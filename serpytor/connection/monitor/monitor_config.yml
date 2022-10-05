@@ -1,0 +1,8 @@
+name: "Monitor Server configuration"
+devices:
+  servers:
+    allow: "*"
+    disallow: []
+  clients:
+    allow: "*"
+    disallow: []

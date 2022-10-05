@@ -1,0 +1,5 @@
+venv/**
+**/dummy/**
+**/automl/**.ipynb
+**/.ipynb_checkpoints
+**/__pycache__
