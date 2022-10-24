@@ -1,30 +1,66 @@
 from functools import lru_cache
-from tinydb import TinyDB, Query, Document
+from tinydb import TinyDB, Query
 from ..feature_store.feature_stores import SimpleFeatureStore
 import yaml
-from ..config import CONFIG
+from serpytor.config import CONFIG
 from pathlib import Path
-from typing import Optional, Dict, Tuple, Depends, Any
+from typing import Optional, Dict, Tuple, List, Any
 from datetime import datetime
+from uuid import uuid4
+from serpytor.database.db import DBIO
+from functools import lru_cache
+from threading import Lock
 
-REGISTRY_DIR = ""
+REGISTRY_DIR = Path("")
 
 
 class SimpleModelRegistry:
-    def __init__(
-        self, db_path: Optional[str] = str(REGISTRY_DIR / "registry.json")
-    ) -> None:
-        self.db = TinyDB(db_path)
-        self.registry: Dict[str, Any] = {}
+    """Simple, thread-safe model registry.<br>
+    Conventions:<br>
+        1. Stores all data in the ``model_registry`` table in the database.<br>
+        2. Stores all data in-memory until ``write_all_to_db()`` is invoked, to avoid excessive database writes.<br>
+        3. Add a model to the main memory using ``add_to_registry()``.<br>
+    """
 
-    def write_to_db(self, entry: Dict[str, Any]) -> None:
-        for index, i in enumerate(self.registry):
-            self.db.insert({i: self.registry[i], "id": index + 1})
+    def __init__(self, db_path: Optional[str] = CONFIG["DB"]["URL"]) -> None:
+        self.db: DBIO = DBIO(table_name="model_registry", db_path=db_path)
+        self.registry: Dict[str, Any] = {}
+        self.lock = Lock()
+
+    def write_all_to_db(self) -> None:
+        """Write all the in-memory models to the database.
+        Can be used as a batch process, to avoid writing bottlenecks.
+        """
+        for i in self.registry:
+            self.db.write_to_db(self.registry[i] | {"id": i})
+
+        self.registry: Dict[str, Any] = {}
 
     def add_to_registry(
         self,
         model_name: Optional[str] = datetime.now(),
         params: Dict[str, Any] = None,
-        id: int = len(self.db) + 1,
+        id: Optional[str] = str(uuid4().hex),
     ) -> None:
-        pass
+        """Add a model to the model registry.
+        This operation is atomic, and performed in-memory to avoid database writes that are slow in nature.
+        """
+        self.lock.acquire()
+        self.registry[i]: Dict[str, Any] = {"params": params} | {
+            "model_name": model_name
+        }
+        self.lock.release()
+
+    @lru_cache(maxsize=100)
+    def get_from_registry(self, model_id: str, *args, **kwargs) -> Dict[str, Any]:
+        """Read the database and return model details by id.
+        LRU Caching is used to speed up lookups and reduce database reads.
+        """
+        return self.db.read_from_db(model_id, *args, **kwargs)
+
+    @lru_cache(maxsize=10)
+    def get_all_from_registry(self) -> List[Dict[str, Any]]:
+        """Get all model entries from the registry.
+        LRU Caching is used to speed up lookups and reduce database reads.
+        """
+        return self.db.read_all_from_db()

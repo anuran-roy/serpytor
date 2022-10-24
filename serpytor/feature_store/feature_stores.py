@@ -11,7 +11,7 @@ import polars as pl
 import pandas as pd
 from rich import print as rich_print
 from functools import lru_cache
-from config import CONFIG
+from serpytor.feature_store.config import CONFIG
 
 
 class SimpleFeatureStore:

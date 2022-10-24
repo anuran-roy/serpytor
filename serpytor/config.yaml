@@ -1,0 +1,6 @@
+DB: 
+  URL: /media/anuran/Samsung SSD 970 EVO 1TB/Projects/Capstone Project/ml system/db.json"
+  TYPE: NOSQL  # Either SQL or NOSQL
+TSDB:
+  URL: "/media/anuran/Samsung SSD 970 EVO 1TB/Projects/Capstone Project/ml system/tsdb.json"
+  TYPE: NOSQL  # Either SQL or NOSQL
