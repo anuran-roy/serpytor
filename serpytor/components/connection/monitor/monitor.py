@@ -1,6 +1,6 @@
 from yaml import safe_load
 from .server import HeartbeatServer
-from serpytor.events import (
+from serpytor.components.events import (
     EventCapture,
 )
 

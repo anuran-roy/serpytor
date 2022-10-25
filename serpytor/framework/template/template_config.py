@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Optional, Any, List, Tuple, Dict, Union
-from serpytor.analytics import decorators
-from serpytor.events.event_capture import EventCapture
+from serpytor.components.analytics import decorators
+from serpytor.components.events.event_capture import EventCapture
 import sentry_sdk
 from sentry_sdk.integrations.aiohttp import AioHttpIntegration
 

@@ -1,5 +1,4 @@
 from threading import Lock
-from serpytor.config import CONFIG_ENV_VARS
 from tinydb import TinyDB, Query
 from typing import Optional, Dict, List, Any
 
@@ -9,7 +8,7 @@ class DBIO:
 
     def __init__(
         self,
-        db_url: Optional[str] = CONFIG_ENV_VARS["TSDB"]["URL"],
+        db_url: str,
         table_name: Optional[str] = "_default",
         *args,
         **kwargs
@@ -22,7 +21,8 @@ class DBIO:
     def read_from_db(
         self, query: Dict[str, Any], *args, **kwargs
     ) -> List[Dict[str, Any]]:
-        """Read operations don't need to synchronized. So we don't use locks to read the database."""
+        """Read operations don't need to synchronized.
+        So we don't use locks to read the database."""
         db_query = Query()
         return self.db.search(db_query.fragment(query))
 
@@ -30,7 +30,8 @@ class DBIO:
         return self.db.all()
 
     def write_to_db(self, data: Dict[Any, Any], *args, **kwargs) -> None:
-        """Write operations need to be synchronized. So we use locks while writing into the database."""
+        """Write operations need to be synchronized.
+        So we use locks while writing into the database."""
         self.lock.acquire()
         try:
             self.db.insert(data)

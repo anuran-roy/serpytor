@@ -1,4 +1,4 @@
-from serpytor.resolver.resolve import resolve_base
+from serpytor.components.resolver.resolve import resolve_base
 import pytest
 from pathlib import Path
 

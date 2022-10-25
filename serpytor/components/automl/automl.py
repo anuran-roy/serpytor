@@ -24,7 +24,31 @@ def get_best_model(
     model_type: str = "classification",
     optimize_for: str = "balanced",
 ):
-    """Get the best performing model for the given features and labels."""
+    """Get the best performing model for the given features and labels.
+    Models are chosen from one of the following scikit-learn models:
+    - For classification:
+        - DecisionTreeClassifier
+        - RandomForestClassifier
+        - SupportVectorClassifier (or SVC)
+
+    - For regression:
+        - DecisionTreeRegressor
+        - RandomForestRegressor
+        - SupportVectorRegressor (or SVR)
+
+    Example usage:
+
+    ```python
+    from serpytor.components.automl import get_best_model
+    from sklearn.datasets import load_iris
+
+    data = load_iris()
+    features = data.data
+    labels = data.target
+
+    model = get_best_model(features, labels, test_size=0.3, model_type="classification")
+    ```
+    """
 
     model_glossary = {
         "classification": [DecisionTreeClassifier, RandomForestClassifier, SVC],

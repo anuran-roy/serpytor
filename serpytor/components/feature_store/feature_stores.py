@@ -9,9 +9,10 @@ from typing import (
 )
 import polars as pl
 import pandas as pd
-from rich import print as rich_print
+
+# from rich import print as rich_print
 from functools import lru_cache
-from serpytor.feature_store.config import CONFIG
+from serpytor.components.feature_store.config import CONFIG
 
 
 class SimpleFeatureStore:

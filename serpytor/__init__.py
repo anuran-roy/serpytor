@@ -1,2 +1,3 @@
-"""Hello!
+"""
+.. include:: ../README.md
 """

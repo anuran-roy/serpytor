@@ -1,4 +1,4 @@
-from serpytor.logging.exceptions import (
+from serpytor.components.logging.exceptions import (
     CriticalLog,
     ErrorLog,
     WarningLog,

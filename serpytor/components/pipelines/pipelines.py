@@ -1,5 +1,5 @@
 from typing import List, Tuple, Optional, Dict, Callable, Iterable, Any, Union
-from serpytor.pipelines.exceptions import (
+from serpytor.components.pipelines.exceptions import (
     CriticalPipelineError,
     PipelineError,
     PipelineWarning,
@@ -7,48 +7,52 @@ from serpytor.pipelines.exceptions import (
     PipelineDebugInfo,
 )
 import traceback
-from serpytor.events.event_capture import EventCapture
+from serpytor.components.events.event_capture import EventCapture
+
 # from serpytor.config import EVENT_CAPTURE_CONFIG
 
+
 class Pipeline:
-    """Create pipelines by stacking functions on top of each other.  
-      
-    Some conventions to follow:  
-      
-    1. The first function must be a producer function that outputs data.  
-    2. The rest of the functions must be consumer functions that take in data <b>AND</b> return data.  
-      
-      
-    This is done to ensure that the pipeline is not broken, and that there is a single source of initial data.  
-      
-    Example usage:    
+    """Create pipelines by stacking functions on top of each other.
+
+    Some conventions to follow:
+
+    1. The first function must be a producer function that outputs data.
+    2. The rest of the functions must be consumer functions that take in data <b>AND</b> return data.
+
+
+    This is done to ensure that the pipeline is not broken, and that there is a single source of initial data.
+
+    Example usage:
 
     ```python
     def producer(*args, **kwargs):
         return [1, 0, 1, 0, 1]
 
 
-    def proc1(data, *args, **kwargs):
+    def consumer1(data, *args, **kwargs):
         print(data)
         mod_data = [i + 1 for i in data]
         return mod_data
 
 
-    def proc2(data, *args, **kwargs):
+    def consumer2(data, *args, **kwargs):
         print(data)
         mod_data2 = [i**2 for i in data]
         return mod_data2
 
 
     def pipeline():
-        pipe = Pipeline(pipeline=[(producer, [], {}), (proc1, [], {}), (proc2, [], {})])
+        pipe = Pipeline(pipeline=[(producer, [], {}), (consumer1, [], {}), (consumer2, [], {})])
 
         finished_data = pipe.execute_pipeline()
         print(finished_data)
 
-    pipeline()```
+    pipeline()
+    ```
     """
-    EVENT_CAPTURE_CONFIG = EventCapture(event_name="Pipeline event capture")
+
+    # EVENT_CAPTURE_CONFIG = EventCapture(event_name="Pipeline event capture")
 
     def __init__(self, pipeline: List[Callable], *args, **kwargs) -> None:
         """
@@ -72,7 +76,7 @@ class Pipeline:
         else:
             self.pipeline.remove(self.pipeline[index])
 
-    @EVENT_CAPTURE_CONFIG.capture_event
+    # @EVENT_CAPTURE_CONFIG.capture_event
     def execute(self, method: Callable, data: Any, *args, **kwargs) -> None:
         """Executor for pipelined functions"""
         try:
@@ -80,13 +84,17 @@ class Pipeline:
         except Exception as e:
             raise PipelineError(f"Error in executing pipeline. Details: {e}")
 
-    @EVENT_CAPTURE_CONFIG.capture_event
+    # @EVENT_CAPTURE_CONFIG.capture_event
     def execute_pipeline(self, *args, **kwargs) -> None:
         try:
             try:
                 data = None
                 for pipe_index, pipelined_tuple in enumerate(self.pipeline):
-                    pipelined_callable, pipelined_args, pipelined_kwargs = pipelined_tuple
+                    (
+                        pipelined_callable,
+                        pipelined_args,
+                        pipelined_kwargs,
+                    ) = pipelined_tuple
                     if len(pipelined_args) == 0:
                         pipelined_args = self.global_args
                     pipelined_kwargs = self.global_kwargs | kwargs

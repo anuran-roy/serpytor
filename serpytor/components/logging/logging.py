@@ -1,12 +1,11 @@
 from typing import Any, Tuple, Callable, Dict, Optional, List, Union, Iterable
 from functools import wraps
-import logging
-import json
+
+# import logging
+# import json
 from .exceptions import CriticalLog, ErrorLog, WarningLog, InfoLog, DebugLog, UnknownLog
-from tinydb import TinyDB, Query
-from serpytor.config import CONFIG_ENV_VARS
 from datetime import datetime
-from serpytor.database.db import DBIO
+from serpytor.components.database.db import DBIO
 
 LOG_LEVELS: Dict[str, int] = {
     "UNKNOWN": 6,
@@ -53,7 +52,7 @@ class StandardLogger:
 
     def __init__(
         self,
-        db_url: Optional[str] = CONFIG_ENV_VARS["TSDB"]["URL"],
+        db_url: str,
         log_threshold: Optional[int] = 3,
         debug: Optional[bool] = False,
         *args,

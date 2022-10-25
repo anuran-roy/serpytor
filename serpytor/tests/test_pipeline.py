@@ -1,5 +1,5 @@
 import pytest
-from serpytor.pipelines import Pipeline
+from serpytor.components.pipelines import Pipeline
 
 
 def producer(*args, **kwargs):
@@ -22,7 +22,9 @@ def consumer2(data, *args, **kwargs):
 
 
 def test_pipeline():
-    pipe = Pipeline(pipeline=[(producer, [], {}), (consumer1, [], {}), (consumer2, [], {})])
+    pipe = Pipeline(
+        pipeline=[(producer, [], {}), (consumer1, [], {}), (consumer2, [], {})]
+    )
 
     finished_data = pipe.execute_pipeline()
     print(finished_data)
@@ -30,4 +32,3 @@ def test_pipeline():
 
 if __name__ == "__main__":
     test_pipeline()
-

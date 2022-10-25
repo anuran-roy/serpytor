@@ -1,5 +1,6 @@
 import pytest
-from serpytor.events import EventCapture
+from serpytor.components.events import EventCapture
+
 
 def test_event_capture():
     ec = EventCapture()

@@ -1,20 +1,22 @@
 from typing import Callable, Any
 import time
-from functools import lru_cache, wraps
-# from serpytor.events.event_capture import EventCapture
-from serpytor.config import CONFIG_ENV_VARS
+from functools import wraps
+
+# from serpytor.components.events.event_capture import EventCapture
+
 
 def get_execution_time(func: Callable) -> Any:
-    """Decorator to get execution time for a task/function/job.  
-      
-    Example usage:  
-    ```
-    from serpytor.analytics.decorators import get_execution_time
+    """Decorator to get execution time for a task/function/job.
+
+    Example usage:
+    ```python
+    from serpytor.components.analytics.decorators import get_execution_time
     @get_execution_time
     def foo():
         return "bar"
     ```
     """
+
     @wraps(func)
     def wrapper(*args: list, **kwargs: dict) -> Any:
         start_time: float = time.time()

@@ -1,11 +1,11 @@
 from functools import wraps
 from typing import Optional, Callable, List, Dict, Any
-from serpytor.logging.logging import StandardLogger
-from serpytor.analytics.decorators import get_execution_time
-from time import time
-from serpytor.config import CONFIG_ENV_VARS
+from serpytor.components.logging.logging import StandardLogger
+from serpytor.components.analytics.decorators import get_execution_time
 
-# from serpytor.logging.decorators import
+# from time import time
+
+# from serpytor.components.logging.decorators import
 
 
 class EventCapture:
@@ -15,10 +15,9 @@ class EventCapture:
 
     def __init__(
         self,
-        # db_url: str,
+        db_url: str,
         event_name: Optional[str] = "Untitled Event Capture",
         logger: Optional[Callable] = StandardLogger,
-        db_url: Optional[str] = CONFIG_ENV_VARS["TSDB"]["URL"],
         *args: Optional[List[Any]],
         **kwargs: Optional[Dict[str, Any]]
     ) -> None:
@@ -26,7 +25,7 @@ class EventCapture:
         self.event_name = event_name
         self.logger = logger(db_url, *args, **kwargs)
 
-    @get_execution_time
+    # @get_execution_time
     def capture_event(self, function: Callable) -> None:
         @wraps(function)
         def wrapper(*args, **kwargs):
