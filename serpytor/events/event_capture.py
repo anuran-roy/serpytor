@@ -1,12 +1,11 @@
 from functools import wraps
 from typing import Optional, Callable, List, Dict, Any
 from serpytor.logging.logging import StandardLogger
+from serpytor.analytics.decorators import get_execution_time
 from time import time
-from serpytor.config import CONFIG
+from serpytor.config import CONFIG_ENV_VARS
 
 # from serpytor.logging.decorators import
-global LOGGER
-LOGGER = StandardLogger
 
 
 class EventCapture:
@@ -16,21 +15,23 @@ class EventCapture:
 
     def __init__(
         self,
+        # db_url: str,
         event_name: Optional[str] = "Untitled Event Capture",
         logger: Optional[Callable] = StandardLogger,
-        db_url: Optional[str] = CONFIG["TSDB"]["URL"],
+        db_url: Optional[str] = CONFIG_ENV_VARS["TSDB"]["URL"],
         *args: Optional[List[Any]],
         **kwargs: Optional[Dict[str, Any]]
     ) -> None:
         self.db_url = db_url
         self.event_name = event_name
-        global LOGGER
-        LOGGER = logger(db_url, *args, **kwargs)
+        self.logger = logger(db_url, *args, **kwargs)
 
+    @get_execution_time
     def capture_event(self, function: Callable) -> None:
         @wraps(function)
         def wrapper(*args, **kwargs):
-            output = LOGGER.log(function, *args, **kwargs)
+            print("Passint through the event capture function")
+            output = self.logger.log(function, *args, **kwargs)
             # TODO: Other operations can be done here
             return output
 
