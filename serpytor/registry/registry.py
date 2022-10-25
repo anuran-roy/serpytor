@@ -2,7 +2,7 @@ from functools import lru_cache
 from tinydb import TinyDB, Query
 from ..feature_store.feature_stores import SimpleFeatureStore
 import yaml
-from serpytor.config import CONFIG
+from serpytor.config import CONFIG_ENV_VARS
 from pathlib import Path
 from typing import Optional, Dict, Tuple, List, Any
 from datetime import datetime
@@ -15,14 +15,14 @@ REGISTRY_DIR = Path("")
 
 
 class SimpleModelRegistry:
-    """Simple, thread-safe model registry.<br>
-    Conventions:<br>
-        1. Stores all data in the ``model_registry`` table in the database.<br>
-        2. Stores all data in-memory until ``write_all_to_db()`` is invoked, to avoid excessive database writes.<br>
-        3. Add a model to the main memory using ``add_to_registry()``.<br>
+    """Simple, thread-safe model registry.  
+    Conventions:  
+        1. Stores all data in the ``model_registry`` table in the database.  
+        2. Stores all data in-memory until ``write_all_to_db()`` is invoked, to avoid excessive database writes.  
+        3. Add a model to the main memory using ``add_to_registry()``.  
     """
 
-    def __init__(self, db_path: Optional[str] = CONFIG["DB"]["URL"]) -> None:
+    def __init__(self, db_path: Optional[str] = CONFIG_ENV_VARS["DB"]["URL"]) -> None:
         self.db: DBIO = DBIO(table_name="model_registry", db_path=db_path)
         self.registry: Dict[str, Any] = {}
         self.lock = Lock()
