@@ -1,5 +1,5 @@
 from threading import Lock
-from serpytor.config import CONFIG
+from serpytor.config import CONFIG_ENV_VARS
 from tinydb import TinyDB, Query
 from typing import Optional, Dict, List, Any
 
@@ -9,7 +9,7 @@ class DBIO:
 
     def __init__(
         self,
-        db_url: Optional[str] = CONFIG["TSDB"]["URL"],
+        db_url: Optional[str] = CONFIG_ENV_VARS["TSDB"]["URL"],
         table_name: Optional[str] = "_default",
         *args,
         **kwargs
