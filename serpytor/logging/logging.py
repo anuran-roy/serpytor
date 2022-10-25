@@ -4,7 +4,7 @@ import logging
 import json
 from .exceptions import CriticalLog, ErrorLog, WarningLog, InfoLog, DebugLog, UnknownLog
 from tinydb import TinyDB, Query
-from serpytor.config import CONFIG
+from serpytor.config import CONFIG_ENV_VARS
 from datetime import datetime
 from serpytor.database.db import DBIO
 
@@ -25,6 +25,7 @@ class DebugLogger:
 
     def __init__(self, debug: bool = False, *args, **kwargs) -> None:
         self.log_dict: Dict[str, str] = {
+            "UNKNOWN": "bold gray",
             "CRITICAL": "bold purple",
             "ERROR": "bold red",
             "WARNING": "bold yellow",
@@ -37,6 +38,7 @@ class DebugLogger:
         """
         Log to console.
         """
+        print("Passing through the StandardLogger log function")
         try:
             output = function(*args, **kwargs)
             return output
@@ -51,13 +53,14 @@ class StandardLogger:
 
     def __init__(
         self,
-        db_url: Optional[str] = CONFIG["TSDB"]["URL"],
+        db_url: Optional[str] = CONFIG_ENV_VARS["TSDB"]["URL"],
         log_threshold: Optional[int] = 3,
         debug: Optional[bool] = False,
         *args,
         **kwargs,
     ) -> None:
         self.log_dict: Dict[str, str] = {
+            "UNKNOWN": "bold gray",
             "CRITICAL": "bold purple",
             "ERROR": "bold red",
             "WARNING": "bold yellow",
@@ -69,7 +72,7 @@ class StandardLogger:
         self.log_threshold = log_threshold
         self.db_url: str = db_url
         self.log_types: List[str] = list(self.log_dict.keys())
-        self.table_name: str = kwargs.get("table_name", "_default")
+        self.table_name: str = kwargs.get("table_name", "logs")
         self.db_io: DBIO = DBIO(
             db_url=self.db_url, table_name=self.table_name, *args, **kwargs
         )
@@ -78,6 +81,7 @@ class StandardLogger:
         """
         Log to DB.
         """
+        print("Passing through the StandardLogger log function")
         try:
             output: Any = function(*args, **kwargs)
             return output
@@ -91,13 +95,14 @@ class StandardLogger:
                 type(e) == type(DebugLog),
                 isinstance(e, Exception),
             )
+            # print(f"\n\n\n\n{self.log_index}\n\n\n\n")
             # TODO: Log to DB.
             log: Dict[str, str] = {
                 "timestamp": str(datetime.now()),
                 "type": self.log_types[self.log_index.index(True)],
                 "log": str(e),
             }
-
+            print(f"Generated log details = \n{log}")
             if self.log_index.index(True) == len(self.log_types) - 1 or (
                 (self.log_index.index(True) != len(self.log_types) - 1)
                 and e.level >= self.log_threshold
