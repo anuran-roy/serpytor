@@ -53,7 +53,6 @@
     </ul>
 
 
-            <footer>Made by &lt;a href=https://github.com/anuran-roy&gt;Anuran&lt;/a&gt; with \U0001F499</footer>
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span><img
@@ -68,59 +67,31 @@
 <a href="./../serpytor.html">serpytor</a><wbr>.analytics    </h1>
 
                 
-                        <input id="mod-analytics-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-
-                        <label class="view-source-button" for="mod-analytics-view-source"><span>View Source</span></label>
-
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="kn">from</span> <span class="nn">serpytor.analytics.decorators</span> <span class="kn">import</span> <span class="n">get_execution_time</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_execution_time&quot;</span><span class="p">]</span>
-</span></pre></div>
-
-
+                
+                
+                
             </section>
                 <section id="get_execution_time">
-                            <input id="get_execution_time-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                    <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">get_execution_time</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
 
-                <label class="view-source-button" for="get_execution_time-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#get_execution_time"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_execution_time-8"><a href="#get_execution_time-8"><span class="linenos"> 8</span></a><span class="k">def</span> <span class="nf">get_execution_time</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span id="get_execution_time-9"><a href="#get_execution_time-9"><span class="linenos"> 9</span></a>    <span class="sd">&quot;&quot;&quot;Decorator to get execution time for a task/function/job.  </span>
-</span><span id="get_execution_time-10"><a href="#get_execution_time-10"><span class="linenos">10</span></a><span class="sd">      </span>
-</span><span id="get_execution_time-11"><a href="#get_execution_time-11"><span class="linenos">11</span></a><span class="sd">    Example usage:  </span>
-</span><span id="get_execution_time-12"><a href="#get_execution_time-12"><span class="linenos">12</span></a><span class="sd">    ```</span>
-</span><span id="get_execution_time-13"><a href="#get_execution_time-13"><span class="linenos">13</span></a><span class="sd">    </span>
-</span><span id="get_execution_time-14"><a href="#get_execution_time-14"><span class="linenos">14</span></a><span class="sd">    ```</span>
-</span><span id="get_execution_time-15"><a href="#get_execution_time-15"><span class="linenos">15</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="get_execution_time-16"><a href="#get_execution_time-16"><span class="linenos">16</span></a>    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-</span><span id="get_execution_time-17"><a href="#get_execution_time-17"><span class="linenos">17</span></a>    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span id="get_execution_time-18"><a href="#get_execution_time-18"><span class="linenos">18</span></a>        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-</span><span id="get_execution_time-19"><a href="#get_execution_time-19"><span class="linenos">19</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Passing through the get_execution_time function&quot;</span><span class="p">)</span>
-</span><span id="get_execution_time-20"><a href="#get_execution_time-20"><span class="linenos">20</span></a>        <span class="n">output</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="get_execution_time-21"><a href="#get_execution_time-21"><span class="linenos">21</span></a>
-</span><span id="get_execution_time-22"><a href="#get_execution_time-22"><span class="linenos">22</span></a>        <span class="n">end_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-</span><span id="get_execution_time-23"><a href="#get_execution_time-23"><span class="linenos">23</span></a>        <span class="n">execution_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
-</span><span id="get_execution_time-24"><a href="#get_execution_time-24"><span class="linenos">24</span></a>
-</span><span id="get_execution_time-25"><a href="#get_execution_time-25"><span class="linenos">25</span></a>        <span class="c1"># TODO: Add the execution time to the EventCapture instance.</span>
-</span><span id="get_execution_time-26"><a href="#get_execution_time-26"><span class="linenos">26</span></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution time = </span><span class="si">{</span><span class="n">execution_time</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
-</span><span id="get_execution_time-27"><a href="#get_execution_time-27"><span class="linenos">27</span></a>        <span class="k">return</span> <span class="n">output</span>
-</span><span id="get_execution_time-28"><a href="#get_execution_time-28"><span class="linenos">28</span></a>
-</span><span id="get_execution_time-29"><a href="#get_execution_time-29"><span class="linenos">29</span></a>    <span class="k">return</span> <span class="n">wrapper</span>
-</span></pre></div>
-
-
+    
             <div class="docstring"><p>Decorator to get execution time for a task/function/job.  </p>
 
 <p>Example usage:  </p>
 
-<pre><code>
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn">serpytor.analytics.decorators</span> <span class="kn">import</span> <span class="n">get_execution_time</span>
+<span class="nd">@get_execution_time</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;bar&quot;</span>
 </code></pre>
+</div>
 </div>
 
 

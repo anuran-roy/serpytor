@@ -38,26 +38,28 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+        <h2>Contents</h2>
+        <ul>
+  <li><a href="#the-serpytor-docs">The SerPytor Docs</a>
+  <ul>
+    <li><a href="#where-did-it-come-from">Where did it come from?</a></li>
+    <li><a href="#why-open-source-this">Why Open Source this?</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#serpytor-architecture">SerPyTor Architecture</a></li>
+    <li><a href="#contributing-to-serpytor">Contributing to SerPyTor</a></li>
+  </ul></li>
+</ul>
+
 
         <h2>Submodules</h2>
         <ul>
-                <li><a href="serpytor/analytics.html">analytics</a></li>
-                <li><a href="serpytor/automl.html">automl</a></li>
+                <li><a href="serpytor/components.html">components</a></li>
                 <li><a href="serpytor/config.html">config</a></li>
-                <li><a href="serpytor/connection.html">connection</a></li>
-                <li><a href="serpytor/dashboard.html">dashboard</a></li>
-                <li><a href="serpytor/events.html">events</a></li>
-                <li><a href="serpytor/exports.html">exports</a></li>
-                <li><a href="serpytor/feature_store.html">feature_store</a></li>
-                <li><a href="serpytor/logging.html">logging</a></li>
-                <li><a href="serpytor/models.html">models</a></li>
-                <li><a href="serpytor/pipelines.html">pipelines</a></li>
-                <li><a href="serpytor/registry.html">registry</a></li>
-                <li><a href="serpytor/resolver.html">resolver</a></li>
+                <li><a href="serpytor/framework.html">framework</a></li>
+                <li><a href="serpytor/services.html">services</a></li>
         </ul>
 
 
-            <footer>Made by &lt;a href=https://github.com/anuran-roy&gt;Anuran&lt;/a&gt; with \U0001F499</footer>
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span><img
@@ -71,18 +73,103 @@
                     <h1 class="modulename">
 serpytor    </h1>
 
-                        <div class="docstring"><p>Hello!</p>
+                        <div class="docstring"><h1 id="the-serpytor-docs">The SerPytor Docs</h1>
+
+<p>A low-code, end-to-end data collection and analysis tool for data folks.   Take the pain out of data collection from your pipeline!  </p>
+
+<h2 id="where-did-it-come-from">Where did it come from?</h2>
+
+<p>Alright, I'll be completely honest here. It's a story, so if you're in, read along! Busy folks, the <a href="#tl-dr">TL;DR</a> is for you!  </p>
+
+<h3 id="the-story">The Story</h3>
+
+<p>I was always fascinated by large-scale system design and big data pipelines - on the scale of billions. Statistics released from time to time by companies like AWS, Google, Cloudflare and others intensified my fascination further.  </p>
+
+<p>I read a lot of newsletters, blogs and articles about how to implement large scale system design, I still do. But it always felt like an enigma - something that is not as easy as the online resources make it to be. Special mention to Alex Xu's newsletters and his gem of a book on System Design Interview (I've read only the first part, eagerly waiting for the second to arrive 😃)  </p>
+
+<p>Fast forward to my summer holidays, I decided that something needs to be done, else I'll remain stuck in this loop of getting hyped and feeling inadequate. </p>
+
+<p><strong>Then came a twist.</strong>  </p>
+
+<p>As I kept working and learning, I came to know about the so-called <em>Modern Data Stack</em> and how many experts claimed that the way is not sustainable in anyway imaginable. Especially one point stuck me from a newsletter (sorry I don't remember the name) that proposed a solution for the disparity and the inconvenience caused by the hugely heterogeneous nature of the Modern Data Stack. It was to homogenise the different heterogeneous components, such that components logically connected to each other are implemented into a homogeneous layer. I interpreted it as: </p>
+
+<blockquote>
+  <p>Connect wherever possible; segregate wherever required. </p>
+</blockquote>
+
+<p>I was also inspired by the way the people at <a href="https://naas.ai"><strong>naas.ai</strong></a> do their work:</p>
+
+<ul>
+<li>First they build the core, low-level drivers</li>
+<li>Then their contributors build a low-code platform (I happen to be one of them 😃) by creating templates on top of the drivers</li>
+<li>Then they let their consumers build services using those templates.</li>
+</ul>
+
+<p>This brought me to the conclusion - Moving data quick needs to be of three-levels, not the one-stop solution many products claim to be. Yes, they may do a lot of things correct, but because of the unlimited variety in data, there might be cases where the so-called one-stop solution falls short. </p>
+
+<p>Thus, I started this project. I could never guess that the codebase would grow so much so quickly!  </p>
+
+<h3 id="tl-dr">TL; DR</h3>
+
+<p>This project was taken up by me as a challenge to understand big data architecture, and to find a low-code unified alternative to the plethora of conflicting data products out there. It's been quite a journey till now!  </p>
+
+<h2 id="why-open-source-this">Why Open Source this?</h2>
+
+<p>There are mainly two reasons:</p>
+
+<ul>
+<li><p><strong>Learning Large-scale System Design while doing it</strong>: System Design is one of the most sought-after skills in the software industry, and I know for sure that I am not the only one stuck in the vicious loop of feeling there is some black magic, trying to learn it, and end up feeling inadequate to learn the stuff. <br />
+I am someone who learns by doing. So I wanted to make something tangible to start off with.  </p></li>
+<li><p><strong><em>The more important reason-</em> A modest attempt at a unified data platform</strong>: I've been thoroughly confused about the different tools that exist in the Big Data Space - and a lot of them have almost same functionalities, if not exactly the same. It's okay to do one thing and do it good, but somewhere down the line, I think that so many options to choose from gives rise to a lot of confusion. For example, considering data formats, there are many conflicts, due to which many other extra software also needs to be introduced.  </p></li>
+</ul>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>Getting started with SerPyTor is extremely easy. You can use it as a library, framework, and/or as a service (under development).</p>
+
+<p>Install SerPyTor with the following two steps:</p>
+
+<ul>
+<li>Clone the Git Repo on your local machine and navigate into it:</li>
+</ul>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code>git clone https://github.com/anuran-roy/serpytor.git
+<span class="nb">cd</span> serpytor
+</code></pre>
 </div>
 
-                        <input id="mod-serpytor-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<ul>
+<li>Run <code>pip install</code>:</li>
+</ul>
 
-                        <label class="view-source-button" for="mod-serpytor-view-source"><span>View Source</span></label>
+<div class="pdoc-code codehilite">
+<pre><span></span><code>pip install .
+</code></pre>
+</div>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;Hello!</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span></pre></div>
+<h2 id="serpytor-architecture">SerPyTor Architecture</h2>
 
+<p>As I mentioned before, SerPyTor is being created in a way that it can act as a library, framework, and/or as a service. Hence, there are three main parts of SerPyTor:</p>
 
+<ol>
+<li><p><strong>SerPyTor Components</strong>: The building blocks of SerPyTor. These are the most fundamental components of SerPyTor, and are used by the SerPyTor Framework and the SerPyTor Services.  </p></li>
+<li><p><strong>SerPyTor Framework</strong>: This is to aid developers ship code faster, and in a consistent fashion, in ways that make best use of the capabilities that SerPyTor provides. If you want something pre-made and ready to ship in no time (viz., templates), this is what you want to check out. </p></li>
+<li><p><strong>SerPyTor Services</strong>: SerPyTor services are meant for quick and effortless deployment and integration of SerPyTor-based code and products.</p></li>
+</ol>
+
+<p>As of now (October, 2022), I am dedicating my efforts towards building a diverse set of SerPyTor components that can be used to create a robust framework.</p>
+
+<h2 id="contributing-to-serpytor">Contributing to SerPyTor</h2>
+
+<p>Contributors are the driving force behind an open-source project, and SerPyTor aims to be 100% open source in nature! As a big fan of open source projects, anyone willing to lend me a helping hand in growing this project is most welcome! 🤩</p>
+
+<p>You can talk in Discussions, create Issues and Pull Requests in the <a href="https://github.com/anuran-roy/serpytor"><strong>GitHub repository</strong></a>, or mail me directly at anuranroy02 [at] gmail.com 😃</p>
+</div>
+
+                
+                
+                
             </section>
     </main>
 <script>

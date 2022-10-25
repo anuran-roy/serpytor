@@ -113,7 +113,6 @@
     </ul>
 
 
-            <footer>Made by &lt;a href=https://github.com/anuran-roy&gt;Anuran&lt;/a&gt; with \U0001F499</footer>
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span><img
@@ -128,490 +127,239 @@
 <a href="./../serpytor.html">serpytor</a><wbr>.connection    </h1>
 
                 
-                        <input id="mod-connection-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-
-                        <label class="view-source-button" for="mod-connection-view-source"><span>View Source</span></label>
-
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="kn">from</span> <span class="nn">.extensions.reports.crash_reports.crash_reports</span> <span class="kn">import</span> <span class="n">get_report</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="kn">from</span> <span class="nn">.monitor.monitor</span> <span class="kn">import</span> <span class="n">Monitor</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="kn">from</span> <span class="nn">.monitor.client</span> <span class="kn">import</span> <span class="n">HeartbeatClient</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="kn">from</span> <span class="nn">.monitor.server</span> <span class="kn">import</span> <span class="n">HeartbeatServer</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">6</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_report&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor&quot;</span><span class="p">,</span> <span class="s2">&quot;HeartbeatClient&quot;</span><span class="p">,</span> <span class="s2">&quot;HeartbeatServer&quot;</span><span class="p">]</span>
-</span></pre></div>
-
-
+                
+                
+                
             </section>
                 <section id="get_report">
-                            <input id="get_report-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                    <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">get_report</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
 
-                <label class="view-source-button" for="get_report-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#get_report"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_report-2"><a href="#get_report-2"><span class="linenos">2</span></a><span class="k">def</span> <span class="nf">get_report</span><span class="p">():</span>
-</span><span id="get_report-3"><a href="#get_report-3"><span class="linenos">3</span></a>    <span class="sd">&quot;&quot;&quot;Currently under development.&quot;&quot;&quot;</span>
-</span><span id="get_report-4"><a href="#get_report-4"><span class="linenos">4</span></a>    <span class="o">...</span>
-</span></pre></div>
-
-
+    
             <div class="docstring"><p>Currently under development.</p>
 </div>
 
 
                 </section>
                 <section id="Monitor">
-                            <input id="Monitor-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr class">
+                    <div class="attr class">
             
     <span class="def">class</span>
     <span class="name">Monitor</span>:
 
-                <label class="view-source-button" for="Monitor-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#Monitor"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Monitor-9"><a href="#Monitor-9"><span class="linenos"> 9</span></a><span class="k">class</span> <span class="nc">Monitor</span><span class="p">:</span>
-</span><span id="Monitor-10"><a href="#Monitor-10"><span class="linenos">10</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Monitor-11"><a href="#Monitor-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./monitor_config.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-</span><span id="Monitor-12"><a href="#Monitor-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span>
-</span><span id="Monitor-13"><a href="#Monitor-13"><span class="linenos">13</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">servers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;servers&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span>
-</span><span id="Monitor-14"><a href="#Monitor-14"><span class="linenos">14</span></a>
-</span><span id="Monitor-15"><a href="#Monitor-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="nf">start_server</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Monitor-16"><a href="#Monitor-16"><span class="linenos">16</span></a>        <span class="n">server</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">()</span>
-</span><span id="Monitor-17"><a href="#Monitor-17"><span class="linenos">17</span></a>        <span class="n">server</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
-</span><span id="Monitor-18"><a href="#Monitor-18"><span class="linenos">18</span></a>
-</span><span id="Monitor-19"><a href="#Monitor-19"><span class="linenos">19</span></a>    <span class="k">def</span> <span class="nf">connect_to_clients</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Monitor-20"><a href="#Monitor-20"><span class="linenos">20</span></a>        <span class="k">pass</span>
-</span></pre></div>
-
-
+    
     
 
                             <div id="Monitor.__init__" class="classattr">
-                                        <input id="Monitor.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="name">Monitor</span><span class="signature pdoc-code condensed">()</span>
 
-                <label class="view-source-button" for="Monitor.__init__-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#Monitor.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Monitor.__init__-10"><a href="#Monitor.__init__-10"><span class="linenos">10</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Monitor.__init__-11"><a href="#Monitor.__init__-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./monitor_config.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-</span><span id="Monitor.__init__-12"><a href="#Monitor.__init__-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span>
-</span><span id="Monitor.__init__-13"><a href="#Monitor.__init__-13"><span class="linenos">13</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">servers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;servers&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="Monitor.start_server" class="classattr">
-                                        <input id="Monitor.start_server-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">start_server</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="Monitor.start_server-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#Monitor.start_server"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Monitor.start_server-15"><a href="#Monitor.start_server-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="nf">start_server</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Monitor.start_server-16"><a href="#Monitor.start_server-16"><span class="linenos">16</span></a>        <span class="n">server</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">()</span>
-</span><span id="Monitor.start_server-17"><a href="#Monitor.start_server-17"><span class="linenos">17</span></a>        <span class="n">server</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="Monitor.connect_to_clients" class="classattr">
-                                        <input id="Monitor.connect_to_clients-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">connect_to_clients</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="Monitor.connect_to_clients-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#Monitor.connect_to_clients"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Monitor.connect_to_clients-19"><a href="#Monitor.connect_to_clients-19"><span class="linenos">19</span></a>    <span class="k">def</span> <span class="nf">connect_to_clients</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Monitor.connect_to_clients-20"><a href="#Monitor.connect_to_clients-20"><span class="linenos">20</span></a>        <span class="k">pass</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                 </section>
                 <section id="HeartbeatClient">
-                            <input id="HeartbeatClient-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr class">
+                    <div class="attr class">
             
     <span class="def">class</span>
     <span class="name">HeartbeatClient</span>:
 
-                <label class="view-source-button" for="HeartbeatClient-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatClient"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatClient-6"><a href="#HeartbeatClient-6"><span class="linenos"> 6</span></a><span class="k">class</span> <span class="nc">HeartbeatClient</span><span class="p">:</span>
-</span><span id="HeartbeatClient-7"><a href="#HeartbeatClient-7"><span class="linenos"> 7</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="HeartbeatClient-8"><a href="#HeartbeatClient-8"><span class="linenos"> 8</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="HeartbeatClient-9"><a href="#HeartbeatClient-9"><span class="linenos"> 9</span></a>        <span class="n">default_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;http://172.16.25.252:6666&quot;</span><span class="p">,</span>
-</span><span id="HeartbeatClient-10"><a href="#HeartbeatClient-10"><span class="linenos">10</span></a>        <span class="n">time_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span>
-</span><span id="HeartbeatClient-11"><a href="#HeartbeatClient-11"><span class="linenos">11</span></a>        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-</span><span id="HeartbeatClient-12"><a href="#HeartbeatClient-12"><span class="linenos">12</span></a>        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-</span><span id="HeartbeatClient-13"><a href="#HeartbeatClient-13"><span class="linenos">13</span></a>    <span class="p">):</span>
-</span><span id="HeartbeatClient-14"><a href="#HeartbeatClient-14"><span class="linenos">14</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Client&quot;</span>
-</span><span id="HeartbeatClient-15"><a href="#HeartbeatClient-15"><span class="linenos">15</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time_interval</span>
-</span><span id="HeartbeatClient-16"><a href="#HeartbeatClient-16"><span class="linenos">16</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">default_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">default_endpoint</span>
-</span><span id="HeartbeatClient-17"><a href="#HeartbeatClient-17"><span class="linenos">17</span></a>
-</span><span id="HeartbeatClient-18"><a href="#HeartbeatClient-18"><span class="linenos">18</span></a>    <span class="k">def</span> <span class="nf">send_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatClient-19"><a href="#HeartbeatClient-19"><span class="linenos">19</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">endpoint</span><span class="p">:</span>
-</span><span id="HeartbeatClient-20"><a href="#HeartbeatClient-20"><span class="linenos">20</span></a>            <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_endpoint</span>
-</span><span id="HeartbeatClient-21"><a href="#HeartbeatClient-21"><span class="linenos">21</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sending GET request to:&quot;</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
-</span><span id="HeartbeatClient-22"><a href="#HeartbeatClient-22"><span class="linenos">22</span></a>        <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
-</span><span id="HeartbeatClient-23"><a href="#HeartbeatClient-23"><span class="linenos">23</span></a>
-</span><span id="HeartbeatClient-24"><a href="#HeartbeatClient-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="nf">start_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatClient-25"><a href="#HeartbeatClient-25"><span class="linenos">25</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="HeartbeatClient-26"><a href="#HeartbeatClient-26"><span class="linenos">26</span></a>            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span><span id="HeartbeatClient-27"><a href="#HeartbeatClient-27"><span class="linenos">27</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">send_request</span><span class="p">()</span>
-</span><span id="HeartbeatClient-28"><a href="#HeartbeatClient-28"><span class="linenos">28</span></a>                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">)</span>
-</span><span id="HeartbeatClient-29"><a href="#HeartbeatClient-29"><span class="linenos">29</span></a>        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-</span><span id="HeartbeatClient-30"><a href="#HeartbeatClient-30"><span class="linenos">30</span></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shutting down client...&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatClient-31"><a href="#HeartbeatClient-31"><span class="linenos">31</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="HeartbeatClient-32"><a href="#HeartbeatClient-32"><span class="linenos">32</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception details: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             <div id="HeartbeatClient.__init__" class="classattr">
-                                        <input id="HeartbeatClient.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="name">HeartbeatClient</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">default_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;http://172.16.25.252:6666&#39;</span>,</span><span class="param">	<span class="n">time_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">list</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span></span>)</span>
 
-                <label class="view-source-button" for="HeartbeatClient.__init__-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatClient.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatClient.__init__-7"><a href="#HeartbeatClient.__init__-7"><span class="linenos"> 7</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="HeartbeatClient.__init__-8"><a href="#HeartbeatClient.__init__-8"><span class="linenos"> 8</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="HeartbeatClient.__init__-9"><a href="#HeartbeatClient.__init__-9"><span class="linenos"> 9</span></a>        <span class="n">default_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;http://172.16.25.252:6666&quot;</span><span class="p">,</span>
-</span><span id="HeartbeatClient.__init__-10"><a href="#HeartbeatClient.__init__-10"><span class="linenos">10</span></a>        <span class="n">time_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span>
-</span><span id="HeartbeatClient.__init__-11"><a href="#HeartbeatClient.__init__-11"><span class="linenos">11</span></a>        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-</span><span id="HeartbeatClient.__init__-12"><a href="#HeartbeatClient.__init__-12"><span class="linenos">12</span></a>        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-</span><span id="HeartbeatClient.__init__-13"><a href="#HeartbeatClient.__init__-13"><span class="linenos">13</span></a>    <span class="p">):</span>
-</span><span id="HeartbeatClient.__init__-14"><a href="#HeartbeatClient.__init__-14"><span class="linenos">14</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Client&quot;</span>
-</span><span id="HeartbeatClient.__init__-15"><a href="#HeartbeatClient.__init__-15"><span class="linenos">15</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time_interval</span>
-</span><span id="HeartbeatClient.__init__-16"><a href="#HeartbeatClient.__init__-16"><span class="linenos">16</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">default_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">default_endpoint</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatClient.send_request" class="classattr">
-                                        <input id="HeartbeatClient.send_request-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">send_request</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatClient.send_request-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatClient.send_request"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatClient.send_request-18"><a href="#HeartbeatClient.send_request-18"><span class="linenos">18</span></a>    <span class="k">def</span> <span class="nf">send_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatClient.send_request-19"><a href="#HeartbeatClient.send_request-19"><span class="linenos">19</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">endpoint</span><span class="p">:</span>
-</span><span id="HeartbeatClient.send_request-20"><a href="#HeartbeatClient.send_request-20"><span class="linenos">20</span></a>            <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_endpoint</span>
-</span><span id="HeartbeatClient.send_request-21"><a href="#HeartbeatClient.send_request-21"><span class="linenos">21</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sending GET request to:&quot;</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
-</span><span id="HeartbeatClient.send_request-22"><a href="#HeartbeatClient.send_request-22"><span class="linenos">22</span></a>        <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatClient.start_heartbeat" class="classattr">
-                                        <input id="HeartbeatClient.start_heartbeat-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">start_heartbeat</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatClient.start_heartbeat-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatClient.start_heartbeat"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatClient.start_heartbeat-24"><a href="#HeartbeatClient.start_heartbeat-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="nf">start_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatClient.start_heartbeat-25"><a href="#HeartbeatClient.start_heartbeat-25"><span class="linenos">25</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="HeartbeatClient.start_heartbeat-26"><a href="#HeartbeatClient.start_heartbeat-26"><span class="linenos">26</span></a>            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span><span id="HeartbeatClient.start_heartbeat-27"><a href="#HeartbeatClient.start_heartbeat-27"><span class="linenos">27</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">send_request</span><span class="p">()</span>
-</span><span id="HeartbeatClient.start_heartbeat-28"><a href="#HeartbeatClient.start_heartbeat-28"><span class="linenos">28</span></a>                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">)</span>
-</span><span id="HeartbeatClient.start_heartbeat-29"><a href="#HeartbeatClient.start_heartbeat-29"><span class="linenos">29</span></a>        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-</span><span id="HeartbeatClient.start_heartbeat-30"><a href="#HeartbeatClient.start_heartbeat-30"><span class="linenos">30</span></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shutting down client...&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatClient.start_heartbeat-31"><a href="#HeartbeatClient.start_heartbeat-31"><span class="linenos">31</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="HeartbeatClient.start_heartbeat-32"><a href="#HeartbeatClient.start_heartbeat-32"><span class="linenos">32</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception details: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                 </section>
                 <section id="HeartbeatServer">
-                            <input id="HeartbeatServer-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr class">
+                    <div class="attr class">
             
     <span class="def">class</span>
     <span class="name">HeartbeatServer</span>:
 
-                <label class="view-source-button" for="HeartbeatServer-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer-16"><a href="#HeartbeatServer-16"><span class="linenos">16</span></a><span class="k">class</span> <span class="nc">HeartbeatServer</span><span class="p">:</span>
-</span><span id="HeartbeatServer-17"><a href="#HeartbeatServer-17"><span class="linenos">17</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hostName</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6666</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer-18"><a href="#HeartbeatServer-18"><span class="linenos">18</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">port</span>
-</span><span id="HeartbeatServer-19"><a href="#HeartbeatServer-19"><span class="linenos">19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Server&quot;</span>
-</span><span id="HeartbeatServer-20"><a href="#HeartbeatServer-20"><span class="linenos">20</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">hostName</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">hostName</span>
-</span><span id="HeartbeatServer-21"><a href="#HeartbeatServer-21"><span class="linenos">21</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
-</span><span id="HeartbeatServer-22"><a href="#HeartbeatServer-22"><span class="linenos">22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./monitor_config.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-</span><span id="HeartbeatServer-23"><a href="#HeartbeatServer-23"><span class="linenos">23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">routes</span> <span class="o">=</span> <span class="p">[</span><span class="n">web</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handleRequest</span><span class="p">)]</span>
-</span><span id="HeartbeatServer-24"><a href="#HeartbeatServer-24"><span class="linenos">24</span></a>
-</span><span id="HeartbeatServer-25"><a href="#HeartbeatServer-25"><span class="linenos">25</span></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handleRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-</span><span id="HeartbeatServer-26"><a href="#HeartbeatServer-26"><span class="linenos">26</span></a>        <span class="c1"># print(dir(request))</span>
-</span><span id="HeartbeatServer-27"><a href="#HeartbeatServer-27"><span class="linenos">27</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="HeartbeatServer-28"><a href="#HeartbeatServer-28"><span class="linenos">28</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">check_source</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">)</span>
-</span><span id="HeartbeatServer-29"><a href="#HeartbeatServer-29"><span class="linenos">29</span></a>            <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">)</span>
-</span><span id="HeartbeatServer-30"><a href="#HeartbeatServer-30"><span class="linenos">30</span></a>            <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Hello World&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer-31"><a href="#HeartbeatServer-31"><span class="linenos">31</span></a>        <span class="k">except</span> <span class="n">ForbiddenDeviceException</span><span class="p">:</span>
-</span><span id="HeartbeatServer-32"><a href="#HeartbeatServer-32"><span class="linenos">32</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forbidden device request: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer-33"><a href="#HeartbeatServer-33"><span class="linenos">33</span></a>
-</span><span id="HeartbeatServer-34"><a href="#HeartbeatServer-34"><span class="linenos">34</span></a>    <span class="k">def</span> <span class="nf">check_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer-35"><a href="#HeartbeatServer-35"><span class="linenos">35</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_whitelisted</span><span class="p">(</span><span class="n">ip_address</span><span class="p">):</span>
-</span><span id="HeartbeatServer-36"><a href="#HeartbeatServer-36"><span class="linenos">36</span></a>            <span class="k">raise</span> <span class="n">ForbiddenDeviceException</span>
-</span><span id="HeartbeatServer-37"><a href="#HeartbeatServer-37"><span class="linenos">37</span></a>
-</span><span id="HeartbeatServer-38"><a href="#HeartbeatServer-38"><span class="linenos">38</span></a>    <span class="k">def</span> <span class="nf">add_all_routes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer-39"><a href="#HeartbeatServer-39"><span class="linenos">39</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_routes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">routes</span><span class="p">)</span>
-</span><span id="HeartbeatServer-40"><a href="#HeartbeatServer-40"><span class="linenos">40</span></a>
-</span><span id="HeartbeatServer-41"><a href="#HeartbeatServer-41"><span class="linenos">41</span></a>    <span class="k">def</span> <span class="nf">is_whitelisted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="HeartbeatServer-42"><a href="#HeartbeatServer-42"><span class="linenos">42</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="HeartbeatServer-43"><a href="#HeartbeatServer-43"><span class="linenos">43</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span>
-</span><span id="HeartbeatServer-44"><a href="#HeartbeatServer-44"><span class="linenos">44</span></a>            <span class="ow">and</span> <span class="n">ip_address</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;disallow&quot;</span><span class="p">]</span>
-</span><span id="HeartbeatServer-45"><a href="#HeartbeatServer-45"><span class="linenos">45</span></a>        <span class="p">):</span>
-</span><span id="HeartbeatServer-46"><a href="#HeartbeatServer-46"><span class="linenos">46</span></a>            <span class="k">return</span> <span class="kc">True</span>
-</span><span id="HeartbeatServer-47"><a href="#HeartbeatServer-47"><span class="linenos">47</span></a>        <span class="k">return</span> <span class="p">(</span>
-</span><span id="HeartbeatServer-48"><a href="#HeartbeatServer-48"><span class="linenos">48</span></a>            <span class="n">ip_address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span>
-</span><span id="HeartbeatServer-49"><a href="#HeartbeatServer-49"><span class="linenos">49</span></a>            <span class="ow">or</span> <span class="n">ip_address</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;disallow&quot;</span><span class="p">]</span>
-</span><span id="HeartbeatServer-50"><a href="#HeartbeatServer-50"><span class="linenos">50</span></a>        <span class="p">)</span>
-</span><span id="HeartbeatServer-51"><a href="#HeartbeatServer-51"><span class="linenos">51</span></a>
-</span><span id="HeartbeatServer-52"><a href="#HeartbeatServer-52"><span class="linenos">52</span></a>    <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer-53"><a href="#HeartbeatServer-53"><span class="linenos">53</span></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server started http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hostName</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer-54"><a href="#HeartbeatServer-54"><span class="linenos">54</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_all_routes</span><span class="p">()</span>
-</span><span id="HeartbeatServer-55"><a href="#HeartbeatServer-55"><span class="linenos">55</span></a>        <span class="n">web</span><span class="o">.</span><span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hostName</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
-</span><span id="HeartbeatServer-56"><a href="#HeartbeatServer-56"><span class="linenos">56</span></a>
-</span><span id="HeartbeatServer-57"><a href="#HeartbeatServer-57"><span class="linenos">57</span></a>    <span class="k">def</span> <span class="nf">stop_server</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer-58"><a href="#HeartbeatServer-58"><span class="linenos">58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
-</span><span id="HeartbeatServer-59"><a href="#HeartbeatServer-59"><span class="linenos">59</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Server stopped.&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer-60"><a href="#HeartbeatServer-60"><span class="linenos">60</span></a>
-</span><span id="HeartbeatServer-61"><a href="#HeartbeatServer-61"><span class="linenos">61</span></a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer-62"><a href="#HeartbeatServer-62"><span class="linenos">62</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="HeartbeatServer-63"><a href="#HeartbeatServer-63"><span class="linenos">63</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">listen</span><span class="p">()</span>
-</span><span id="HeartbeatServer-64"><a href="#HeartbeatServer-64"><span class="linenos">64</span></a>        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-</span><span id="HeartbeatServer-65"><a href="#HeartbeatServer-65"><span class="linenos">65</span></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shutting down...&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer-66"><a href="#HeartbeatServer-66"><span class="linenos">66</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">stop_server</span><span class="p">()</span>
-</span></pre></div>
-
-
+    
     
 
                             <div id="HeartbeatServer.__init__" class="classattr">
-                                        <input id="HeartbeatServer.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="name">HeartbeatServer</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">hostName</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;0.0.0.0&#39;</span>, </span><span class="param"><span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6666</span></span>)</span>
 
-                <label class="view-source-button" for="HeartbeatServer.__init__-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.__init__-17"><a href="#HeartbeatServer.__init__-17"><span class="linenos">17</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hostName</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6666</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer.__init__-18"><a href="#HeartbeatServer.__init__-18"><span class="linenos">18</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">port</span>
-</span><span id="HeartbeatServer.__init__-19"><a href="#HeartbeatServer.__init__-19"><span class="linenos">19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Server&quot;</span>
-</span><span id="HeartbeatServer.__init__-20"><a href="#HeartbeatServer.__init__-20"><span class="linenos">20</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">hostName</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">hostName</span>
-</span><span id="HeartbeatServer.__init__-21"><a href="#HeartbeatServer.__init__-21"><span class="linenos">21</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
-</span><span id="HeartbeatServer.__init__-22"><a href="#HeartbeatServer.__init__-22"><span class="linenos">22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./monitor_config.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-</span><span id="HeartbeatServer.__init__-23"><a href="#HeartbeatServer.__init__-23"><span class="linenos">23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">routes</span> <span class="o">=</span> <span class="p">[</span><span class="n">web</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handleRequest</span><span class="p">)]</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatServer.handleRequest" class="classattr">
-                                        <input id="HeartbeatServer.handleRequest-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">async def</span>
         <span class="name">handleRequest</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">request</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">web_request</span><span class="o">.</span><span class="n">Request</span></span><span class="return-annotation">) -> <span class="n">aiohttp</span><span class="o">.</span><span class="n">web_response</span><span class="o">.</span><span class="n">Response</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatServer.handleRequest-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.handleRequest"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.handleRequest-25"><a href="#HeartbeatServer.handleRequest-25"><span class="linenos">25</span></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handleRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-</span><span id="HeartbeatServer.handleRequest-26"><a href="#HeartbeatServer.handleRequest-26"><span class="linenos">26</span></a>        <span class="c1"># print(dir(request))</span>
-</span><span id="HeartbeatServer.handleRequest-27"><a href="#HeartbeatServer.handleRequest-27"><span class="linenos">27</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="HeartbeatServer.handleRequest-28"><a href="#HeartbeatServer.handleRequest-28"><span class="linenos">28</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">check_source</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">)</span>
-</span><span id="HeartbeatServer.handleRequest-29"><a href="#HeartbeatServer.handleRequest-29"><span class="linenos">29</span></a>            <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">)</span>
-</span><span id="HeartbeatServer.handleRequest-30"><a href="#HeartbeatServer.handleRequest-30"><span class="linenos">30</span></a>            <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Hello World&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer.handleRequest-31"><a href="#HeartbeatServer.handleRequest-31"><span class="linenos">31</span></a>        <span class="k">except</span> <span class="n">ForbiddenDeviceException</span><span class="p">:</span>
-</span><span id="HeartbeatServer.handleRequest-32"><a href="#HeartbeatServer.handleRequest-32"><span class="linenos">32</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forbidden device request: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatServer.check_source" class="classattr">
-                                        <input id="HeartbeatServer.check_source-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">check_source</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatServer.check_source-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.check_source"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.check_source-34"><a href="#HeartbeatServer.check_source-34"><span class="linenos">34</span></a>    <span class="k">def</span> <span class="nf">check_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer.check_source-35"><a href="#HeartbeatServer.check_source-35"><span class="linenos">35</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_whitelisted</span><span class="p">(</span><span class="n">ip_address</span><span class="p">):</span>
-</span><span id="HeartbeatServer.check_source-36"><a href="#HeartbeatServer.check_source-36"><span class="linenos">36</span></a>            <span class="k">raise</span> <span class="n">ForbiddenDeviceException</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatServer.add_all_routes" class="classattr">
-                                        <input id="HeartbeatServer.add_all_routes-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">add_all_routes</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatServer.add_all_routes-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.add_all_routes"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.add_all_routes-38"><a href="#HeartbeatServer.add_all_routes-38"><span class="linenos">38</span></a>    <span class="k">def</span> <span class="nf">add_all_routes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer.add_all_routes-39"><a href="#HeartbeatServer.add_all_routes-39"><span class="linenos">39</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_routes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">routes</span><span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatServer.is_whitelisted" class="classattr">
-                                        <input id="HeartbeatServer.is_whitelisted-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">is_whitelisted</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatServer.is_whitelisted-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.is_whitelisted"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.is_whitelisted-41"><a href="#HeartbeatServer.is_whitelisted-41"><span class="linenos">41</span></a>    <span class="k">def</span> <span class="nf">is_whitelisted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="HeartbeatServer.is_whitelisted-42"><a href="#HeartbeatServer.is_whitelisted-42"><span class="linenos">42</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="HeartbeatServer.is_whitelisted-43"><a href="#HeartbeatServer.is_whitelisted-43"><span class="linenos">43</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span>
-</span><span id="HeartbeatServer.is_whitelisted-44"><a href="#HeartbeatServer.is_whitelisted-44"><span class="linenos">44</span></a>            <span class="ow">and</span> <span class="n">ip_address</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;disallow&quot;</span><span class="p">]</span>
-</span><span id="HeartbeatServer.is_whitelisted-45"><a href="#HeartbeatServer.is_whitelisted-45"><span class="linenos">45</span></a>        <span class="p">):</span>
-</span><span id="HeartbeatServer.is_whitelisted-46"><a href="#HeartbeatServer.is_whitelisted-46"><span class="linenos">46</span></a>            <span class="k">return</span> <span class="kc">True</span>
-</span><span id="HeartbeatServer.is_whitelisted-47"><a href="#HeartbeatServer.is_whitelisted-47"><span class="linenos">47</span></a>        <span class="k">return</span> <span class="p">(</span>
-</span><span id="HeartbeatServer.is_whitelisted-48"><a href="#HeartbeatServer.is_whitelisted-48"><span class="linenos">48</span></a>            <span class="n">ip_address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;allow&quot;</span><span class="p">]</span>
-</span><span id="HeartbeatServer.is_whitelisted-49"><a href="#HeartbeatServer.is_whitelisted-49"><span class="linenos">49</span></a>            <span class="ow">or</span> <span class="n">ip_address</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;devices&quot;</span><span class="p">][</span><span class="s2">&quot;clients&quot;</span><span class="p">][</span><span class="s2">&quot;disallow&quot;</span><span class="p">]</span>
-</span><span id="HeartbeatServer.is_whitelisted-50"><a href="#HeartbeatServer.is_whitelisted-50"><span class="linenos">50</span></a>        <span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatServer.listen" class="classattr">
-                                        <input id="HeartbeatServer.listen-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">listen</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatServer.listen-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.listen"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.listen-52"><a href="#HeartbeatServer.listen-52"><span class="linenos">52</span></a>    <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer.listen-53"><a href="#HeartbeatServer.listen-53"><span class="linenos">53</span></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server started http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hostName</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer.listen-54"><a href="#HeartbeatServer.listen-54"><span class="linenos">54</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_all_routes</span><span class="p">()</span>
-</span><span id="HeartbeatServer.listen-55"><a href="#HeartbeatServer.listen-55"><span class="linenos">55</span></a>        <span class="n">web</span><span class="o">.</span><span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hostName</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatServer.stop_server" class="classattr">
-                                        <input id="HeartbeatServer.stop_server-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">stop_server</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatServer.stop_server-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.stop_server"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.stop_server-57"><a href="#HeartbeatServer.stop_server-57"><span class="linenos">57</span></a>    <span class="k">def</span> <span class="nf">stop_server</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer.stop_server-58"><a href="#HeartbeatServer.stop_server-58"><span class="linenos">58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
-</span><span id="HeartbeatServer.stop_server-59"><a href="#HeartbeatServer.stop_server-59"><span class="linenos">59</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Server stopped.&quot;</span><span class="p">)</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>
                             <div id="HeartbeatServer.execute" class="classattr">
-                                        <input id="HeartbeatServer.execute-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                                <div class="attr function">
             
         <span class="def">def</span>
         <span class="name">execute</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
-                <label class="view-source-button" for="HeartbeatServer.execute-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#HeartbeatServer.execute"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="HeartbeatServer.execute-61"><a href="#HeartbeatServer.execute-61"><span class="linenos">61</span></a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="HeartbeatServer.execute-62"><a href="#HeartbeatServer.execute-62"><span class="linenos">62</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="HeartbeatServer.execute-63"><a href="#HeartbeatServer.execute-63"><span class="linenos">63</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">listen</span><span class="p">()</span>
-</span><span id="HeartbeatServer.execute-64"><a href="#HeartbeatServer.execute-64"><span class="linenos">64</span></a>        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-</span><span id="HeartbeatServer.execute-65"><a href="#HeartbeatServer.execute-65"><span class="linenos">65</span></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shutting down...&quot;</span><span class="p">)</span>
-</span><span id="HeartbeatServer.execute-66"><a href="#HeartbeatServer.execute-66"><span class="linenos">66</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">stop_server</span><span class="p">()</span>
-</span></pre></div>
-
-
+    
     
 
                             </div>

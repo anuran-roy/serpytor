@@ -53,7 +53,6 @@
     </ul>
 
 
-            <footer>Made by &lt;a href=https://github.com/anuran-roy&gt;Anuran&lt;/a&gt; with \U0001F499</footer>
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span><img
@@ -68,74 +67,20 @@
 <a href="./../../serpytor.html">serpytor</a><wbr>.<a href="./../registry.html">registry</a><wbr>.utils    </h1>
 
                 
-                        <input id="mod-utils-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-
-                        <label class="view-source-button" for="mod-utils-view-source"><span>View Source</span></label>
-
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">import</span> <span class="nn">datetime</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="c1"># from ..config import MODELS_DIR, EXTENSIONS</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">import</span> <span class="nn">joblib</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span> <span class="nn">serpytor.exports</span> <span class="kn">import</span> <span class="n">export</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="k">async</span> <span class="k">def</span> <span class="nf">save_pipeline</span><span class="p">(</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>    <span class="n">pipeline</span><span class="p">:</span> <span class="n">Pipeline</span><span class="p">,</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="n">timestamp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()),</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="n">output_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pickle&quot;</span><span class="p">,</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    <span class="sd">&quot;&quot;&quot;Saves the pipeline in a format.&quot;&quot;&quot;</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="n">EXTENSIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>        <span class="s2">&quot;pickle&quot;</span><span class="p">:</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">,</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>        <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>        <span class="s2">&quot;yaml&quot;</span><span class="p">:</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>        <span class="s2">&quot;csv&quot;</span><span class="p">:</span> <span class="s2">&quot;.csv&quot;</span><span class="p">,</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>        <span class="s2">&quot;tsv&quot;</span><span class="p">:</span> <span class="s2">&quot;.tsv&quot;</span><span class="p">,</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>        <span class="s2">&quot;xml&quot;</span><span class="p">:</span> <span class="s2">&quot;.xml&quot;</span><span class="p">,</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>    <span class="p">}</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>    <span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">MODELS_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;model-</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}{</span><span class="n">EXTENSIONS</span><span class="p">[</span><span class="n">output_format</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">model_path</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="k">return</span> <span class="n">model_path</span>
-</span></pre></div>
-
-
+                
+                
+                
             </section>
                 <section id="save_pipeline">
-                            <input id="save_pipeline-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                    <div class="attr function">
             
         <span class="def">async def</span>
-        <span class="name">save_pipeline</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">pipeline</span><span class="p">:</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span>,</span><span class="param">	<span class="n">timestamp</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2022-10-25 17:40:56.577622&#39;</span>,</span><span class="param">	<span class="n">output_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pickle&#39;</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+        <span class="name">save_pipeline</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">pipeline</span><span class="p">:</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span>,</span><span class="param">	<span class="n">timestamp</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2022-10-26 00:00:29.114668&#39;</span>,</span><span class="param">	<span class="n">output_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pickle&#39;</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
 
-                <label class="view-source-button" for="save_pipeline-view-source"><span>View Source</span></label>
-
+        
     </div>
     <a class="headerlink" href="#save_pipeline"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="save_pipeline-12"><a href="#save_pipeline-12"><span class="linenos">12</span></a><span class="k">async</span> <span class="k">def</span> <span class="nf">save_pipeline</span><span class="p">(</span>
-</span><span id="save_pipeline-13"><a href="#save_pipeline-13"><span class="linenos">13</span></a>    <span class="n">pipeline</span><span class="p">:</span> <span class="n">Pipeline</span><span class="p">,</span>
-</span><span id="save_pipeline-14"><a href="#save_pipeline-14"><span class="linenos">14</span></a>    <span class="n">timestamp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()),</span>
-</span><span id="save_pipeline-15"><a href="#save_pipeline-15"><span class="linenos">15</span></a>    <span class="n">output_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pickle&quot;</span><span class="p">,</span>
-</span><span id="save_pipeline-16"><a href="#save_pipeline-16"><span class="linenos">16</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="save_pipeline-17"><a href="#save_pipeline-17"><span class="linenos">17</span></a>    <span class="sd">&quot;&quot;&quot;Saves the pipeline in a format.&quot;&quot;&quot;</span>
-</span><span id="save_pipeline-18"><a href="#save_pipeline-18"><span class="linenos">18</span></a>    <span class="n">EXTENSIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="save_pipeline-19"><a href="#save_pipeline-19"><span class="linenos">19</span></a>        <span class="s2">&quot;pickle&quot;</span><span class="p">:</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">,</span>
-</span><span id="save_pipeline-20"><a href="#save_pipeline-20"><span class="linenos">20</span></a>        <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span>
-</span><span id="save_pipeline-21"><a href="#save_pipeline-21"><span class="linenos">21</span></a>        <span class="s2">&quot;yaml&quot;</span><span class="p">:</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span>
-</span><span id="save_pipeline-22"><a href="#save_pipeline-22"><span class="linenos">22</span></a>        <span class="s2">&quot;csv&quot;</span><span class="p">:</span> <span class="s2">&quot;.csv&quot;</span><span class="p">,</span>
-</span><span id="save_pipeline-23"><a href="#save_pipeline-23"><span class="linenos">23</span></a>        <span class="s2">&quot;tsv&quot;</span><span class="p">:</span> <span class="s2">&quot;.tsv&quot;</span><span class="p">,</span>
-</span><span id="save_pipeline-24"><a href="#save_pipeline-24"><span class="linenos">24</span></a>        <span class="s2">&quot;xml&quot;</span><span class="p">:</span> <span class="s2">&quot;.xml&quot;</span><span class="p">,</span>
-</span><span id="save_pipeline-25"><a href="#save_pipeline-25"><span class="linenos">25</span></a>    <span class="p">}</span>
-</span><span id="save_pipeline-26"><a href="#save_pipeline-26"><span class="linenos">26</span></a>    <span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">MODELS_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;model-</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}{</span><span class="n">EXTENSIONS</span><span class="p">[</span><span class="n">output_format</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="save_pipeline-27"><a href="#save_pipeline-27"><span class="linenos">27</span></a>    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">model_path</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
-</span><span id="save_pipeline-28"><a href="#save_pipeline-28"><span class="linenos">28</span></a>
-</span><span id="save_pipeline-29"><a href="#save_pipeline-29"><span class="linenos">29</span></a>    <span class="k">return</span> <span class="n">model_path</span>
-</span></pre></div>
-
-
+    
             <div class="docstring"><p>Saves the pipeline in a format.</p>
 </div>
 
