@@ -7,20 +7,48 @@ from serpytor.pipelines.exceptions import (
     PipelineDebugInfo,
 )
 import traceback
-from serpytor.analytics.decorators import get_execution_time
-
+from serpytor.events.event_capture import EventCapture
+# from serpytor.config import EVENT_CAPTURE_CONFIG
 
 class Pipeline:
-    """Create pipelines by stacking functions on top of each other.
+    """Create pipelines by stacking functions on top of each other.  
+      
+    Some conventions to follow:  
+      
+    1. The first function must be a producer function that outputs data.  
+    2. The rest of the functions must be consumer functions that take in data <b>AND</b> return data.  
+      
+      
+    This is done to ensure that the pipeline is not broken, and that there is a single source of initial data.  
+      
+    Example usage:    
 
-    Some conventions to follow:
+    ```python
+    def producer(*args, **kwargs):
+        return [1, 0, 1, 0, 1]
 
-    1. The first function must be a producer function that outputs data.
-    2. The rest of the functions must be consumer functions that take in data AND return data.
+
+    def proc1(data, *args, **kwargs):
+        print(data)
+        mod_data = [i + 1 for i in data]
+        return mod_data
 
 
-    This is done to ensure that the pipeline is not broken, and that there is a single source of initial data.
+    def proc2(data, *args, **kwargs):
+        print(data)
+        mod_data2 = [i**2 for i in data]
+        return mod_data2
+
+
+    def pipeline():
+        pipe = Pipeline(pipeline=[(producer, [], {}), (proc1, [], {}), (proc2, [], {})])
+
+        finished_data = pipe.execute_pipeline()
+        print(finished_data)
+
+    pipeline()```
     """
+    EVENT_CAPTURE_CONFIG = EventCapture(event_name="Pipeline event capture")
 
     def __init__(self, pipeline: List[Callable], *args, **kwargs) -> None:
         """
@@ -44,44 +72,44 @@ class Pipeline:
         else:
             self.pipeline.remove(self.pipeline[index])
 
-    @get_execution_time
+    @EVENT_CAPTURE_CONFIG.capture_event
     def execute(self, method: Callable, data: Any, *args, **kwargs) -> None:
         """Executor for pipelined functions"""
         try:
             return method(data, *args, **kwargs)
         except Exception as e:
-            raise PipelineError("Error in executing pipeline.") from e
+            raise PipelineError(f"Error in executing pipeline. Details: {e}")
 
-    @get_execution_time
+    @EVENT_CAPTURE_CONFIG.capture_event
     def execute_pipeline(self, *args, **kwargs) -> None:
         try:
             try:
                 data = None
-                for (
-                    pipelined_callable,
-                    pipelined_args,
-                    pipelined_kwargs,
-                ) in self.pipeline:
+                for pipe_index, pipelined_tuple in enumerate(self.pipeline):
+                    pipelined_callable, pipelined_args, pipelined_kwargs = pipelined_tuple
                     if len(pipelined_args) == 0:
                         pipelined_args = self.global_args
                     pipelined_kwargs = self.global_kwargs | kwargs
                     data = self.execute(
                         pipelined_callable, data, *pipelined_args, **pipelined_kwargs
                     )
+                    if data is None and pipe_index != len(self.pipeline) - 1:
+                        break
 
                 print("Pipeline execution complete.")
                 return data
 
-            except Exception as e:
+            except Exception as method_exception:
                 traceback.print_exc()
                 raise PipelineError(
-                    "Could not execute one or more parts of the pipeline."
+                    f"Could not execute one or more parts of the pipeline. Details: {method_exception}"
                 )
-        except PipelineError as e:
-            raise e
+        except PipelineError as pipe_error:
+            print(pipe_error)
+            raise pipe_error
         except Exception as e:
             traceback.print_exc()
-            raise CriticalPipelineError(f"Error in pipeline flow!")
+            raise CriticalPipelineError(f"Unknown Error in pipeline flow! Details: {e}")
 
 
 if __name__ == "__main__":
