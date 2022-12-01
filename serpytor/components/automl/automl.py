@@ -23,6 +23,7 @@ def get_best_model(
     random_state=42,
     model_type: str = "classification",
     optimize_for: str = "balanced",
+    get_all_models=False,
 ):
     """Get the best performing model for the given features and labels.
     Models are chosen from one of the following scikit-learn models:
@@ -36,6 +37,10 @@ def get_best_model(
         - RandomForestRegressor
         - SupportVectorRegressor (or SVR)
 
+    Important Flags:
+        get_all_models (default: False): When turned on, returns all the models alongwith their metrics. 
+        **WARNING**: Can cause the function to slow down considerably.  
+  
     Example usage:
 
     ```python
@@ -91,6 +96,13 @@ def get_best_model(
         }
 
     if optimize_for == "balanced":
-        return max(scores.items(), key=lambda x: x[1]["scores"][1])
+        if not get_all_models:
+            return max(scores.items(), key=lambda x: x[1]["scores"][1])
+        else:
+            return (max(scores.items(), key=lambda x: x[1]["scores"][1]), scores.items())
+
     elif optimize_for == "accuracy":
-        return max(scores.items(), key=lambda x: x[1]["scores"][0])
+        if not get_all_models:
+            return max(scores.items(), key=lambda x: x[1]["scores"][0])
+        else:
+            return (max(scores.items(), key=lambda x: x[1]["scores"][0]), scores.items())

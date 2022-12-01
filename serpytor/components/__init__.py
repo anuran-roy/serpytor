@@ -42,7 +42,7 @@ class CustomEventCapture(EventCapture):
 
         return wrapper
 
-EVENT_CAPTURE_COMPONENT = EventCapture(db_url=DB_PATH, event_name="Sample Event Capture")
+EVENT_CAPTURE_COMPONENT = CustomEventCapture(db_url=DB_PATH, event_name="Sample Event Capture")
 
 class CustomPipeline(Pipeline):
     def __init__(self, *args, **kwargs):

@@ -7,11 +7,7 @@ class DBIO:
     """Thread-safe logging for Databases."""
 
     def __init__(
-        self,
-        db_url: str,
-        table_name: Optional[str] = "_default",
-        *args,
-        **kwargs
+        self, db_url: str, table_name: Optional[str] = "_default", *args, **kwargs
     ):
         self.lock = Lock()
         self.db_url: Optional[str] = db_url
