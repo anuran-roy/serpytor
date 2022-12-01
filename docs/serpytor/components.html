@@ -66,6 +66,7 @@
                 <li><a href="components/models.html">models</a></li>
                 <li><a href="components/pipelines.html">pipelines</a></li>
                 <li><a href="components/registry.html">registry</a></li>
+                <li><a href="components/reports.html">reports</a></li>
                 <li><a href="components/resolver.html">resolver</a></li>
         </ul>
 
@@ -130,7 +131,7 @@ together using the Pipeline component present in the pipelines submodule.  </p>
 
         <span class="k">return</span> <span class="n">wrapper</span>
 
-<span class="n">EVENT_CAPTURE_COMPONENT</span> <span class="o">=</span> <span class="n">EventCapture</span><span class="p">(</span><span class="n">db_url</span><span class="o">=</span><span class="n">DB_PATH</span><span class="p">,</span> <span class="n">event_name</span><span class="o">=</span><span class="s2">&quot;Sample Event Capture&quot;</span><span class="p">)</span>
+<span class="n">EVENT_CAPTURE_COMPONENT</span> <span class="o">=</span> <span class="n">CustomEventCapture</span><span class="p">(</span><span class="n">db_url</span><span class="o">=</span><span class="n">DB_PATH</span><span class="p">,</span> <span class="n">event_name</span><span class="o">=</span><span class="s2">&quot;Sample Event Capture&quot;</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">CustomPipeline</span><span class="p">(</span><span class="n">Pipeline</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
