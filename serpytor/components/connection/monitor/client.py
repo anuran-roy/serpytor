@@ -44,20 +44,20 @@ from datetime import datetime
 
 class HeartbeatClient:
     """The HeartbeatClient component provides the necessary structure and functions to:
-      
+
     1. Enwrap heartbeats across entrypoints.
     2. Define logging behaviours
     3. Run heartbeats independently in separate processes than entrypoint functions
     4. Set intervals independently for each type of heartbeat defined.
-    5. Set separate destinations for each type of heartbeat defined.  
-      
-    Use HeartbeatClient to derive classes with appropriate heartbeat mechanisms.  
-      
-    Example usage:  
-      
+    5. Set separate destinations for each type of heartbeat defined.
+
+    Use HeartbeatClient to derive classes with appropriate heartbeat mechanisms.
+
+    Example usage:
+
     ```python
     from serpytor.components.connection import HeartbeatClient
-    
+
     class WrappedHeartbeatClient(HeartbeatClient):
         def __init__(self, destinations=[], entrypoint=None, *args, **kwargs):
             super(WrappedHeartbeatClient, self).__init__(
@@ -82,7 +82,7 @@ class HeartbeatClient:
         interval=5,
     )
     client.orchestrate_tasks()
-    
+
     ```
     """
 

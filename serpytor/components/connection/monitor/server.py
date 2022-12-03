@@ -122,7 +122,7 @@ class HeartbeatServerV2:
                 transformed_mappings.append(web.patch(i[0], i[1]["mapped_method"]))
             elif request_type == "delete":
                 transformed_mappings.append(web.delete(i[0], i[1]["mapped_method"]))
-        
+
         return transformed_mappings
 
     def run_server(self):
@@ -143,7 +143,9 @@ if __name__ == "__main__":
 
     async def handlePost(request):
         print(request.remote)
-        return web.Response(text=json.dumps({"message": request.remote}), content_type="text/json")
+        return web.Response(
+            text=json.dumps({"message": request.remote}), content_type="text/json"
+        )
 
     mapping = {"/": {"type": "post", "mapped_method": handlePost}}
 
@@ -165,7 +167,7 @@ if __name__ == "__main__":
 
         # for i in processes:
         #     i.start()
-        
+
         server1.run_server()
 
     test_example_v2()
