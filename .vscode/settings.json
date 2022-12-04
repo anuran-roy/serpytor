@@ -1,4 +1,5 @@
 {
     "dvc.dvcPath": "dvc",
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "liveServer.settings.port": 5501
 }

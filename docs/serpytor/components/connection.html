@@ -43,6 +43,11 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+        <h2>Contents</h2>
+        <ul>
+  <li><a href="#heartbeat-monitoring">Heartbeat Monitoring</a></li>
+</ul>
+
 
 
         <h2>API Documentation</h2>
@@ -102,40 +107,10 @@
                                 <a class="function" href="#HeartbeatServer.__init__">HeartbeatServer</a>
                         </li>
                         <li>
-                                <a class="function" href="#HeartbeatServer.handleRequest">handleRequest</a>
+                                <a class="function" href="#HeartbeatServer.transform_mappings">transform_mappings</a>
                         </li>
                         <li>
-                                <a class="function" href="#HeartbeatServer.check_source">check_source</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#HeartbeatServer.add_all_routes">add_all_routes</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#HeartbeatServer.is_whitelisted">is_whitelisted</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#HeartbeatServer.listen">listen</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#HeartbeatServer.stop_server">stop_server</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#HeartbeatServer.execute">execute</a>
-                        </li>
-                </ul>
-
-            </li>
-            <li>
-                    <a class="class" href="#HeartbeatServerV2">HeartbeatServerV2</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="function" href="#HeartbeatServerV2.__init__">HeartbeatServerV2</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#HeartbeatServerV2.transform_mappings">transform_mappings</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#HeartbeatServerV2.run_server">run_server</a>
+                                <a class="function" href="#HeartbeatServer.run_server">run_server</a>
                         </li>
                 </ul>
 
@@ -156,7 +131,119 @@
                     <h1 class="modulename">
 <a href="./../../serpytor.html">serpytor</a><wbr>.<a href="./../components.html">components</a><wbr>.connection    </h1>
 
-                        <div class="docstring"><p>The connection module contains components that</p>
+                        <div class="docstring"><p>The connection module contains components for monitoring the connectivity between distributed infrastructures.</p>
+
+<h2 id="heartbeat-monitoring">Heartbeat Monitoring</h2>
+
+<p>Heartbeat Monitoring is a requirement in managing distributed architectures.</p>
+
+<p>SerPyTor provides for hardware &amp; application tracking through the use of the Connections Monitor Objects.
+There are two kinds of Connection Monitor Objects:</p>
+
+<ul>
+<li>HeartbeatClient, and</li>
+<li>HeartbeatServer</li>
+</ul>
+
+<h3 id="heartbeatserver">HeartbeatServer</h3>
+
+<p>The HeartBeatServer object is an object that creates a server, emitting the status of the hardware to clients that request it.</p>
+
+<h4 id="working-example">Working example:</h4>
+
+<p><strong>Objective</strong>: Run 4 server instances (simulating 4 remote resource machines) with a simple mapping to map the output of an endpoint.
+The endpoint simply returns the IP of the requesting device as a JSON response.</p>
+
+<p>This is probably the simplest possible application of Heartbeat.</p>
+
+<p><strong>Implementation</strong>:</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">web</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">serpytor.components.connection.monitor.server</span> <span class="kn">import</span> <span class="n">HeartbeatServer</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">handlePost</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Contains the mapping method that will print the IP of the request origin.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">}),</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/json&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="s2">&quot;mapped_method&quot;</span><span class="p">:</span> <span class="n">handlePost</span><span class="p">}}</span>
+
+
+<span class="k">def</span> <span class="nf">test_example_v2</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;Emulate the server heartbeat instances.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">server1</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+    <span class="c1"># server1.run_server()  # Uncomment this line to run the server individually.</span>
+    <span class="n">server2</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5001</span><span class="p">)</span>
+    <span class="c1"># server2.run_server()  # Uncomment this line to run the server individually.</span>
+    <span class="n">server3</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5002</span><span class="p">)</span>
+    <span class="c1"># server3.run_server()  # Uncomment this line to run the server individually.</span>
+    <span class="n">server4</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5003</span><span class="p">)</span>
+    <span class="c1"># server4.run_server()  # Uncomment this line to run the server individually.</span>
+
+    <span class="n">servers</span> <span class="o">=</span> <span class="p">[</span><span class="n">server1</span><span class="p">,</span> <span class="n">server2</span><span class="p">,</span> <span class="n">server3</span><span class="p">,</span> <span class="n">server4</span><span class="p">]</span>
+    <span class="n">processes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+        <span class="n">processes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">run_server</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
+        <span class="n">i</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+
+<span class="n">test_example_v2</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<h3 id="heartbeatclient">HeartbeatClient</h3>
+
+<p>The other half of the Heartbeat Monitoring facility, we have the HeartbeatClient Object.
+It requests the resource pool for the availability of a resource, from the client side.</p>
+
+<h4 id="working-example-2">Working example:</h4>
+
+<p><strong>Objective</strong>: Request the Heartbeat Server and get response regarding the resources avaiability in the servers.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn">serpytor.components.connection.monitor.client</span> <span class="kn">import</span> <span class="n">HeartbeatClient</span>
+
+<span class="k">class</span> <span class="nc">WrappedHeartbeatClient</span><span class="p">(</span><span class="n">HeartbeatClient</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Emulate the connections to the different servers from the clients.</span>
+<span class="sd">    The server can be an instance in a remote machine, or a local instance.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destinations</span><span class="o">=</span><span class="p">[],</span> <span class="n">entrypoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">WrappedHeartbeatClient</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">destinations</span><span class="o">=</span><span class="n">destinations</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="n">entrypoint</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">log_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception logged! Details: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_method</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raising exception...&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Random Exception&quot;</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">WrappedHeartbeatClient</span><span class="p">(</span>
+    <span class="n">destinations</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;http://localhost:5001&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;http://localhost:5002&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;http://localhost:5003&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">entrypoint</span><span class="o">=</span><span class="n">test_method</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">orchestrate_tasks</span><span class="p">()</span>
+</code></pre>
+</div>
 </div>
 
                 
@@ -246,12 +333,12 @@
 <li>Define logging behaviours</li>
 <li>Run heartbeats independently in separate processes than entrypoint functions</li>
 <li>Set intervals independently for each type of heartbeat defined.</li>
-<li>Set separate destinations for each type of heartbeat defined.  </li>
+<li>Set separate destinations for each type of heartbeat defined.</li>
 </ol>
 
-<p>Use HeartbeatClient to derive classes with appropriate heartbeat mechanisms.  </p>
+<p>Use HeartbeatClient to derive classes with appropriate heartbeat mechanisms.</p>
 
-<p>Example usage:  </p>
+<p>Example usage:</p>
 
 <div class="pdoc-code codehilite">
 <pre><span></span><code><span class="kn">from</span> <span class="nn"><a href="">serpytor.components.connection</a></span> <span class="kn">import</span> <span class="n">HeartbeatClient</span>
@@ -404,127 +491,11 @@
                             <div id="HeartbeatServer.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">HeartbeatServer</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">hostName</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;0.0.0.0&#39;</span>, </span><span class="param"><span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6666</span></span>)</span>
+        <span class="name">HeartbeatServer</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">mappings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span>,</span><span class="param">	<span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8000</span>,</span><span class="param">	<span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>,</span><span class="param">	<span class="n">server_args</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>,</span><span class="param">	<span class="n">server_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span>)</span>
 
         
     </div>
     <a class="headerlink" href="#HeartbeatServer.__init__"></a>
-    
-    
-
-                            </div>
-                            <div id="HeartbeatServer.handleRequest" class="classattr">
-                                <div class="attr function">
-            
-        <span class="def">async def</span>
-        <span class="name">handleRequest</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">request</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">web_request</span><span class="o">.</span><span class="n">Request</span></span><span class="return-annotation">) -> <span class="n">aiohttp</span><span class="o">.</span><span class="n">web_response</span><span class="o">.</span><span class="n">Response</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServer.handleRequest"></a>
-    
-    
-
-                            </div>
-                            <div id="HeartbeatServer.check_source" class="classattr">
-                                <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">check_source</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServer.check_source"></a>
-    
-    
-
-                            </div>
-                            <div id="HeartbeatServer.add_all_routes" class="classattr">
-                                <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">add_all_routes</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServer.add_all_routes"></a>
-    
-    
-
-                            </div>
-                            <div id="HeartbeatServer.is_whitelisted" class="classattr">
-                                <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">is_whitelisted</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServer.is_whitelisted"></a>
-    
-    
-
-                            </div>
-                            <div id="HeartbeatServer.listen" class="classattr">
-                                <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">listen</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServer.listen"></a>
-    
-    
-
-                            </div>
-                            <div id="HeartbeatServer.stop_server" class="classattr">
-                                <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">stop_server</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServer.stop_server"></a>
-    
-    
-
-                            </div>
-                            <div id="HeartbeatServer.execute" class="classattr">
-                                <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">execute</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServer.execute"></a>
-    
-    
-
-                            </div>
-                </section>
-                <section id="HeartbeatServerV2">
-                    <div class="attr class">
-            
-    <span class="def">class</span>
-    <span class="name">HeartbeatServerV2</span>:
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServerV2"></a>
-    
-    
-
-                            <div id="HeartbeatServerV2.__init__" class="classattr">
-                                <div class="attr function">
-            
-        <span class="name">HeartbeatServerV2</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">mappings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span>,</span><span class="param">	<span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8000</span>,</span><span class="param">	<span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>,</span><span class="param">	<span class="n">server_args</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>,</span><span class="param">	<span class="n">server_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span>)</span>
-
-        
-    </div>
-    <a class="headerlink" href="#HeartbeatServerV2.__init__"></a>
     
             <div class="docstring"><p>Initializes the HeartbeatServer class with the mappings.</p>
 
@@ -549,7 +520,7 @@
 
 
                             </div>
-                            <div id="HeartbeatServerV2.transform_mappings" class="classattr">
+                            <div id="HeartbeatServer.transform_mappings" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
@@ -557,12 +528,12 @@
 
         
     </div>
-    <a class="headerlink" href="#HeartbeatServerV2.transform_mappings"></a>
+    <a class="headerlink" href="#HeartbeatServer.transform_mappings"></a>
     
     
 
                             </div>
-                            <div id="HeartbeatServerV2.run_server" class="classattr">
+                            <div id="HeartbeatServer.run_server" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
@@ -570,7 +541,7 @@
 
         
     </div>
-    <a class="headerlink" href="#HeartbeatServerV2.run_server"></a>
+    <a class="headerlink" href="#HeartbeatServer.run_server"></a>
     
     
 
