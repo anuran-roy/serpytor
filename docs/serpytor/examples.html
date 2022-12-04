@@ -43,6 +43,12 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+        <h2>Contents</h2>
+        <ul>
+  <li><a href="#pipeline-data-collection-and-analysis">Pipeline data collection and analysis</a></li>
+  <li><a href="#hello">Hello!</a></li>
+</ul>
+
 
 
 
@@ -59,8 +65,89 @@
                     <h1 class="modulename">
 <a href="./../serpytor.html">serpytor</a><wbr>.examples    </h1>
 
-                        <div class="docstring"><p>.. include:: ./data_pipeline.md
-.. include:: ./distributed_data_pipeline.md</p>
+                        <div class="docstring"><h2 id="pipeline-data-collection-and-analysis">Pipeline data collection and analysis</h2>
+
+<p>In this example, we will be building a simple data collection and analysis pipeline using <strong>SerPyTor</strong>.</p>
+
+<p>Features:</p>
+
+<ul>
+<li>Custom pipeline measuring execution times</li>
+<li>Event captures for logging warnings and errors.</li>
+<li>Logging DB</li>
+</ul>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn"><a href="components/automl.html">serpytor.components.automl</a></span> <span class="kn">import</span> <span class="n">get_best_model</span>
+<span class="kn">from</span> <span class="nn"><a href="components/pipelines.html">serpytor.components.pipelines</a></span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">serpytor.components.events.event_capture</span> <span class="kn">import</span> <span class="n">EventCapture</span>
+<span class="kn">from</span> <span class="nn">serpytor.components.analytics.decorators</span> <span class="kn">import</span> <span class="n">get_execution_time</span>
+
+<span class="n">DB_PATH</span> <span class="o">=</span> <span class="s2">&quot;./db.json&quot;</span>  <span class="c1"># Path to the database</span>
+
+<span class="k">class</span> <span class="nc">CustomEventCapture</span><span class="p">(</span><span class="n">EventCapture</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@get_execution_time</span>
+    <span class="k">def</span> <span class="nf">capture_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Passint through the event capture function&quot;</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">output</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="n">EVENT_CAPTURE_COMPONENT</span> <span class="o">=</span> <span class="n">CustomEventCapture</span><span class="p">(</span><span class="n">db_url</span><span class="o">=</span><span class="n">DB_PATH</span><span class="p">,</span> <span class="n">event_name</span><span class="o">=</span><span class="s2">&quot;Sample Event Capture&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">CustomPipeline</span><span class="p">(</span><span class="n">Pipeline</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@EVENT_CAPTURE_COMPONENT</span><span class="o">.</span><span class="n">capture_event</span>
+    <span class="k">def</span> <span class="nf">execution_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">execution_pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Return the Iris Datasets</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">load_iris</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">consumer1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Convert received data into training and testing portions</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">consumer2</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Returns best model available through the AutoML component</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">get_best_model</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">pipeline_work</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">pipe</span> <span class="o">=</span> <span class="n">CustomPipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="p">[(</span><span class="n">get_data</span><span class="p">,</span> <span class="p">[],</span> <span class="p">{}),</span> <span class="p">(</span><span class="n">consumer1</span><span class="p">,</span> <span class="p">[],</span> <span class="p">{}),</span> <span class="p">(</span><span class="n">consumer2</span><span class="p">,</span> <span class="p">[],</span> <span class="p">{})])</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">execute_pipeline</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+<span class="n">pipeline_work</span><span class="p">()</span>  <span class="c1"># Returns a list containing 2 elements - the best model found for the Iris dataset, and a tuple containing the testing data. </span>
+</code></pre>
+</div>
+
+<h3 id="step-by-step-explanation">Step-by-step explanation</h3>
+
+<h2 id="hello">Hello!</h2>
+
+<p>This is distributed_data_pipeline.md!</p>
 </div>
 
                 
