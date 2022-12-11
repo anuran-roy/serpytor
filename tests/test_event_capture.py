@@ -11,3 +11,7 @@ def test_event_capture():
         raise Exception("Random bs gooooooo!")
 
     hi()
+
+
+if __name__ == "__main__":
+    test_event_capture()

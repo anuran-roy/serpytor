@@ -70,4 +70,5 @@ def pipeline_work(*args, **kwargs):
     print(results)
 
 
-pipeline_work()
+if __name__ == "__main__":
+    pipeline_work()
