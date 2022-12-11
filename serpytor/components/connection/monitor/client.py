@@ -191,10 +191,10 @@ if __name__ == "__main__":
 
     client = WrappedHeartbeatClient(
         destinations=[
-            "http://localhost:5000",
-            "http://localhost:5001",
-            "http://localhost:5002",
-            "http://localhost:5003",
+            "http://localhost:5000/heartbeat",
+            "http://localhost:5001/heartbeat",
+            "http://localhost:5002/heartbeat",
+            "http://localhost:5003/heartbeat",
         ],
         entrypoint=test_method,
         interval=5,
