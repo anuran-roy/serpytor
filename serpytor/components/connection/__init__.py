@@ -29,13 +29,23 @@ from aiohttp import web
 from multiprocessing import Process
 import json
 from serpytor.components.connection.monitor.server import HeartbeatServer
+import psutil
+
 
 async def handlePost(request):
     '''Contains the mapping method that will print the IP of the request origin.
+    It also returns the cpu and memory usage of the system the server instance is running on.
     '''
     print(request.remote)
     return web.Response(
-        text=json.dumps({"message": request.remote}), content_type="text/json"
+        text=json.dumps(
+            {
+                "message": request.remote,
+                "cpu": psutil.cpu_percent(),
+                "memory": psutil.virtual_memory(),
+            }
+        ),
+        content_type="text/json",
     )
 
 
@@ -46,19 +56,19 @@ def test_example_v2():
     '''Emulate the server heartbeat instances.
     '''
     server1 = HeartbeatServer(mappings=mapping, port=5000)
-    # server1.run_server()  # Uncomment this line to run the server individually.
+    # server1.start_heartbeats()  # Uncomment this line to run the server individually.
     server2 = HeartbeatServer(mappings=mapping, port=5001)
-    # server2.run_server()  # Uncomment this line to run the server individually.
+    # server2.start_heartbeats()  # Uncomment this line to run the server individually.
     server3 = HeartbeatServer(mappings=mapping, port=5002)
-    # server3.run_server()  # Uncomment this line to run the server individually.
+    # server3.start_heartbeats()  # Uncomment this line to run the server individually.
     server4 = HeartbeatServer(mappings=mapping, port=5003)
-    # server4.run_server()  # Uncomment this line to run the server individually.
+    # server4.start_heartbeats()  # Uncomment this line to run the server individually.
 
     servers = [server1, server2, server3, server4]
     processes = []
 
     for i in servers:
-        processes.append(Process(target=i.run_server))
+        processes.append(Process(target=i.start_heartbeats))
 
     for i in processes:
         i.start()
@@ -115,10 +125,12 @@ from serpytor.components.connection.extensions.reports.crash_reports.crash_repor
 from serpytor.components.connection.monitor.monitor import Monitor
 from serpytor.components.connection.monitor.client import HeartbeatClient
 from serpytor.components.connection.monitor.server import HeartbeatServer
+from serpytor.components.connection.monitor.gateway import Gateway
 
 __all__ = [
     "get_report",
     "Monitor",
     "HeartbeatClient",
     "HeartbeatServer",
+    "Gateway",
 ]
