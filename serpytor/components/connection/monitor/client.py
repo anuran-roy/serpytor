@@ -121,7 +121,7 @@ class HeartbeatClient:
 
     async def send_heartbeat(self, session, destination: str) -> Any:
 
-        async with session.post(destination) as resp:
+        async with session.get(destination) as resp:
             # print(f"Sending request to {destination}")
             ack = await resp.json(content_type="text/json")
             # print(ack)
