@@ -1,5 +1,5 @@
-from queue import Queue, PriorityQueue
-from typing import Iterable, List, Dict, Tuple, Any, Optional
+from queue import Queue
+from typing import Iterable, List, Dict, Any, Optional
 
 
 class TasksQueue:

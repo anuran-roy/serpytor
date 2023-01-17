@@ -1,17 +1,12 @@
-import aiohttp
-from aiohttp import web
-from yaml import safe_load
-import time
 import json
-from datetime import datetime
-from tinydb import TinyDB, Query
-from serpytor.components.connection.monitor.utils import detect_ip
-from typing import Optional, Callable, Tuple, Union, List, Dict, Any
-from multiprocessing import Process
 import multiprocessing as mp
-import os
+from datetime import datetime
+from multiprocessing import Process
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import psutil
-from io import StringIO, BytesIO
+from aiohttp import web
+
+from serpytor.components.connection.monitor.utils import detect_ip
 
 
 class ForbiddenDeviceException(Exception):
@@ -75,7 +70,6 @@ class ForbiddenDeviceException(Exception):
 class HeartbeatServer:
     def __init__(
         self,
-        heartbeat_mappings: Dict[str, Dict[str, Union[str, Callable]]],
         heartbeat_port: Optional[int] = 8000,
         heartbeat_host: Optional[str] = "127.0.0.1",
         heartbeat_server_args: List = [],
@@ -103,7 +97,26 @@ class HeartbeatServer:
 
         If an endpoint type is not specified, defaults to "get"
         """
-        self.heartbeat_mappings: List[Tuple[str, Callable]] = heartbeat_mappings.items()
+
+        self.heartbeat_handler: Dict[str, Dict[str, Union[str, Callable]]] = {
+            "/heartbeat": {
+                "type": "get",
+                "mapped_method": lambda request: web.Response(
+                    text=json.dumps(
+                        {
+                            "location": f"http://{self.heartbeat_host}:{self.heartbeat_port}",
+                            "message": request.remote,
+                            "cpu": psutil.cpu_percent(),
+                            "memory": psutil.virtual_memory()[2],
+                        }
+                    )
+                ),
+            },
+        }
+
+        self.heartbeat_mappings: List[
+            Tuple[str, Callable]
+        ] = self.heartbeat_handler.items()
         self.heartbeat_web_server = web.Application()
         self.heartbeat_port: int = heartbeat_port
         self.heartbeat_host: str = heartbeat_host
@@ -194,6 +207,26 @@ class Server(HeartbeatServer):
         self.process_lock = mp.Lock()
         self.service_online: bool = True
 
+        self.heartbeat_handler: Dict[str, Dict[str, Union[str, Callable]]] = {
+            "/heartbeat": {
+                "type": "get",
+                "mapped_method": lambda request: web.Response(
+                    text=json.dumps(
+                        {
+                            "location": f"http://{self.server_host}:{self.server_port}",
+                            "message": request.remote,
+                            "cpu": psutil.cpu_percent(),
+                            "memory": psutil.virtual_memory()[2],
+                        }
+                    )
+                ),
+            },
+        }
+
+        self.heartbeat_mappings: List[
+            Tuple[str, Callable]
+        ] = self.heartbeat_handler.items()
+
     def __str__(self):
         return "Server"
 
@@ -204,10 +237,10 @@ class Server(HeartbeatServer):
         This changes them to their respective route commands.
         This means less hassle to add endpoints to the web server
         """
+        self.mappings.extend(mappings.items())
 
     def start_service(
         self,
-        *server_args,
         **server_kwargs,
     ) -> None:
         """Starts the service on the specified port and host.
@@ -253,21 +286,21 @@ if __name__ == "__main__":
     # HeartbeatServer().execute()
     # print(detect_ip())
 
-    async def handleGet(request):
-        """Contains the mapping method that will print the IP of the request origin.
-        It also returns the cpu and memory usage of the system the server instance is running on.
-        """
-        print(request.remote)
-        return web.Response(
-            text=json.dumps(
-                {
-                    "message": request.remote,
-                    "cpu": psutil.cpu_percent(),
-                    "memory": psutil.virtual_memory()[2],
-                }
-            ),
-            content_type="text/json",
-        )
+    # async def handleGet(request):
+    #     """Contains the mapping method that will print the IP of the request origin.
+    #     It also returns the cpu and memory usage of the system the server instance is running on.
+    #     """
+    #     print(request.remote)
+    #     return web.Response(
+    #         text=json.dumps(
+    #             {
+    #                 "message": request.remote,
+    #                 "cpu": psutil.cpu_percent(),
+    #                 "memory": psutil.virtual_memory()[2],
+    #             }
+    #         ),
+    #         content_type="text/json",
+    #     )
 
     async def hello(request):
         print("Hello!")
@@ -318,9 +351,9 @@ if __name__ == "__main__":
             content_type="text/json",
         )
 
-    heartbeat_mapping: Dict[str, Dict[str, Union[str, Callable[..., Any]]]] = {
-        "/heartbeat": {"type": "get", "mapped_method": handleGet}
-    }
+    # heartbeat_mapping: Dict[str, Dict[str, Union[str, Callable[..., Any]]]] = {
+    #     "/heartbeat": {"type": "get", "mapped_method": handleGet}
+    # }
     mapping: Dict[str, Dict[str, Union[str, Callable[..., Any]]]] = {
         "/hello": {"type": "get", "mapped_method": hello},
         "/exec": {"type": "post", "mapped_method": exec_func},
@@ -328,7 +361,7 @@ if __name__ == "__main__":
 
     def test_example_v2():
         server1 = Server(
-            heartbeat_mappings=heartbeat_mapping,
+            # heartbeat_mappings=heartbeat_mapping,
             heartbeat_port=5000,
             mappings=mapping,
             server_host="127.0.0.1",
@@ -336,7 +369,7 @@ if __name__ == "__main__":
         )
         # server1.start_heartbeats()
         server2 = Server(
-            heartbeat_mappings=heartbeat_mapping,
+            # heartbeat_mappings=heartbeat_mapping,
             heartbeat_port=5001,
             mappings=mapping,
             server_host="127.0.0.1",
@@ -344,7 +377,7 @@ if __name__ == "__main__":
         )
         # server2.start_heartbeats()
         server3 = Server(
-            heartbeat_mappings=heartbeat_mapping,
+            # heartbeat_mappings=heartbeat_mapping,
             heartbeat_port=5002,
             mappings=mapping,
             server_host="127.0.0.1",
@@ -352,7 +385,7 @@ if __name__ == "__main__":
         )
         # server3.start_heartbeats()
         server4 = Server(
-            heartbeat_mappings=heartbeat_mapping,
+            # heartbeat_mappings=heartbeat_mapping,
             heartbeat_port=5003,
             mappings=mapping,
             server_host="127.0.0.1",

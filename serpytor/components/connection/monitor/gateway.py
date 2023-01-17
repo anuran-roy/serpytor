@@ -1,10 +1,8 @@
-from functools import lru_cache, wraps
-from typing import Optional, Any, List, Dict, Tuple, Callable
-import multiprocessing as mp
-import threading as mt
-import aiohttp
 import asyncio
-from queue import Queue, PriorityQueue
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
+import aiohttp
+import cloudpickle
 
 from serpytor.components.utils.algorithms.allocation.base_allocation import (
     BaseAllocation,
@@ -27,11 +25,11 @@ class Gateway:
         self,
         task: Callable[..., Any],
         allocation_algorithm: BaseAllocation,
-        task_data: Tuple[List[Any], Dict[str, Any]] = ([], {}),
-        heartbeat_addresses: List[str] = [],
-        resource_addresses: List[str] = [],
-        *args: List[Any],
-        **kwargs: Dict[str, Any]
+        task_data: Optional[Tuple[List[Any], Dict[str, Any]]] = ([], {}),
+        heartbeat_addresses: Optional[List[str]] = [],
+        resource_addresses: Optional[List[str]] = [],
+        *args: Optional[List[Any]],
+        **kwargs: Optional[Dict[str, Any]],
     ) -> None:
         self._heartbeat_addr: List[str] = heartbeat_addresses
         self._resource_addr: List[str] = resource_addresses
@@ -39,17 +37,19 @@ class Gateway:
         self._task_input: Tuple[List[Any], Dict[str, Any]] = task_data
         self._allocation_algorithm: BaseAllocation = allocation_algorithm
 
-    def __str__(*args: List[Any], **kwargs: Dict[str, Any]) -> str:
+    def __str__(*args: Optional[List[Any]], **kwargs: Optional[Dict[str, Any]]) -> str:
         ...
 
-    def __repr__(*args: List[Any], **kwargs: Dict[str, Any]) -> str:
+    def __repr__(*args: Optional[List[Any]], **kwargs: Optional[Dict[str, Any]]) -> str:
         ...
 
     async def get_available_resources(
-        self, *args: List[Any], **kwargs: Dict[str, Any]
+        self, *args: Optional[List[Any]], **kwargs: Optional[Dict[str, Any]]
     ) -> Any:
         report: Dict[str, Dict[str, Any]] = {addr: {} for addr in self._resource_addr}
-        async with aiohttp.ClientSession(timeout=kwargs.get("timeout", 10)) as session:
+        async with aiohttp.ClientSession(
+            conn_timeout=kwargs.get("timeout", 10.0)
+        ) as session:
             for resource_addr, heartbeat_addr in zip(
                 self._resource_addr, self._heartbeat_addr
             ):
@@ -58,7 +58,9 @@ class Gateway:
 
         return report
 
-    def allocate_resource(self, *args: List[Any], **kwargs: Dict[str, Any]) -> Any:
+    def allocate_resource(
+        self, *args: Optional[List[Any]], **kwargs: Optional[Dict[str, Any]]
+    ) -> Any:
         """Get report from webservers at any given time"""
         report: Any = asyncio.run(self.get_available_resources())
         optimal_resource: Any = self._allocation_algorithm.queue(
@@ -66,8 +68,30 @@ class Gateway:
         )
         return optimal_resource
 
-    def execute(self, *args: List[Any], **kwargs: Dict[str, Any]) -> Any:
+    async def execute(
+        self, *args: Optional[List[Any]], **kwargs: Optional[Dict[str, Any]]
+    ) -> Any:
         resource_details = self.allocate_resource()
+        task_pickle = cloudpickle.dumps(self._task)
+        task_args, task_kwargs = self._task_input
+        args_pickle = cloudpickle.dumps(task_args)
+        kwargs_pickle = cloudpickle.dumps(task_kwargs)
+
+        execution_loc: str = (
+            f"{resource_details['location']}/{kwargs.get('execution_endpoint', 'exec')}"
+        )
+        async with aiohttp.ClientSession(execution_loc) as session:
+            async with session.post(
+                execution_loc,
+                files={
+                    "code": task_pickle,
+                    "args": args_pickle,
+                    "kwargs": kwargs_pickle,
+                },
+            ) as resp:
+                return await resp.text()
+
+        # Execute the task
 
 
 if __name__ == "__main__":
