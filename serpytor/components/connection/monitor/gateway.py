@@ -37,14 +37,10 @@ class Gateway:
         self._task_input: Tuple[List[Any], Dict[str, Any]] = task_data
         self._allocation_algorithm: BaseAllocation = allocation_algorithm
 
-    def __str__(
-        self, *args: Optional[List[Any]], **kwargs: Optional[Dict[str, Any]]
-    ) -> str:
+    def __str__(self) -> str:
         return f"Gateway({self._task.__name__}) with {len(self._resource_addr)} resources at {self._resource_addr} using {self._allocation_algorithm.__class__.__name__} algorithm"
 
-    def __repr__(
-        self, *args: Optional[List[Any]], **kwargs: Optional[Dict[str, Any]]
-    ) -> str:
+    def __repr__(self) -> str:
         return f"Gateway({self._task.__name__}) with {len(self._resource_addr)} resources at {self._resource_addr} using {self._allocation_algorithm.__class__.__name__} algorithm"
 
     async def get_available_resources(
