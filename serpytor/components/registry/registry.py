@@ -45,7 +45,7 @@ class SimpleModelRegistry:
         This operation is atomic, and performed in-memory to avoid database writes that are slow in nature.
         """
         self.lock.acquire()
-        self.registry[i]: Dict[str, Any] = {"params": params} | {
+        self.registry[id]: Dict[str, Any] = {"params": params} | {
             "model_name": model_name
         }
         self.lock.release()
