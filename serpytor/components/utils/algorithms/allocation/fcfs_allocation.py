@@ -1,0 +1,35 @@
+from functools import cache, lru_cache
+from queue import Queue
+from typing import Iterable, Tuple, List, Dict, Callable, Any, Optional, Union
+from serpytor.components.utils.algorithms.allocation.base_allocation import (
+    BaseAllocation,
+)
+
+
+class FCFSAllocation(BaseAllocation):
+    """FCFS Allocation algorithm."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.add_queue()
+
+    def __str__(self):
+        return f"{self.__class__.__name__} algorithm.({len(self.queue_silo)} queues)"
+
+    def queue(self, *args: List[Any], **kwargs: Dict[str, Any]) -> Any:
+        super().queue(*args, **kwargs)
+        if len(self.queue_silo) == 0:
+            raise ValueError("No queues found.")
+        else:
+            return self.queue_silo[0].get()
+
+    def put(self, item: Union[Iterable[Any], int, str, Any]) -> None:
+        super().put(item, index=0)
+
+
+if __name__ == "__main__":
+    queue_ob = FCFSAllocation()
+    queue_ob.put(index=0, item=[6, 1, 5, 4, 2, 3])
+
+    for i in queue_ob:
+        print(i)
