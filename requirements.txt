@@ -137,7 +137,7 @@ rich==12.6.0
 SecretStorage==3.3.3
 Send2Trash==1.8.0
 sentry-sdk==1.10.1
--e git+https://github.com/anuran-roy/serpytor.git@c05f5ec394dddcce11b80471bd0a0cff371fd439#egg=serpytor
+-e git+https://github.com/anuran-roy/serpytor.git@6ff43441f501272d3d9e83c56cfa0a14767339d7#egg=serpytor
 setuptools-scm==7.0.5
 shellingham==1.5.0
 six==1.16.0
