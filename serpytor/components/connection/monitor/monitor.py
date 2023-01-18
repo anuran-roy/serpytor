@@ -13,7 +13,7 @@ class Monitor:
 
     def start_server(self) -> None:
         server = HeartbeatServer()
-        server.execute()
+        server.start_heartbeats()
 
     def connect_to_clients() -> None:
         pass
