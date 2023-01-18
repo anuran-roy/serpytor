@@ -21,7 +21,8 @@ class FCFSAllocation(BaseAllocation):
         if len(self.queue_silo) == 0:
             raise ValueError("No queues found.")
         else:
-            return self.queue_silo[0].get()
+            print("Returning queue at index 0.")
+            return self.queue_silo[0].get(0)
 
     def put(self, item: Union[Iterable[Any], int, str, Any]) -> None:
         super().put(item, index=0)
