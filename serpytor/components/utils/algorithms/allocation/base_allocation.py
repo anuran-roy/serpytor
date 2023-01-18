@@ -19,9 +19,7 @@ class BaseAllocation:
         self.max_size = max_size
         self.queue_silo: List = [Queue(maxsize=max_size) for _ in range(num_queues)]
         self.lock = mp.Lock()
-        self.sortable_fields = kwargs.get(
-            "sortable_fields", None
-        )  # In case of objects passed in the queue, get list of sortable fields in each object.
+        self.sortable_fields = kwargs.get("sortable_fields")
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}({len(self.queue)} items)"

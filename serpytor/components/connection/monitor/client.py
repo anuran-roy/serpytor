@@ -119,24 +119,16 @@ class HeartbeatClient:
     async def send_heartbeat(self, session, destination: str) -> Any:
 
         async with session.get(destination) as resp:
-            # print(f"Sending request to {destination}")
-            ack = await resp.json(content_type="text/json")
-            # print(ack)
-            return ack
+            return await resp.json(content_type="text/json")
 
     async def orchestrate_requests(self):
         # print("Orchestrating requests...")
         self.async_session = aiohttp.ClientSession()
         async with self.async_session as session:
-            tasks = []
-            # print("Adding tasks...")
-
-            for destination in self.destinations:
-                # print(f"Sending request to {destination}...")
-                tasks.append(
-                    asyncio.ensure_future(self.send_heartbeat(session, destination))
-                )
-
+            tasks = [
+                asyncio.ensure_future(self.send_heartbeat(session, destination))
+                for destination in self.destinations
+            ]
             completed_tasks = await asyncio.gather(*tasks)
             for task in completed_tasks:
                 print("Task=", task)
