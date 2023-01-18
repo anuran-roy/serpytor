@@ -122,9 +122,7 @@ class Gateway:
                 "kwargs": kwargs_pickle,
             },
         )
-        json_res = res.json()
-        # print(json_res)
-        return json_res
+        return res.json()
 
 
 if __name__ == "__main__":
