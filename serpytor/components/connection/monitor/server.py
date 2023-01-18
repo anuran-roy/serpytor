@@ -218,7 +218,8 @@ class Server(HeartbeatServer):
                             "cpu": psutil.cpu_percent(),
                             "memory": psutil.virtual_memory()[2],
                         }
-                    )
+                    ),
+                    content_type="text/json",
                 ),
             },
         }
@@ -325,6 +326,7 @@ if __name__ == "__main__":
         request, sanity_checking: Callable[..., bool] = sanity_check
     ) -> Any:
         import pickle
+        import time
 
         """Receives a chunk of code (complete with imports, etc), executes it, and returns an output."""
         reader = await request.multipart()
@@ -343,9 +345,13 @@ if __name__ == "__main__":
         message: str = "Sanity check not passed."
         output: Union[Any, None] = None
         if check_complete:
+            start_time = time.time()
             output = pickle.loads(code)(*pickle.loads(args), **pickle.loads(kwargs))
+            stop_time = time.time()
             message = "Sanity check passed."
-        print("Computation complete.")
+        print(
+            f"Computation from {request.remote} completed in {(stop_time - start_time):.5f} second(s)."
+        )
         return web.Response(
             text=json.dumps({"message": message, "output": output}),
             content_type="text/json",
