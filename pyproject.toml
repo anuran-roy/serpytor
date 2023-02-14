@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-starlette = "^0.20.4"
+starlette = "^0.25.0"
 polars = "^0.13.58"
 uvicorn = "^0.18.2"
 gunicorn = "^20.1.0"
