@@ -59,8 +59,6 @@ class SimpleFeatureStore:
         """
         if self.backend == "pandas":
             return features_dict
-        elif self.backend == "polars":
-            pass
 
     def register_feature(
         self,
