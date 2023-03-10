@@ -4,6 +4,7 @@ from typing import Any, Callable, Dict, List, Literal, Optional, Tuple
 import aiohttp
 import cloudpickle
 import requests
+
 from serpytor.components.utils.algorithms.allocation.base_allocation import \
     BaseAllocation
 
@@ -131,6 +132,7 @@ class Gateway:
 
 if __name__ == "__main__":
     import numpy as np
+
     from serpytor.components.utils.algorithms.allocation import FCFSAllocation
 
     # from serpytor.components.utils.algorithms.allocation import (

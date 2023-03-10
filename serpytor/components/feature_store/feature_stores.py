@@ -4,6 +4,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional, Union
 
 import pandas as pd
 import polars as pl
+
 from serpytor.components.feature_store.config import CONFIG
 
 
