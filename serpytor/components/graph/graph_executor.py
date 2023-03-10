@@ -73,11 +73,14 @@ class GraphExecutor:
     def find_node_corresponding_to_task(
         self, task: Callable[..., Any]
     ) -> Tuple[bool, Optional[Node]]:
-        for node in self._graph.nodes:
-            if task.__code__.co_cellvars == node.task.__code__.co_cellvars:
-                return (True, node)
-
-        return (False, None)
+        return next(
+            (
+                (True, node)
+                for node in self._graph.nodes
+                if task.__code__.co_cellvars == node.task.__code__.co_cellvars
+            ),
+            (False, None),
+        )
 
     def execute(self, node: Node) -> None:
         """Takes in a Node as an input and executes the node in a server determined by the gateway"""
@@ -125,17 +128,12 @@ class GraphExecutor:
         nodes_to_add: List[Node] = []
 
         for i in self._execution_sequence:
-            nodes_to_add.append(self._graph.nodes[i[0]])
-            nodes_to_add.append(self._graph.nodes[i[1]])
-
+            nodes_to_add.extend((self._graph.nodes[i[0]], self._graph.nodes[i[1]]))
         nodes_to_add = list(set(nodes_to_add))
 
-        for idx, node in enumerate(nodes_to_add):
-            if use == "networkx":
+        for node in nodes_to_add:
+            if use in ["networkx", "pyvis"]:
                 G.add_node(str(node.task_meta["name"]), label=node.task_meta["name"])
-            elif use == "pyvis":
-                G.add_node(str(node.task_meta["name"]), label=node.task_meta["name"])
-
         for x in self._execution_sequence:
             G.add_edge(
                 str(self._graph.nodes[x[0]].task_meta["name"]),
@@ -152,7 +150,7 @@ class GraphExecutor:
             self._network_graph = G
             # return open(file_loc, "rb").read()
         elif use == "pyvis":
-            if "buttons" in kwargs.keys():
+            if "buttons" in kwargs:
                 G.show_buttons(kwargs["buttons"])
 
             G.toggle_physics(status=False)
