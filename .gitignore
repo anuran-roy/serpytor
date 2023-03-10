@@ -1,6 +1,11 @@
-venv/**
-**/dummy/**
+**/venv
+**/*dummy*
 **/automl/**.ipynb
 **/.ipynb_checkpoints
 **/__pycache__
 **/.vscode/**
+**/.pytest_cache
+**/.trunk
+**/.vscode
+**/dist
+**/lib
