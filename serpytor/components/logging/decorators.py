@@ -8,5 +8,5 @@ def log(function: Callable, *args, **kwargs) -> Any:
         try:
             output = function(*args, **kwargs)
             return output
-        except:
-            pass
+        except Exception:
+            ...
