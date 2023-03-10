@@ -64,4 +64,4 @@ class Node:
         """Method to execute the callable attached to the Node.
         Executes callable along with set task params with (kw)args passed at runtime.
         """
-        return self.task(self.task_params, *args, **kwargs)
+        return self._task(self.task_params, *args, **kwargs)
