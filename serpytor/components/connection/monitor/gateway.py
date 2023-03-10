@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Literal
 import requests
 import aiohttp
 import cloudpickle
@@ -43,7 +43,7 @@ class Gateway:
     def __repr__(self) -> str:
         return f"Gateway({self._task.__name__}) with {len(self._resource_addr)} resources at {self._resource_addr} using {self._allocation_algorithm.__class__.__name__} algorithm"
 
-    def change_task(self, task: Callable[..., Any]) -> None:
+    def set_task(self, task: Callable[..., Any]) -> None:
         self._task = task
 
     async def get_available_resources(
@@ -60,7 +60,7 @@ class Gateway:
                 zip(self._resource_addr, self._heartbeat_addr)
             ):
                 resource_addr, heartbeat_addr = zipped_tuple
-                print(f"Sending request {idx}...")
+                print(f"Sending request {idx+1}...")
                 async with session.get(heartbeat_addr) as resp:
                     report[resource_addr] = await resp.json()
 
@@ -81,6 +81,7 @@ class Gateway:
 
     async def execute(
         self,
+        task_return_type: Literal["batch", "stream"] = "batch",
         task_args: Optional[List[Any]] = [],
         task_kwargs: Optional[Dict[str, Any]] = {},
         *args: Optional[List[Any]],
@@ -90,10 +91,13 @@ class Gateway:
         We use sync requests here due to some problems with AIOHttp requests.
         Moreover, for a single request, sync requests are faster than async requests.
         """
+        # while True:
+        print("Task Kwargs received = ", task_kwargs)
         resource_details = await self.allocate_resource()
         task_pickle = cloudpickle.dumps(self._task)
         task_setup_args, task_setup_kwargs = self._task_setup_input
         args_pickle = cloudpickle.dumps(task_setup_args + task_args)
+        print("Kwargs received at gateway = ", task_kwargs)
         kwargs_pickle = cloudpickle.dumps(task_setup_kwargs | task_kwargs)
 
         execution_loc: str = f"{resource_details}"
@@ -122,12 +126,11 @@ class Gateway:
                 "kwargs": kwargs_pickle,
             },
         )
-        json_res = res.json()
-        # print(json_res)
-        return json_res
+        return res.json()
 
 
 if __name__ == "__main__":
+    import numpy as np
     from serpytor.components.utils.algorithms.allocation.fcfs_allocation import (
         FCFSAllocation,
     )
@@ -137,7 +140,7 @@ if __name__ == "__main__":
 
     # Create a gateway object
     gateway = Gateway(
-        task=lambda: "Hello World!",
+        task=lambda x: np.square(x).tolist(),
         task_setup_data=([], {}),
         allocation_algorithm=FCFSAllocation(),
         resource_addresses=[
@@ -155,4 +158,6 @@ if __name__ == "__main__":
     )
 
     # Execute the gateway
-    asyncio.run(gateway.execute())
+    asyncio.run(
+        gateway.execute(task_args=[np.random.randint(10, size=(10000, 10000)).tolist()])
+    )
