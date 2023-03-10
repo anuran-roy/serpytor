@@ -5,8 +5,7 @@ from serpytor.components.database.db import DBIO
 
 # import logging
 # import json
-from .exceptions import (CriticalLog, DebugLog, ErrorLog, InfoLog, UnknownLog,
-                         WarningLog)
+from .exceptions import CriticalLog, DebugLog, ErrorLog, InfoLog, UnknownLog, WarningLog
 
 LOG_LEVELS: Dict[str, int] = {
     "UNKNOWN": 6,
@@ -85,27 +84,27 @@ class StandardLogger:
         try:
             output: Any = function(*args, **kwargs)
             return output
-        except Exception as e:
+        except Exception as logging_exception:
             self.log_index: Tuple[bool] = (
-                type(e) == type(UnknownLog),
-                type(e) == type(CriticalLog),
-                type(e) == type(ErrorLog),
-                type(e) == type(WarningLog),
-                type(e) == type(InfoLog),
-                type(e) == type(DebugLog),
-                isinstance(e, Exception),
+                isinstance(logging_exception, UnknownLog),
+                isinstance(logging_exception, CriticalLog),
+                isinstance(logging_exception, ErrorLog),
+                isinstance(logging_exception, WarningLog),
+                isinstance(logging_exception, InfoLog),
+                isinstance(logging_exception, DebugLog),
+                isinstance(logging_exception, Exception),
             )
             # print(f"\n\n\n\n{self.log_index}\n\n\n\n")
             # TODO: Log to DB.
             log: Dict[str, str] = {
                 "timestamp": str(datetime.now()),
                 "type": self.log_types[self.log_index.index(True)],
-                "log": str(e),
+                "log": str(logging_exception),
             }
             print(f"Generated log details = \n{log}")
             if self.log_index.index(True) == len(self.log_types) - 1 or (
                 (self.log_index.index(True) != len(self.log_types) - 1)
-                and e.level >= self.log_threshold
+                and logging_exception.level >= self.log_threshold
             ):
-                print(f"Writing exception {e}")
+                print(f"Writing exception {logging_exception}")
                 self.db_io.write_to_db(log)
