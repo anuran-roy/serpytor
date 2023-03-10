@@ -23,6 +23,10 @@ class Graph:
     def nodes(self):
         return self._nodes
 
+    @property
+    def edges(self):
+        return self._edges
+
     def add_node(self, node: Node):
         self.nodes.append(node)
 
@@ -40,7 +44,7 @@ class Graph:
             print(node.task_meta)
 
     def add_edge(self, edge: Any):
-        self.edges.append(edge)
+        self._edges.append(edge)
 
     def add_to_graph(
         self,
