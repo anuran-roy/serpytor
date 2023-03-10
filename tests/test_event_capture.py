@@ -1,4 +1,4 @@
-import pytest
+
 from serpytor.components.events import EventCapture
 
 
