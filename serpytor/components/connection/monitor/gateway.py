@@ -11,14 +11,15 @@ from serpytor.components.utils.algorithms.allocation.base_allocation import (
 
 class Gateway:
     """
-    The Gateway object aggregates the services by abstracting server details, and providing uniform APIs.
+    The Gateway object aggregates the services by abstracting server details and providing uniform APIs.
 
-    Each gateway performs a set of logically-connected tasks across the servers. Each Gateway executes a specific task specified by its entrypoint during initialization.
+    Each gateway performs a set of logically-connected tasks across the servers.
+    Each Gateway executes a specific task specified by its entrypoint during initialization.
     Gateway objects can be superposed on other Gateway objects for handling complex use cases.
 
     The diagram below represents how the gateways behave:
 
-    <img alt='Gateway behaviour' src='https://imgur.com/qxcZ3ep.png' />
+    <img alt='Gateway behavior' src='https://imgur.com/qxcZ3ep.png' />
     """
 
     def __init__(
@@ -131,12 +132,13 @@ class Gateway:
 
 if __name__ == "__main__":
     import numpy as np
-    from serpytor.components.utils.algorithms.allocation.fcfs_allocation import (
+    from serpytor.components.utils.algorithms.allocation import (
         FCFSAllocation,
     )
-    from serpytor.components.utils.algorithms.allocation.round_robin_allocation import (
-        RoundRobinAllocation,
-    )
+
+    # from serpytor.components.utils.algorithms.allocation import (
+    #     RoundRobinAllocation,
+    # )
 
     # Create a gateway object
     gateway = Gateway(

@@ -119,7 +119,7 @@ class HeartbeatClient:
     async def send_heartbeat(self, session, destination: str) -> Any:
 
         async with session.get(destination) as resp:
-            return await resp.json(content_type="text/json")
+            return await resp.json(content_type="application/json")
 
     async def orchestrate_requests(self):
         # print("Orchestrating requests...")
