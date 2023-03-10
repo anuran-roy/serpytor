@@ -1,9 +1,9 @@
 from serpytor.components.logging.exceptions import (
     CriticalLog,
-    ErrorLog,
-    WarningLog,
-    InfoLog,
     DebugLog,
+    ErrorLog,
+    InfoLog,
+    WarningLog,
 )
 
 

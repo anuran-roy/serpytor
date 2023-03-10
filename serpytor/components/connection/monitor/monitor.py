@@ -1,8 +1,6 @@
 from yaml import safe_load
-from .server import HeartbeatServer
-from serpytor.components.events import (
-    EventCapture,
-)
+
+from serpytor.components.connection.monitor.server import HeartbeatServer
 
 
 class Monitor:

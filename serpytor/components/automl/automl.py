@@ -1,19 +1,18 @@
-from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.svm import SVC, SVR
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import (
     accuracy_score,
+    f1_score,
     mean_squared_error,
+    precision_score,
     r2_score,
     recall_score,
-    precision_score,
-    f1_score,
 )
-
-import pandas as pd
-import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC, SVR
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 
 def get_best_model(

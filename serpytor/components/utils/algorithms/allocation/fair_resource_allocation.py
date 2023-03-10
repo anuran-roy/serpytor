@@ -1,5 +1,6 @@
 from functools import cache, lru_cache
-from typing import Any, Tuple, Dict, List, Callable, Iterable
+from typing import Any, Callable, Dict, Iterable, List, Tuple
+
 from serpytor.components.utils.algorithms.allocation.base_allocation import (
     BaseAllocation,
 )

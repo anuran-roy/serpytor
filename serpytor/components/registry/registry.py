@@ -1,14 +1,16 @@
-from functools import lru_cache
-from tinydb import TinyDB, Query
-from ..feature_store.feature_stores import SimpleFeatureStore
-import yaml
-from pathlib import Path
-from typing import Optional, Dict, Tuple, List, Any
 from datetime import datetime
-from uuid import uuid4
-from serpytor.components.database.db import DBIO
 from functools import lru_cache
+from pathlib import Path
 from threading import Lock
+from typing import Any, Dict, List, Optional, Tuple
+from uuid import uuid4
+
+import yaml
+from tinydb import Query, TinyDB
+
+from serpytor.components.database.db import DBIO
+
+from serpytor.components.registry.feature_store.feature_stores import SimpleFeatureStore
 
 REGISTRY_DIR = Path("")
 

@@ -1,7 +1,8 @@
 from functools import wraps
-from .exceptions import CriticalLog, ErrorLog, WarningLog, InfoLog, DebugLog
-from typing import Optional, List, Any, Callable
-from .logging import StandardLogger, DebugLogger
+from typing import Any, Callable, List, Optional
+
+from .exceptions import CriticalLog, DebugLog, ErrorLog, InfoLog, WarningLog
+from .logging import DebugLogger, StandardLogger
 
 
 def log(function: Callable, *args, **kwargs) -> Any:

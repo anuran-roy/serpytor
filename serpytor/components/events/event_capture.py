@@ -1,7 +1,8 @@
 from functools import wraps
-from typing import Optional, Callable, List, Dict, Any
-from serpytor.components.logging.logging import StandardLogger
+from typing import Any, Callable, Dict, List, Optional
+
 from serpytor.components.analytics.decorators import get_execution_time
+from serpytor.components.logging.logging import StandardLogger
 
 # from time import time
 
@@ -27,6 +28,9 @@ class EventCapture:
 
     # @get_execution_time
     def capture_event(self, function: Callable) -> None:
+        """Wrapper function to capture an event.
+        Triggered whenever the wrapped callable is called."""
+
         @wraps(function)
         def wrapper(*args, **kwargs):
             print("Passing through the event capture function")
@@ -42,6 +46,7 @@ if __name__ == "__main__":
 
     @ec.capture_event
     def hi():
+        """Random function to test event capture mechanism"""
         print("Hello")
         raise Exception("Random bs gooooooo!")
 

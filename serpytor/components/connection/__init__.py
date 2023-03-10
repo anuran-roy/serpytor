@@ -180,10 +180,10 @@ If the resource itself isn't available, then the service is unavailable too.
 from serpytor.components.connection.extensions.reports.crash_reports.crash_reports import (
     get_report,
 )
-from serpytor.components.connection.monitor.monitor import Monitor
 from serpytor.components.connection.monitor.client import HeartbeatClient
-from serpytor.components.connection.monitor.server import HeartbeatServer, Server
 from serpytor.components.connection.monitor.gateway import Gateway
+from serpytor.components.connection.monitor.monitor import Monitor
+from serpytor.components.connection.monitor.server import HeartbeatServer, Server
 
 __all__ = [
     "get_report",

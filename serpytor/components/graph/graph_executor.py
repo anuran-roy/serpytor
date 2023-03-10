@@ -101,6 +101,10 @@ class GraphExecutor:
             # last_output = {"num": last_output}
         print(last_output)
 
+    @property
+    def execution_sequence(self) -> List[Tuple[int, int]]:
+        return self._execution_sequence
+
     def set_execution_sequence(self, execution_sequence: List[Tuple[int, int]]) -> None:
         """Set the execution sequence manually.
         **Warning**: This will override any checks for dependency integrity!

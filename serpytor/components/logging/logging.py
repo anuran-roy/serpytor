@@ -1,11 +1,12 @@
-from typing import Any, Tuple, Callable, Dict, Optional, List, Union, Iterable
+from datetime import datetime
 from functools import wraps
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
+
+from serpytor.components.database.db import DBIO
 
 # import logging
 # import json
-from .exceptions import CriticalLog, ErrorLog, WarningLog, InfoLog, DebugLog, UnknownLog
-from datetime import datetime
-from serpytor.components.database.db import DBIO
+from .exceptions import CriticalLog, DebugLog, ErrorLog, InfoLog, UnknownLog, WarningLog
 
 LOG_LEVELS: Dict[str, int] = {
     "UNKNOWN": 6,
