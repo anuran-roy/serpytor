@@ -1,5 +1,7 @@
 import json
 import multiprocessing as mp
+import pickle
+import time
 from datetime import datetime
 from multiprocessing import Process
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
@@ -7,7 +9,6 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import psutil
 from aiohttp import web
 from rich import print as rich_print
-
 
 
 class ForbiddenDeviceException(Exception):
@@ -336,9 +337,6 @@ if __name__ == "__main__":
     async def exec_func(
         request, sanity_checking: Callable[..., bool] = sanity_check
     ) -> Any:
-        import pickle
-        import time
-
         """Receives a chunk of code (complete with imports, etc), executes it, and returns an output."""
         reader = await request.multipart()
         code_field = await reader.next()

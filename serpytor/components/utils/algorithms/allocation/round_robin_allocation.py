@@ -1,8 +1,7 @@
 from typing import Any, Dict, List
 
-from serpytor.components.utils.algorithms.allocation.base_allocation import (
-    BaseAllocation,
-)
+from serpytor.components.utils.algorithms.allocation.base_allocation import \
+    BaseAllocation
 
 
 class RoundRobinAllocation(BaseAllocation):

@@ -4,7 +4,6 @@ from typing import Any, Callable, Dict, List, Literal, Optional, Tuple
 import matplotlib.pyplot as plt
 import networkx as nx
 import pyvis
-
 from serpytor.components.connection import Gateway
 from serpytor.components.graph.graph import Graph
 from serpytor.components.graph.node import Node

@@ -1,10 +1,6 @@
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.metrics import (
-    accuracy_score,
-    f1_score,
-    mean_squared_error,
-    r2_score,
-)
+from sklearn.metrics import (accuracy_score, f1_score, mean_squared_error,
+                             r2_score)
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC, SVR
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor

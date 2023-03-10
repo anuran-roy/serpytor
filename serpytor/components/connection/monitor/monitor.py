@@ -1,6 +1,5 @@
-from yaml import safe_load
-
 from serpytor.components.connection.monitor.server import HeartbeatServer
+from yaml import safe_load
 
 
 class Monitor:

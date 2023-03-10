@@ -1,8 +1,7 @@
 from typing import Any, Dict, Iterable, List, Union
 
-from serpytor.components.utils.algorithms.allocation.base_allocation import (
-    BaseAllocation,
-)
+from serpytor.components.utils.algorithms.allocation.base_allocation import \
+    BaseAllocation
 
 
 class FCFSAllocation(BaseAllocation):

@@ -5,7 +5,8 @@ from serpytor.components.database.db import DBIO
 
 # import logging
 # import json
-from .exceptions import CriticalLog, DebugLog, ErrorLog, InfoLog, UnknownLog, WarningLog
+from .exceptions import (CriticalLog, DebugLog, ErrorLog, InfoLog, UnknownLog,
+                         WarningLog)
 
 LOG_LEVELS: Dict[str, int] = {
     "UNKNOWN": 6,

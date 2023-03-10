@@ -2,12 +2,10 @@ from typing import Any, Callable, Dict, List, Tuple, Union
 
 from serpytor.components.connection.monitor.gateway import Gateway
 from serpytor.components.connection.monitor.server import Server
-from serpytor.components.utils.algorithms.allocation.base_allocation import (
-    BaseAllocation,
-)
-from serpytor.components.utils.algorithms.allocation.fcfs_allocation import (
-    FCFSAllocation,
-)
+from serpytor.components.utils.algorithms.allocation.base_allocation import \
+    BaseAllocation
+from serpytor.components.utils.algorithms.allocation.fcfs_allocation import \
+    FCFSAllocation
 
 
 class GatewayServer:

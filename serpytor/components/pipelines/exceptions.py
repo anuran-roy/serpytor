@@ -1,10 +1,6 @@
-from serpytor.components.logging.exceptions import (
-    CriticalLog,
-    DebugLog,
-    ErrorLog,
-    InfoLog,
-    WarningLog,
-)
+from serpytor.components.logging.exceptions import (CriticalLog, DebugLog,
+                                                    ErrorLog, InfoLog,
+                                                    WarningLog)
 
 
 class CriticalPipelineError(CriticalLog):

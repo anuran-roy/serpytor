@@ -5,9 +5,7 @@ from threading import Lock
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-
 from serpytor.components.database.db import DBIO
-
 
 REGISTRY_DIR = Path("")
 

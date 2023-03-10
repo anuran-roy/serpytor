@@ -6,7 +6,6 @@ import joblib
 from sklearn.pipeline import Pipeline
 
 
-
 async def save_pipeline(
     pipeline: Pipeline,
     save_dir: str,

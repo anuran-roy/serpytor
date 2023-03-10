@@ -3,7 +3,6 @@ from queue import Queue
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 
-
 class BaseAllocation:
     """Base class for implementing queuing methods."""
 
