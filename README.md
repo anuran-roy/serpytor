@@ -6,16 +6,20 @@ A distributed, low-code, end-to-end data collection and analysis tool for data f
 
 <!-- [![Codacy Security Scan](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml) -->
 
-<center>
+<!-- [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e926bfe2f314499bbc225cd476b4694f)](https://www.codacy.com/gh/anuran-roy/serpytor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anuran-roy/serpytor&amp;utm_campaign=Badge_Grade) -->
+
+<p align="center">
 <img src="./logo-transparent.png" center/><br><br>
 (Midjourney, create a Python with legs serving food for me)
 <br>
 <br>
 <br>
 <a href="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main" alt="Codacy Security Scan"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<img alt="Codacy branch grade" src="https://img.shields.io/codacy/grade/e926bfe2f314499bbc225cd476b4694f/main?label=Code%20Quality">&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.codacy.com/gh/anuran-roy/serpytor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anuran-roy/serpytor&amp;utm_campaign=Badge_Grade"><img src="https://img.shields.io/codacy/grade/e926bfe2f314499bbc225cd476b4694f/dev?label=Code%20Quality%20%28Dev%29" alt="Codacy Badge"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL Security Scan"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main" alt="CodeQL Security Scan"/></a>
-</center>
+</p>
 
 <!-- [![CodeQL](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml)
 
