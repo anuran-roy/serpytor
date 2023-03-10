@@ -30,5 +30,5 @@ if __name__ == "__main__":
     queue_ob = FCFSAllocation()
     queue_ob.put(index=0, item=[6, 1, 5, 4, 2, 3])
 
-    for i in queue_ob:
+    for i in queue_ob.queue_silo:
         print(i)
