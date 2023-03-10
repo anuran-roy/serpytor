@@ -1,8 +1,5 @@
 """
 """
-
-from typing import Tuple
-
 from serpytor.components.utils.algorithms.allocation.fair_resource_allocation import (
     FairResourceAllocation,
 )
@@ -13,4 +10,4 @@ from serpytor.components.utils.algorithms.allocation.round_robin_allocation impo
     RoundRobinAllocation,
 )
 
-__all__: Tuple = ("FairResourceAllocation", "FCFSAllocation", "RoundRobinAllocation")
+__all__ = ["FairResourceAllocation", "FCFSAllocation", "RoundRobinAllocation"]

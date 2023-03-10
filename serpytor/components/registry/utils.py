@@ -1,12 +1,10 @@
 import datetime
 from pathlib import Path
-from typing import Callable, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Callable, Dict, Optional, Union
 
 import joblib
 from sklearn.pipeline import Pipeline
 
-from serpytor.components.exports import exports
-from serpytor.config import BASE_DIR
 
 
 async def save_pipeline(

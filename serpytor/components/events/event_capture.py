@@ -1,7 +1,6 @@
 from functools import wraps
 from typing import Any, Callable, Dict, List, Optional
 
-from serpytor.components.analytics.decorators import get_execution_time
 from serpytor.components.logging.logging import StandardLogger
 
 # from time import time

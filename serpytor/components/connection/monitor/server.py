@@ -8,7 +8,6 @@ import psutil
 from aiohttp import web
 from rich import print as rich_print
 
-from serpytor.components.connection.monitor.utils import detect_ip
 
 
 class ForbiddenDeviceException(Exception):

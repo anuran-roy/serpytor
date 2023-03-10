@@ -1,13 +1,9 @@
 import traceback
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Callable, List
 
-from serpytor.components.events.event_capture import EventCapture
 from serpytor.components.pipelines.exceptions import (
     CriticalPipelineError,
-    PipelineDebugInfo,
     PipelineError,
-    PipelineInfo,
-    PipelineWarning,
 )
 
 # from serpytor.config import EVENT_CAPTURE_CONFIG

@@ -2,15 +2,12 @@ from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
 from threading import Lock
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-import yaml
-from tinydb import Query, TinyDB
 
 from serpytor.components.database.db import DBIO
 
-from serpytor.components.registry.feature_store.feature_stores import SimpleFeatureStore
 
 REGISTRY_DIR = Path("")
 

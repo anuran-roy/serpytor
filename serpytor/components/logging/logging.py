@@ -1,6 +1,5 @@
 from datetime import datetime
-from functools import wraps
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from serpytor.components.database.db import DBIO
 

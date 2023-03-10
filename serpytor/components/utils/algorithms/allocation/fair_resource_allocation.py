@@ -1,9 +1,5 @@
-from functools import cache, lru_cache
-from typing import Any, Callable, Dict, Iterable, List, Tuple
+from typing import Any, Dict, List
 
-from serpytor.components.utils.algorithms.allocation.base_allocation import (
-    BaseAllocation,
-)
 
 
 class FairResourceAllocation:
