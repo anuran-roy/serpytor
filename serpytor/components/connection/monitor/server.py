@@ -5,7 +5,7 @@ from multiprocessing import Process
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import psutil
 from aiohttp import web
-
+from rich import print as rich_print
 from serpytor.components.connection.monitor.utils import detect_ip
 
 
@@ -24,13 +24,13 @@ class ForbiddenDeviceException(Exception):
 #         self.routes = [web.get("/", self.handleRequest)]
 
 #     async def handleRequest(self, request: web.Request) -> web.Response:
-#         # print(dir(request))
+#         # rich_print(dir(request))
 #         try:
 #             self.check_source(request.remote)
-#             print(request.remote)
+#             rich_print(request.remote)
 #             return web.Response(text="Hello World")
 #         except ForbiddenDeviceException:
-#             print(f"Forbidden device request: {request.remote}")
+#             rich_print(f"Forbidden device request: {request.remote}")
 
 #     def check_source(self, ip_address: str) -> None:
 #         if not self.is_whitelisted(ip_address):
@@ -51,19 +51,19 @@ class ForbiddenDeviceException(Exception):
 #         )
 
 #     def listen(self) -> None:
-#         print(f"Server started http://{self.heartbeat_hostName}:{self.heartbeat_port}")
+#         rich_print(f"Server started http://{self.heartbeat_hostName}:{self.heartbeat_port}")
 #         self.add_all_routes()
 #         web.run_app(self.app, host=self.heartbeat_hostName, port=self.heartbeat_port)
 
 #     def stop_server(self) -> None:
 #         self.app.shutdown()
-#         print("Server stopped.")
+#         rich_print("Server stopped.")
 
 #     def execute(self) -> None:
 #         try:
 #             self.listen()
 #         except KeyboardInterrupt:
-#             print("Shutting down...")
+#             rich_print("Shutting down...")
 #             self.stop_server()
 
 
@@ -165,24 +165,25 @@ class HeartbeatServer:
             target=web.run_app,
             args=(*self.heartbeat_server_args,),
             kwargs={
+                "print": None,
                 "app": self.heartbeat_web_server,
                 "port": self.heartbeat_port,
                 "host": self.heartbeat_host,
                 **self.heartbeat_server_kwargs,
             },
         )
-        print(
-            f"Starting heartbeat server at {self.heartbeat_host}:{self.heartbeat_port}"
+        rich_print(
+            f"[blue][+] Starting heartbeat server at {self.heartbeat_host}:{self.heartbeat_port}[/blue]"
         )
         self.resource_online = True
         heartbeat_process.start()
-        # print(
+        # rich_print(
         #     f"Stopping heartbeat server at {self.heartbeat_host}:{self.heartbeat_port}"
         # )
         # heartbeat_process.join()
         # self.resource_online = False
         # except Exception as e:
-        # print(f"Server {self.__str__} crashed :(")
+        # rich_print(f"Server {self.__str__} crashed :(")
         # self.resource_online = False
 
 
@@ -219,7 +220,7 @@ class Server(HeartbeatServer):
                             "memory": psutil.virtual_memory()[2],
                         }
                     ),
-                    content_type="text/json",
+                    content_type="application/json",
                 ),
             },
         }
@@ -255,43 +256,52 @@ class Server(HeartbeatServer):
                 target=web.run_app,
                 # args=(self.service_web_server),
                 kwargs={
+                    "print": None,
                     "app": self.service_web_server,
                     "port": self.server_port,
                     "host": self.server_host,
                     **server_kwargs,
                 },
             )
-            print(
-                f"Starting service web server at {self.server_host}:{self.server_port}..."
+            rich_print(
+                f"[green][*] Starting service web server at {self.server_host}:{self.server_port}...[/green]"
             )
             self.service_online = True
             p.start()
-        # print(f"Exiting service web server at {self.server_host}:{self.server_port}...")
+        # rich_print(f"Exiting service web server at {self.server_host}:{self.server_port}...")
         # p.join()
         # self.service_online = False
         except Exception as e:
-            print(f"Service {self.__str__} crashed :(")
+            rich_print(f"Service {self.__str__} crashed :(")
             self.service_online = False
 
     def is_service_online(self) -> bool:
         return self.service_online
 
     def execute(self) -> None:
-        heartbeat_process = Process(target=self.start_heartbeats)
-        service_process = Process(target=self.start_service)
-        heartbeat_process.start()
-        service_process.start()
+        try:
+            heartbeat_process = Process(target=self.start_heartbeats)
+            service_process = Process(target=self.start_service)
+            heartbeat_process.start()
+            service_process.start()
+        except KeyboardInterrupt:
+            rich_print(
+                f"[yellow]Gracefully exiting server at {self.server_host}:{self.heartbeat_port}...[/yellow]"
+            )
+
+            service_process.join()
+            heartbeat_process.join()
 
 
 if __name__ == "__main__":
     # HeartbeatServer().execute()
-    # print(detect_ip())
+    # rich_print(detect_ip())
 
     # async def handleGet(request):
-    #     """Contains the mapping method that will print the IP of the request origin.
+    #     """Contains the mapping method that will rich_print the IP of the request origin.
     #     It also returns the cpu and memory usage of the system the server instance is running on.
     #     """
-    #     print(request.remote)
+    #     rich_print(request.remote)
     #     return web.Response(
     #         text=json.dumps(
     #             {
@@ -300,14 +310,14 @@ if __name__ == "__main__":
     #                 "memory": psutil.virtual_memory()[2],
     #             }
     #         ),
-    #         content_type="text/json",
+    #         content_type="application/json",
     #     )
 
     async def hello(request):
-        print("Hello!")
+        rich_print("Hello!")
         return web.Response(
             text=json.dumps({"message": "Hello!", "target": request.remote}),
-            content_type="text/json",
+            content_type="application/json",
         )
 
     def sanity_check(code, args, kwargs):
@@ -342,6 +352,8 @@ if __name__ == "__main__":
             pickle.loads(args),
             pickle.loads(kwargs),
         )
+
+        print("Received kwargs = ", pickle.loads(kwargs))
         message: str = "Sanity check not passed."
         output: Union[Any, None] = None
         if check_complete:
@@ -349,12 +361,12 @@ if __name__ == "__main__":
             output = pickle.loads(code)(*pickle.loads(args), **pickle.loads(kwargs))
             stop_time = time.time()
             message = "Sanity check passed."
-        print(
-            f"Computation from {request.remote} completed in {(stop_time - start_time):.5f} second(s)."
+        rich_print(
+            f"[green][+]Computation from {request.remote} completed in {(stop_time - start_time):.5f} second(s).[/green]"
         )
         return web.Response(
             text=json.dumps({"message": message, "output": output}),
-            content_type="text/json",
+            content_type="application/json",
         )
 
     # heartbeat_mapping: Dict[str, Dict[str, Union[str, Callable[..., Any]]]] = {
@@ -403,7 +415,7 @@ if __name__ == "__main__":
         processes = []
 
         for idx, i in enumerate(servers):
-            print(f"Spawning server {idx+1}")
+            rich_print(f"Spawning server {idx+1}")
             processes.append(Process(target=i.execute))
 
         for i in processes:
