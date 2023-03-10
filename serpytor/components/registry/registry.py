@@ -21,8 +21,8 @@ class SimpleModelRegistry:
         3. Add a model to the main memory using ``add_to_registry()``.
     """
 
-    def __init__(self, db_path: str) -> None:
-        self.db: DBIO = DBIO(table_name="model_registry", db_path=db_path)
+    def __init__(self, db_url: str) -> None:
+        self.db: DBIO = DBIO(table_name="model_registry", db_url=db_url)
         self.registry: Dict[str, Any] = {}
         self.lock = Lock()
 
