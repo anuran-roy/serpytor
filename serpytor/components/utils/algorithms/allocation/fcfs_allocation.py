@@ -1,7 +1,8 @@
 from typing import Any, Dict, Iterable, List, Union
 
-from serpytor.components.utils.algorithms.allocation.base_allocation import \
-    BaseAllocation
+from serpytor.components.utils.algorithms.allocation.base_allocation import (
+    BaseAllocation,
+)
 
 
 class FCFSAllocation(BaseAllocation):
@@ -21,7 +22,7 @@ class FCFSAllocation(BaseAllocation):
         print("Returning queue at index 0.")
         return self.queue_silo[0].get(0)
 
-    def put(self, item: Union[Iterable[Any], int, str, Any]) -> None:
+    def put(self, item: Union[Iterable[Any], int, str, Any], index: int = 0) -> None:
         super().put(item, index=0)
 
 
