@@ -29,7 +29,7 @@ class EventCapture:
     def capture_event(self, function: Callable) -> None:
         @wraps(function)
         def wrapper(*args, **kwargs):
-            print("Passint through the event capture function")
+            print("Passing through the event capture function")
             output = self.logger.log(function, *args, **kwargs)
             # TODO: Other operations can be done here
             return output
@@ -38,7 +38,7 @@ class EventCapture:
 
 
 if __name__ == "__main__":
-    ec = EventCapture()
+    ec = EventCapture(db_url=":memory:")
 
     @ec.capture_event
     def hi():
