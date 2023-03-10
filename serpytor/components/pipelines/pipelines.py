@@ -123,13 +123,11 @@ if __name__ == "__main__":
 
     def proc1(data, *args, **kwargs):
         print(data)
-        mod_data = [i + 1 for i in data]
-        return mod_data
+        return [i + 1 for i in data]
 
     def proc2(data, *args, **kwargs):
         print(data)
-        mod_data2 = [i**2 for i in data]
-        return mod_data2
+        return [i**2 for i in data]
 
     pipe = Pipeline(pipeline=[(producer, [], {}), (proc1, [], {}), (proc2, [], {})])
 
