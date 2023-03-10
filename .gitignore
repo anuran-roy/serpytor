@@ -10,3 +10,5 @@
 **/dist
 **/lib
 **/.vscode
+**/image.png
+**/*.html

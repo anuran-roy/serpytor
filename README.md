@@ -2,13 +2,24 @@
   
 A distributed, low-code, end-to-end data collection and analysis tool for data folks. Take the pain out of data collection from your pipeline!  
 
-***NOTE***: PLEASE DON'T USE IT IN PRODUCTION YET!
+> **NOTE**: PLEASE DON'T USE IT IN PRODUCTION YET!
 
-[![Codacy Security Scan](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml)
+<!-- [![Codacy Security Scan](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml) -->
 
-[![CodeQL](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml)
+<center>
+<img src="./logo-transparent.png" center/><br><br>
+(Midjourney, create a Python with legs serving food for me)
+<br>
+<br>
+<br>
+<a href="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main" alt="Codacy Security Scan"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL Security Scan"/></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main" alt="CodeQL Security Scan"/></a>
+</center>
 
-[![Docs](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment)
+<!-- [![CodeQL](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml)
+
+[![Docs](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment) -->
 
 ## Where did it come from?
   
