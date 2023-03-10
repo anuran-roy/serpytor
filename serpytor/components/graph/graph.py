@@ -1,5 +1,6 @@
-from functools import wraps, partial
-from typing import List, Dict, Any, Callable, Union, Optional
+from functools import wraps
+from typing import Any, Callable, Dict, List, Optional
+
 from serpytor.components.graph import Node
 
 
@@ -16,6 +17,7 @@ class Graph:
         self._directed: bool = directed
         self._nodes: List[Node] = kwargs.get("nodes", [])
         self._edges: List[Any] = kwargs.get("edges", [])
+        self._nodes_meta: Dict[str, Dict[str, Any]]
 
     @property
     def nodes(self):
@@ -23,6 +25,15 @@ class Graph:
 
     def add_node(self, node: Node):
         self.nodes.append(node)
+
+    def add_node_meta(self, task: Callable[..., Any]):
+        keyname = task.__code__.co_filename.replace("/", ".")
+        node_task_meta = {
+            "cellvars": task.__code__.co_cellvars,
+            "stack_size": task.__code__.co_stacksize,
+        }
+
+        self._nodes_meta[keyname] = node_task_meta
 
     def show_nodes(self):
         for node in self.nodes:
