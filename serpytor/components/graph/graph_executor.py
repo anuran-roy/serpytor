@@ -164,10 +164,3 @@ class GraphExecutor:
             G.generate_html(file_loc)
             self._network_graph = G
             # return open(file_loc, "r").read()
-
-
-if __name__ == "__main__":
-    from serpytor.components.connection.monitor.gateway import Gateway
-
-    graph_executor = GraphExecutor()
-    graph_executor.execute()
