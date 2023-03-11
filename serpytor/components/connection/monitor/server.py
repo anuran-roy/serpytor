@@ -8,6 +8,8 @@ from tinydb import TinyDB, Query
 from serpytor.components.connection.monitor.utils import detect_ip
 from typing import Optional, Callable, Tuple, Union, List, Dict, Any
 from multiprocessing import Process
+import os
+import psutil
 
 
 class ForbiddenDeviceException(Exception):
@@ -125,7 +127,7 @@ class HeartbeatServer:
 
         return transformed_mappings
 
-    def run_server(self):
+    def start_heartbeats(self):
         transformed_mappings = self.transform_mappings()
         self.web_server.add_routes(transformed_mappings)
         web.run_app(
@@ -142,32 +144,42 @@ if __name__ == "__main__":
     # print(detect_ip())
 
     async def handlePost(request):
+        """Contains the mapping method that will print the IP of the request origin.
+        It also returns the cpu and memory usage of the system the server instance is running on.
+        """
         print(request.remote)
         return web.Response(
-            text=json.dumps({"message": request.remote}), content_type="text/json"
+            text=json.dumps(
+                {
+                    "message": request.remote,
+                    "cpu": psutil.cpu_percent(),
+                    "memory": psutil.virtual_memory()[2],
+                }
+            ),
+            content_type="text/json",
         )
 
-    mapping = {"/": {"type": "post", "mapped_method": handlePost}}
+    mapping = {"/heartbeat": {"type": "get", "mapped_method": handlePost}}
 
     def test_example_v2():
         server1 = HeartbeatServer(mappings=mapping, port=5000)
-        # server1.run_server()
+        # server1.start_heartbeats()
         server2 = HeartbeatServer(mappings=mapping, port=5001)
-        # server2.run_server()
+        # server2.start_heartbeats()
         server3 = HeartbeatServer(mappings=mapping, port=5002)
-        # server3.run_server()
+        # server3.start_heartbeats()
         server4 = HeartbeatServer(mappings=mapping, port=5003)
-        # server4.run_server()
+        # server4.start_heartbeats()
 
         servers = [server1, server2, server3, server4]
         processes = []
 
         for i in servers:
-            processes.append(Process(target=i.run_server))
+            processes.append(Process(target=i.start_heartbeats))
 
         for i in processes:
             i.start()
 
-        # server1.run_server()
+        # server1.start_heartbeats()
 
     test_example_v2()

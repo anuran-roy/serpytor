@@ -1,7 +1,15 @@
+[![Codacy Security Scan](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml)
+
+[![CodeQL](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml)
+
+[![Docs](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment)
+
 # The SerPytor Docs
   
-A low-code, end-to-end data collection and analysis tool for data folks.   Take the pain out of data collection from your pipeline!  
-  
+A distributed, low-code, end-to-end data collection and analysis tool for data folks. Take the pain out of data collection from your pipeline!  
+
+***NOTE***: PLEASE DON'T USE IT IN PRODUCTION YET!
+
 ## Where did it come from?
   
 Alright, I'll be completely honest here. It's a story, so if you're in, read along! Busy folks, the [TL;DR](#tl-dr) is for you!  
