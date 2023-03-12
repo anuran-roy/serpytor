@@ -16,59 +16,6 @@ class ForbiddenDeviceException(Exception):
         return "The device is forbidden to access the server."
 
 
-# class HeartbeatServer:
-#     def __init__(self, hostName: str = "0.0.0.0", port: int = 6666) -> None:
-#         self.heartbeat_port: int = port
-#         self.type = "Server"
-#         self.heartbeat_hostName: str = hostName
-#         self.app = web.Application()
-#         self.config = safe_load(open("./monitor_config.yml", "r").read())
-#         self.routes = [web.get("/", self.handleRequest)]
-
-#     async def handleRequest(self, request: web.Request) -> web.Response:
-#         # rich_print(dir(request))
-#         try:
-#             self.check_source(request.remote)
-#             rich_print(request.remote)
-#             return web.Response(text="Hello World")
-#         except ForbiddenDeviceException:
-#             rich_print(f"Forbidden device request: {request.remote}")
-
-#     def check_source(self, ip_address: str) -> None:
-#         if not self.is_whitelisted(ip_address):
-#             raise ForbiddenDeviceException
-
-#     def add_all_routes(self) -> None:
-#         self.app.add_routes(self.routes)
-
-#     def is_whitelisted(self, ip_address: str) -> bool:
-#         if (
-#             self.config["devices"]["clients"]["allow"] == "*"
-#             and ip_address not in self.config["devices"]["clients"]["disallow"]
-#         ):
-#             return True
-#         return (
-#             ip_address in self.config["devices"]["clients"]["allow"]
-#             or ip_address not in self.config["devices"]["clients"]["disallow"]
-#         )
-
-#     def listen(self) -> None:
-#         rich_print(f"Server started http://{self.heartbeat_hostName}:{self.heartbeat_port}")
-#         self.add_all_routes()
-#         web.run_app(self.app, host=self.heartbeat_hostName, port=self.heartbeat_port)
-
-#     def stop_server(self) -> None:
-#         self.app.shutdown()
-#         rich_print("Server stopped.")
-
-#     def execute(self) -> None:
-#         try:
-#             self.listen()
-#         except KeyboardInterrupt:
-#             rich_print("Shutting down...")
-#             self.stop_server()
-
-
 class HeartbeatServer:
     def __init__(
         self,
