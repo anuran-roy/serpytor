@@ -50,8 +50,8 @@ class BaseAllocation:
         """Process the incoming items (using a queue) and return the result."""
         ...
 
-    def put_to_queue(self):
-        result: Any = self.queue()
+    # def put_to_queue(self):
+    #     result: Any = self.queue()
 
     def peek(
         self,
