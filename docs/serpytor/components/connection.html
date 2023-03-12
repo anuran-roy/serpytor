@@ -46,6 +46,7 @@
         <h2>Contents</h2>
         <ul>
   <li><a href="#heartbeat-monitoring">Heartbeat Monitoring</a></li>
+  <li><a href="#serving">Serving</a></li>
 </ul>
 
 
@@ -110,7 +111,7 @@
                                 <a class="function" href="#HeartbeatServer.transform_mappings">transform_mappings</a>
                         </li>
                         <li>
-                                <a class="function" href="#HeartbeatServer.run_server">run_server</a>
+                                <a class="function" href="#HeartbeatServer.start_heartbeats">start_heartbeats</a>
                         </li>
                 </ul>
 
@@ -129,6 +130,27 @@
                         </li>
                         <li>
                                 <a class="function" href="#Gateway.execute">execute</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#Server">Server</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Server.__init__">Server</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Server.add_mappings">add_mappings</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Server.start_service">start_service</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Server.is_service_online">is_service_online</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Server.execute">execute</a>
                         </li>
                 </ul>
 
@@ -167,7 +189,7 @@ There are two kinds of Connection Monitor Objects:</p>
 
 <p>The HeartBeatServer object is an object that creates a server, emitting the status of the hardware to clients that request it.</p>
 
-<h4 id="working-example">Working example:</h4>
+<h5 id="working-example">Working example:</h5>
 
 <p><strong>Objective</strong>: Run 4 server instances (simulating 4 remote resource machines) with a simple mapping to map the output of an endpoint.
 The endpoint simply returns the IP of the requesting device as a JSON response.</p>
@@ -182,36 +204,46 @@ The endpoint simply returns the IP of the requesting device as a JSON response.<
 <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">serpytor.components.connection.monitor.server</span> <span class="kn">import</span> <span class="n">HeartbeatServer</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
 
-<span class="k">async</span> <span class="k">def</span> <span class="nf">handlePost</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">handleGet</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Contains the mapping method that will print the IP of the request origin.</span>
+<span class="sd">    It also returns the cpu and memory usage of the system the server instance is running on.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span>
-        <span class="n">text</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">}),</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/json&quot;</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">,</span>
+                <span class="s2">&quot;cpu&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">(),</span>
+                <span class="s2">&quot;memory&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">(),</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/json&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 
-<span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="s2">&quot;mapped_method&quot;</span><span class="p">:</span> <span class="n">handlePost</span><span class="p">}}</span>
+<span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="s2">&quot;mapped_method&quot;</span><span class="p">:</span> <span class="n">handleGet</span><span class="p">}}</span>
 
 
 <span class="k">def</span> <span class="nf">test_example_v2</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;Emulate the server heartbeat instances.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">server1</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
-    <span class="c1"># server1.run_server()  # Uncomment this line to run the server individually.</span>
+    <span class="c1"># server1.start_heartbeats()  # Uncomment this line to run the server individually.</span>
     <span class="n">server2</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5001</span><span class="p">)</span>
-    <span class="c1"># server2.run_server()  # Uncomment this line to run the server individually.</span>
+    <span class="c1"># server2.start_heartbeats()  # Uncomment this line to run the server individually.</span>
     <span class="n">server3</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5002</span><span class="p">)</span>
-    <span class="c1"># server3.run_server()  # Uncomment this line to run the server individually.</span>
+    <span class="c1"># server3.start_heartbeats()  # Uncomment this line to run the server individually.</span>
     <span class="n">server4</span> <span class="o">=</span> <span class="n">HeartbeatServer</span><span class="p">(</span><span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5003</span><span class="p">)</span>
-    <span class="c1"># server4.run_server()  # Uncomment this line to run the server individually.</span>
+    <span class="c1"># server4.start_heartbeats()  # Uncomment this line to run the server individually.</span>
 
     <span class="n">servers</span> <span class="o">=</span> <span class="p">[</span><span class="n">server1</span><span class="p">,</span> <span class="n">server2</span><span class="p">,</span> <span class="n">server3</span><span class="p">,</span> <span class="n">server4</span><span class="p">]</span>
     <span class="n">processes</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
-        <span class="n">processes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">run_server</span><span class="p">))</span>
+        <span class="n">processes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">start_heartbeats</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
         <span class="n">i</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -262,6 +294,65 @@ It requests the resource pool for the availability of a resource, from the clien
 <span class="n">client</span><span class="o">.</span><span class="n">orchestrate_tasks</span><span class="p">()</span>
 </code></pre>
 </div>
+
+<h2 id="serving">Serving</h2>
+
+<p>SerPyTor also provides building blocks for servers, which have Heartbeat Monitoring built into them.</p>
+
+<p>Currently, the <code><a href="#Server">Server</a></code> object can be used to quickly spawn a server instance that has heartbeat monitoring built into it.</p>
+
+<h3 id="server">Server</h3>
+
+<p>SerPyTor provides you with a <code><a href="#Server">Server</a></code> object that can be used to create a server with inbuilt heartbeat monitoring.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">import</span> <span class="nn">psutil</span>
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">web</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">serpytor.components.connection.monitor.server</span> <span class="kn">import</span> <span class="n">Server</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">handleGet</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Contains the mapping method that will print the IP of the request origin.</span>
+<span class="sd">        It also returns the cpu and memory usage of the system the server instance is running on.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">,</span>
+                    <span class="s2">&quot;cpu&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">(),</span>
+                    <span class="s2">&quot;memory&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/json&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">remote</span><span class="p">}),</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/json&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">heartbeat_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/heartbeat&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;mapped_method&quot;</span><span class="p">:</span> <span class="n">handleGet</span><span class="p">}}</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/hello&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;mapped_method&quot;</span><span class="p">:</span> <span class="n">hello</span><span class="p">}}</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span>
+    <span class="n">heartbeat_mappings</span><span class="o">=</span><span class="n">heartbeat_mapping</span><span class="p">,</span>
+    <span class="n">heartbeat_port</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">mappings</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span>
+    <span class="n">server_host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
+    <span class="n">server_port</span><span class="o">=</span><span class="mi">8100</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre>
+</div>
+
+<p>This code spawns up a Server object instance with the User Service and the HeartBeat server.</p>
+
+<p>The reasoning to separate out the Service and the HeartBeat Servers is to differentiate between resource availability and service availability.
+A resource might not be available, but the resource might be, signifying an application level error.</p>
+
+<p>If the resource itself isn't available, then the service is unavailable too.</p>
 </div>
 
                 
@@ -509,13 +600,13 @@ It requests the resource pool for the availability of a resource, from the clien
                             <div id="HeartbeatServer.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">HeartbeatServer</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">mappings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span>,</span><span class="param">	<span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8000</span>,</span><span class="param">	<span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>,</span><span class="param">	<span class="n">server_args</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>,</span><span class="param">	<span class="n">server_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span>)</span>
+        <span class="name">HeartbeatServer</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">heartbeat_mappings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span>,</span><span class="param">	<span class="n">heartbeat_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8000</span>,</span><span class="param">	<span class="n">heartbeat_host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1&#39;</span>,</span><span class="param">	<span class="n">heartbeat_server_args</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>,</span><span class="param">	<span class="n">heartbeat_server_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span>)</span>
 
         
     </div>
     <a class="headerlink" href="#HeartbeatServer.__init__"></a>
     
-            <div class="docstring"><p>Initializes the HeartbeatServer class with the mappings.</p>
+            <div class="docstring"><p>Initializes the HeartbeatServer class with the heartbeat_mappings.</p>
 
 <p>Format for mapping:</p>
 
@@ -542,7 +633,7 @@ It requests the resource pool for the availability of a resource, from the clien
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">transform_mappings</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">):</span></span>
+        <span class="name">transform_mappings</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">mappings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span>:</span></span>
 
         
     </div>
@@ -551,15 +642,15 @@ It requests the resource pool for the availability of a resource, from the clien
     
 
                             </div>
-                            <div id="HeartbeatServer.run_server" class="classattr">
+                            <div id="HeartbeatServer.start_heartbeats" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">run_server</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">):</span></span>
+        <span class="name">start_heartbeats</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#HeartbeatServer.run_server"></a>
+    <a class="headerlink" href="#HeartbeatServer.start_heartbeats"></a>
     
     
 
@@ -575,18 +666,21 @@ It requests the resource pool for the availability of a resource, from the clien
     </div>
     <a class="headerlink" href="#Gateway"></a>
     
-            <div class="docstring"><p>The Gateway object aggregates the</p>
+            <div class="docstring"><p>The Gateway object aggregates the services by abstracting server details, and providing uniform APIs.</p>
+
+<p>Each gateway performs a set of logically-connected tasks across the servers. Each Gateway executes a specific task specified by its entrypoint during initialization.
+Gateway objects can be superposed on other Gateway objects for handling complex use cases.</p>
 
 <p>The diagram below represents how the gateways behave:</p>
 
-<p><img src="https://imgur.com/qxcZ3ep.png" alt="Gateway behaviour" /></p>
+<p><img alt='Gateway behaviour' src='https://imgur.com/qxcZ3ep.png' /></p>
 </div>
 
 
                             <div id="Gateway.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">Gateway</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">*</span><span class="n">args</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
+        <span class="name">Gateway</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">task</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>,</span><span class="param">	<span class="n">allocation_algorithm</span><span class="p">:</span> <span class="n">serpytor</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">base_allocation</span><span class="o">.</span><span class="n">BaseAllocation</span>,</span><span class="param">	<span class="n">task_data</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">([],</span> <span class="p">{})</span>,</span><span class="param">	<span class="n">heartbeat_addresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>,</span><span class="param">	<span class="n">resource_addresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></span>)</span>
 
         
     </div>
@@ -598,8 +692,8 @@ It requests the resource pool for the availability of a resource, from the clien
                             <div id="Gateway.get_available_resources" class="classattr">
                                 <div class="attr function">
             
-        <span class="def">def</span>
-        <span class="name">get_available_resources</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
+        <span class="def">async def</span>
+        <span class="name">get_available_resources</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
 
         
     </div>
@@ -612,20 +706,22 @@ It requests the resource pool for the availability of a resource, from the clien
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">allocate_resource</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
+        <span class="name">allocate_resource</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
 
         
     </div>
     <a class="headerlink" href="#Gateway.allocate_resource"></a>
     
-    
+            <div class="docstring"><p>Get report from webservers at any given time</p>
+</div>
+
 
                             </div>
                             <div id="Gateway.execute" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">execute</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
+        <span class="name">execute</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="n">Any</span>:</span></span>
 
         
     </div>
@@ -633,6 +729,120 @@ It requests the resource pool for the availability of a resource, from the clien
     
     
 
+                            </div>
+                </section>
+                <section id="Server">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">Server</span><wbr>(<span class="base"><a href="#HeartbeatServer">serpytor.components.connection.HeartbeatServer</a></span>):
+
+        
+    </div>
+    <a class="headerlink" href="#Server"></a>
+    
+    
+
+                            <div id="Server.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Server</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">mappings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span>,</span><span class="param">	<span class="n">server_port</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">server_host</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Server.__init__"></a>
+    
+            <div class="docstring"><p>Initializes the HeartbeatServer class with the heartbeat_mappings.</p>
+
+<p>Format for mapping:</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;/endpoint1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;get&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;mapped_method&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">helloworld</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;/endpoint2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;post&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;mapped_method&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">helloworld_pos</span><span class="kc">t</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre>
+</div>
+
+<p>If an endpoint type is not specified, defaults to "get"</p>
+</div>
+
+
+                            </div>
+                            <div id="Server.add_mappings" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">add_mappings</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">mappings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Server.add_mappings"></a>
+    
+            <div class="docstring"><p>Transforms the given endpoint definitions.
+This changes them to their respective route commands.
+This means less hassle to add endpoints to the web server</p>
+</div>
+
+
+                            </div>
+                            <div id="Server.start_service" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">start_service</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">server_args</span>, </span><span class="param"><span class="o">**</span><span class="n">server_kwargs</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Server.start_service"></a>
+    
+            <div class="docstring"><p>Starts the service on the specified port and host.
+Uses a separate process to do the same so that a single error doesn't crash the entire server.</p>
+</div>
+
+
+                            </div>
+                            <div id="Server.is_service_online" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_service_online</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Server.is_service_online"></a>
+    
+    
+
+                            </div>
+                            <div id="Server.execute" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">execute</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Server.execute"></a>
+    
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="#HeartbeatServer">HeartbeatServer</a></dt>
+                                <dd id="Server.transform_mappings" class="function"><a href="#HeartbeatServer.transform_mappings">transform_mappings</a></dd>
+                <dd id="Server.start_heartbeats" class="function"><a href="#HeartbeatServer.start_heartbeats">start_heartbeats</a></dd>
+
+            </div>
+                                </dl>
                             </div>
                 </section>
     </main>

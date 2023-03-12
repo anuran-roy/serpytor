@@ -1,6 +1,6 @@
-from typing import Callable, Any
 import time
 from functools import wraps
+from typing import Any, Callable
 
 # from serpytor.components.events.event_capture import EventCapture
 

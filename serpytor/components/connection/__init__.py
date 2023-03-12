@@ -14,7 +14,7 @@ There are two kinds of Connection Monitor Objects:
 
 The HeartBeatServer object is an object that creates a server, emitting the status of the hardware to clients that request it.
 
-#### Working example:
+##### Working example:
 
 **Objective**: Run 4 server instances (simulating 4 remote resource machines) with a simple mapping to map the output of an endpoint.
 The endpoint simply returns the IP of the requesting device as a JSON response.
@@ -32,7 +32,7 @@ from serpytor.components.connection.monitor.server import HeartbeatServer
 import psutil
 
 
-async def handlePost(request):
+async def handleGet(request):
     '''Contains the mapping method that will print the IP of the request origin.
     It also returns the cpu and memory usage of the system the server instance is running on.
     '''
@@ -49,7 +49,7 @@ async def handlePost(request):
     )
 
 
-mapping = {"/": {"type": "post", "mapped_method": handlePost}}
+mapping = {"/": {"type": "post", "mapped_method": handleGet}}
 
 
 def test_example_v2():
@@ -117,15 +117,73 @@ client = WrappedHeartbeatClient(
 )
 client.orchestrate_tasks()
 ```
+
+## Serving
+
+SerPyTor also provides building blocks for servers, which have Heartbeat Monitoring built into them.
+
+Currently, the `Server` object can be used to quickly spawn a server instance that has heartbeat monitoring built into it.
+
+### Server
+
+SerPyTor provides you with a `Server` object that can be used to create a server with inbuilt heartbeat monitoring.
+
+```python
+import psutil
+from aiohttp import web
+import json
+from serpytor.components.connection.monitor.server import Server
+
+async def handleGet(request):
+        '''Contains the mapping method that will print the IP of the request origin.
+        It also returns the cpu and memory usage of the system the server instance is running on.
+        '''
+        print(request.remote)
+        return web.Response(
+            text=json.dumps(
+                {
+                    "message": request.remote,
+                    "cpu": psutil.cpu_percent(),
+                    "memory": psutil.virtual_memory()[2],
+                }
+            ),
+            content_type="text/json",
+        )
+
+    async def hello(request):
+        print("Hello!")
+        return web.Response(
+            text=json.dumps({"message": "Hello!", "target": request.remote}),
+            content_type="text/json",
+        )
+
+    heartbeat_mapping = {"/heartbeat": {"type": "get", "mapped_method": handleGet}}
+    mapping = {"/hello": {"type": "get", "mapped_method": hello}}
+
+server = Server(
+    heartbeat_mappings=heartbeat_mapping,
+    heartbeat_port=5000,
+    mappings=mapping,
+    server_host="127.0.0.1",
+    server_port=8100,
+)
+```
+
+This code spawns up a Server object instance with the User Service and the HeartBeat server.
+
+The reasoning to separate out the Service and the HeartBeat Servers is to differentiate between resource availability and service availability.
+A resource might not be available, but the resource might be, signifying an application level error.
+
+If the resource itself isn't available, then the service is unavailable too.
 """
 
-from serpytor.components.connection.extensions.reports.crash_reports.crash_reports import (
-    get_report,
-)
-from serpytor.components.connection.monitor.monitor import Monitor
+from serpytor.components.connection.extensions.reports.crash_reports.crash_reports import \
+    get_report
 from serpytor.components.connection.monitor.client import HeartbeatClient
-from serpytor.components.connection.monitor.server import HeartbeatServer
 from serpytor.components.connection.monitor.gateway import Gateway
+from serpytor.components.connection.monitor.monitor import Monitor
+from serpytor.components.connection.monitor.server import (HeartbeatServer,
+                                                           Server)
 
 __all__ = [
     "get_report",
@@ -133,4 +191,5 @@ __all__ = [
     "HeartbeatClient",
     "HeartbeatServer",
     "Gateway",
+    "Server",
 ]

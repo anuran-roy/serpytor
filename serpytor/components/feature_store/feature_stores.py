@@ -1,17 +1,10 @@
-from typing import (
-    Optional,
-    Any,
-    List,
-    Dict,
-    Callable,
-    Iterable,
-    Union,
-)
-import polars as pl
-import pandas as pd
-
 # from rich import print as rich_print
 from functools import lru_cache
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union
+
+import pandas as pd
+import polars as pl
+
 from serpytor.components.feature_store.config import CONFIG
 
 
@@ -66,8 +59,6 @@ class SimpleFeatureStore:
         """
         if self.backend == "pandas":
             return features_dict
-        elif self.backend == "polars":
-            pass
 
     def register_feature(
         self,

@@ -14,7 +14,7 @@ class BaseLog(Exception):
 
 class CriticalLog(BaseLog):
     def __init__(self, message: Optional[str] = "") -> None:
-        super(self, BaseLog).__init__()
+        super().__init__()
         self.message: str = message
         self.type: str = "CRITICAL"
         self.level = 5
@@ -22,7 +22,7 @@ class CriticalLog(BaseLog):
 
 class ErrorLog(BaseLog):
     def __init__(self, message: Optional[str] = "") -> None:
-        super(self, BaseLog).__init__()
+        super().__init__()
         self.message: str = message
         self.type: str = "FAULT"
         self.level = 4
@@ -30,7 +30,7 @@ class ErrorLog(BaseLog):
 
 class WarningLog(BaseLog):
     def __init__(self, message: Optional[str] = "") -> None:
-        super(self, BaseLog).__init__()
+        super().__init__()
         self.message: str = message
         self.type: str = "WARNING"
         self.level = 3
@@ -38,7 +38,7 @@ class WarningLog(BaseLog):
 
 class InfoLog(BaseLog):
     def __init__(self, message: str = "") -> None:
-        super(self, BaseLog).__init__()
+        super().__init__()
         self.message: str = message
         self.type: str = "INFO"
         self.level = 2
@@ -46,7 +46,7 @@ class InfoLog(BaseLog):
 
 class DebugLog(BaseLog):
     def __init__(self, message: str = "") -> None:
-        super(self, BaseLog).__init__()
+        super().__init__()
         self.message: str = message
         self.type: str = "DEBUG"
         self.level = 1
@@ -54,7 +54,7 @@ class DebugLog(BaseLog):
 
 class UnknownLog(BaseLog):
     def __init__(self, message: str = "") -> None:
-        super(self, BaseLog).__init__()
+        super().__init__()
         self.message: str = message
         self.type: str = "UNKNOWN"
         self.level = 6

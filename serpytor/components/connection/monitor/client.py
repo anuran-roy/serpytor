@@ -1,45 +1,9 @@
-import requests
-import aiohttp
 import asyncio
-import time
-from multiprocessing import Process
-import os
-from typing import List, Optional, Any, Dict, Union, Tuple, Callable
 from datetime import datetime
+from multiprocessing import Process
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-
-# class HeartbeatClient:
-#     def __init__(
-#         self,
-#         default_endpoint: Optional[str] = "http://172.16.25.252:6666",
-#         time_interval: Optional[float] = 2.5,
-#         *args: list,
-#         **kwargs: dict,
-#     ):
-#         self.type = "Client"
-#         self.time_interval: float = time_interval
-#         self.default_endpoint: str = default_endpoint
-#         self.heartbeat_started = None
-#         self.heartbeat_stopped = None
-
-#     def send_request(self, endpoint: Optional[str] = "") -> None:
-#         if not endpoint:
-#             endpoint = self.default_endpoint
-#         print("Sending GET request to:", endpoint)
-#         requests.get(endpoint)
-
-#     def start_heartbeat(self) -> None:
-#         try:
-#             while True:
-#                 self.send_request()
-#                 time.sleep(self.time_interval)
-#         except KeyboardInterrupt:
-#             print("Shutting down client...")
-#         except Exception as e:
-#             print(f"Exception details: {e}")
-
-#     async def heartbeat_controller(self, signal: Optional[str] = "start"):
-#         self.heartbeat_process = Process(target=self.start_heartbeat)
+import aiohttp
 
 
 class HeartbeatClient:
@@ -106,7 +70,8 @@ class HeartbeatClient:
         self.entrypoint_args: Union[Tuple[Any], List[Any]] = kwargs.get(
             "entrypoint_args", []
         )
-        self.entrypoint_kwargs: Dict[str, Any] = kwargs.get("entrypoint_kwargs", {})
+        self.entrypoint_kwargs: Dict[str, Any] = kwargs.get(
+            "entrypoint_kwargs", {})
         self.async_session = None
 
     def generate_heartbeat(self) -> Dict[str, Any]:
@@ -121,25 +86,18 @@ class HeartbeatClient:
 
     async def send_heartbeat(self, session, destination: str) -> Any:
 
-        async with session.post(destination) as resp:
-            # print(f"Sending request to {destination}")
-            ack = await resp.json(content_type="text/json")
-            # print(ack)
-            return ack
+        async with session.get(destination) as resp:
+            return await resp.json(content_type="application/json")
 
     async def orchestrate_requests(self):
         # print("Orchestrating requests...")
         self.async_session = aiohttp.ClientSession()
         async with self.async_session as session:
-            tasks = []
-            # print("Adding tasks...")
-
-            for destination in self.destinations:
-                # print(f"Sending request to {destination}...")
-                tasks.append(
-                    asyncio.ensure_future(self.send_heartbeat(session, destination))
-                )
-
+            tasks = [
+                asyncio.ensure_future(
+                    self.send_heartbeat(session, destination))
+                for destination in self.destinations
+            ]
             completed_tasks = await asyncio.gather(*tasks)
             for task in completed_tasks:
                 print("Task=", task)

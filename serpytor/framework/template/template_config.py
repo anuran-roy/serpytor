@@ -1,9 +1,10 @@
 from pathlib import Path
-from typing import Optional, Any, List, Tuple, Dict, Union
-from serpytor.components.analytics import decorators
-from serpytor.components.events.event_capture import EventCapture
+from typing import Any, Dict, Tuple, Union
+
 import sentry_sdk
 from sentry_sdk.integrations.aiohttp import AioHttpIntegration
+
+from serpytor.components.events.event_capture import EventCapture
 
 BASE_DIR: Path = Path(__file__).parent
 

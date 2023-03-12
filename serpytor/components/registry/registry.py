@@ -1,14 +1,11 @@
-from functools import lru_cache
-from tinydb import TinyDB, Query
-from ..feature_store.feature_stores import SimpleFeatureStore
-import yaml
-from pathlib import Path
-from typing import Optional, Dict, Tuple, List, Any
 from datetime import datetime
-from uuid import uuid4
-from serpytor.components.database.db import DBIO
 from functools import lru_cache
+from pathlib import Path
 from threading import Lock
+from typing import Any, Dict, List, Optional
+from uuid import uuid4
+
+from serpytor.components.database.db import DBIO
 
 REGISTRY_DIR = Path("")
 
@@ -21,8 +18,8 @@ class SimpleModelRegistry:
         3. Add a model to the main memory using ``add_to_registry()``.
     """
 
-    def __init__(self, db_path: str) -> None:
-        self.db: DBIO = DBIO(table_name="model_registry", db_path=db_path)
+    def __init__(self, db_url: str) -> None:
+        self.db: DBIO = DBIO(table_name="model_registry", db_url=db_url)
         self.registry: Dict[str, Any] = {}
         self.lock = Lock()
 
@@ -45,7 +42,7 @@ class SimpleModelRegistry:
         This operation is atomic, and performed in-memory to avoid database writes that are slow in nature.
         """
         self.lock.acquire()
-        self.registry[i]: Dict[str, Any] = {"params": params} | {
+        self.registry[id]: Dict[str, Any] = {"params": params} | {
             "model_name": model_name
         }
         self.lock.release()

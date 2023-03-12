@@ -1,8 +1,9 @@
-## Pipeline data collection and analysis
+# Pipeline data collection and analysis
 
 In this example, we will be building a simple data collection and analysis pipeline using **SerPyTor**.
 
 Features:
+
 - Custom pipeline measuring execution times
 - Event captures for logging warnings and errors.
 - Logging DB
@@ -72,5 +73,4 @@ def pipeline_work(data, *args, **kwargs):
 pipeline_work()  # Returns a list containing 2 elements - the best model found for the Iris dataset, and a tuple containing the testing data. 
 ```
 
-### Step-by-step explanation
-
+## Step-by-step explanation

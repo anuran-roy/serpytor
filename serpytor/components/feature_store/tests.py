@@ -1,6 +1,5 @@
-import pytest
-from feature_stores import SimpleFeatureStore
 import pandas as pd
+from feature_stores import SimpleFeatureStore
 
 
 def test_simplefeaturestore() -> None:

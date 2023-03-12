@@ -1,11 +1,13 @@
+from functools import wraps
+from typing import Callable
+
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from functools import wraps
-from serpytor.components.automl import get_best_model
-from serpytor.components.pipelines import Pipeline
-from serpytor.components.events.event_capture import EventCapture
+
 from serpytor.components.analytics.decorators import get_execution_time
-from typing import Callable
+from serpytor.components.automl import get_best_model
+from serpytor.components.events.event_capture import EventCapture
+from serpytor.components.pipelines import Pipeline
 
 DB_PATH = "./db.json"  # Path to the database
 

@@ -1,11 +1,6 @@
+from .exceptions import (CriticalPipelineError, PipelineDebugInfo,
+                         PipelineError, PipelineInfo, PipelineWarning)
 from .pipelines import Pipeline
-from .exceptions import (
-    CriticalPipelineError,
-    PipelineError,
-    PipelineWarning,
-    PipelineInfo,
-    PipelineDebugInfo,
-)
 
 __all__ = [
     "Pipeline",

@@ -1,9 +1,9 @@
-import pytest
+
 from serpytor.components.events import EventCapture
 
 
 def test_event_capture():
-    ec = EventCapture()
+    ec = EventCapture(db_url=":memory:")
 
     @ec.capture_event
     def hi():
