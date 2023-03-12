@@ -202,7 +202,8 @@ class Server(HeartbeatServer):
         """Starts the service on the specified port and host.
         Uses a separate process to do the same so that a single error doesn't crash the entire server.
         """
-        transformed_mappings: List[Callable] = self.transform_mappings(self.mappings)
+        transformed_mappings: List[Callable] = self.transform_mappings(
+            self.mappings)
         self.service_web_server.add_routes(transformed_mappings)
 
         try:
@@ -309,7 +310,8 @@ if __name__ == "__main__":
         output: Union[Any, None] = None
         if check_complete:
             start_time = time.time()
-            output = pickle.loads(code)(*pickle.loads(args), **pickle.loads(kwargs))
+            output = pickle.loads(code)(
+                *pickle.loads(args), **pickle.loads(kwargs))
             stop_time = time.time()
             message = "Sanity check passed."
         rich_print(

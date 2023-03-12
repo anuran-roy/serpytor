@@ -70,7 +70,8 @@ class HeartbeatClient:
         self.entrypoint_args: Union[Tuple[Any], List[Any]] = kwargs.get(
             "entrypoint_args", []
         )
-        self.entrypoint_kwargs: Dict[str, Any] = kwargs.get("entrypoint_kwargs", {})
+        self.entrypoint_kwargs: Dict[str, Any] = kwargs.get(
+            "entrypoint_kwargs", {})
         self.async_session = None
 
     def generate_heartbeat(self) -> Dict[str, Any]:
@@ -93,7 +94,8 @@ class HeartbeatClient:
         self.async_session = aiohttp.ClientSession()
         async with self.async_session as session:
             tasks = [
-                asyncio.ensure_future(self.send_heartbeat(session, destination))
+                asyncio.ensure_future(
+                    self.send_heartbeat(session, destination))
                 for destination in self.destinations
             ]
             completed_tasks = await asyncio.gather(*tasks)
