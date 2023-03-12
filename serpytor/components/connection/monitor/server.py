@@ -72,6 +72,7 @@ class ForbiddenDeviceException(Exception):
 class HeartbeatServer:
     def __init__(
         self,
+        heartbeat_protocol: Optional[str] = "http",
         heartbeat_port: Optional[int] = 8000,
         heartbeat_host: Optional[str] = "127.0.0.1",
         heartbeat_server_args: List = [],
@@ -100,13 +101,24 @@ class HeartbeatServer:
         If an endpoint type is not specified, defaults to "get"
         """
 
+        self.heartbeat_mappings: List[
+            Tuple[str, Callable]
+        ] = self.heartbeat_handler.items()
+        self.heartbeat_web_server = web.Application()
+        self.heartbeat_protocol: str = heartbeat_protocol
+        self.heartbeat_port: int = heartbeat_port
+        self.heartbeat_host: str = heartbeat_host
+        self.heartbeat_server_kwargs: Dict[str, Any] = heartbeat_server_kwargs
+        self.heartbeat_server_args: List[Any] = heartbeat_server_args
+        self.resource_online: bool = False
+
         self.heartbeat_handler: Dict[str, Dict[str, Union[str, Callable]]] = {
             "/heartbeat": {
                 "type": "get",
                 "mapped_method": lambda request: web.Response(
                     text=json.dumps(
                         {
-                            "location": f"http://{self.heartbeat_host}:{self.heartbeat_port}",
+                            "location": f"{self.heartbeat_protocol}://{self.heartbeat_host}:{self.heartbeat_port}",
                             "message": request.remote,
                             "cpu": psutil.cpu_percent(),
                             "memory": psutil.virtual_memory()[2],
@@ -115,16 +127,6 @@ class HeartbeatServer:
                 ),
             },
         }
-
-        self.heartbeat_mappings: List[
-            Tuple[str, Callable]
-        ] = self.heartbeat_handler.items()
-        self.heartbeat_web_server = web.Application()
-        self.heartbeat_port: int = heartbeat_port
-        self.heartbeat_host: str = heartbeat_host
-        self.heartbeat_server_kwargs: Dict[str, Any] = heartbeat_server_kwargs
-        self.heartbeat_server_args: List[Any] = heartbeat_server_args
-        self.resource_online: bool = False
 
     def transform_mappings(
         self, mappings: Dict[str, Dict[str, Union[str, Callable]]]
@@ -195,6 +197,7 @@ class Server(HeartbeatServer):
         mappings: Dict[str, Dict[str, Union[str, Callable]]],
         server_port: int,
         server_host: str,
+        server_protocol: Optional[str] = "http",
         *args: List[Any],
         **kwargs: Dict[str, Any],
     ) -> None:
@@ -207,6 +210,7 @@ class Server(HeartbeatServer):
         }
         self.server_port: int = server_port
         self.server_host: str = server_host
+        self.server_protocol: str = server_protocol
         self.process_lock = mp.Lock()
         self.service_online: bool = True
 
@@ -216,7 +220,7 @@ class Server(HeartbeatServer):
                 "mapped_method": lambda request: web.Response(
                     text=json.dumps(
                         {
-                            "location": f"http://{self.server_host}:{self.server_port}",
+                            "location": f"{self.server_protocol}://{self.server_host}:{self.server_port}",
                             "message": request.remote,
                             "cpu": psutil.cpu_percent(),
                             "memory": psutil.virtual_memory()[2],
