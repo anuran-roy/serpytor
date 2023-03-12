@@ -9,7 +9,7 @@ A distributed, low-code, end-to-end data collection and analysis tool for data f
 <!-- [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e926bfe2f314499bbc225cd476b4694f)](https://www.codacy.com/gh/anuran-roy/serpytor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anuran-roy/serpytor&amp;utm_campaign=Badge_Grade) -->
 
 <p align="center">
-<img src="./logo-transparent.png" center/><br><br>
+<img src="https://github.com/anuran-roy/serpytor/blob/main/logo-transparent.png" center/><br><br>
 (Midjourney, create a Python with legs serving food for me)
 <br>
 <br>
