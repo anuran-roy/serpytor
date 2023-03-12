@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 12.2.0"/>
+    <meta name="generator" content="pdoc 12.3.0"/>
     <title>serpytor API documentation</title>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
@@ -28,7 +28,12 @@
             {childList: true}
         );
     })
-</script></head>
+</script>
+<style>
+    mjx-container {
+        overflow-x: auto;
+    }
+</style></head>
 <body>
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
@@ -74,33 +79,51 @@
                     <h1 class="modulename">
 serpytor    </h1>
 
-                        <div class="docstring"><p><a href="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main" alt="Codacy Security Scan" /></a></p>
+                        <div class="docstring"><h1 id="the-serpytor-docs">The SerPytor Docs</h1>
 
-<p><a href="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL" /></a></p>
+<p>A distributed, low-code, end-to-end data collection and analysis tool for data folks. Take the pain out of data collection from your pipeline!</p>
 
-<p><a href="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main" alt="Docs" /></a></p>
+<blockquote>
+  <p><strong>NOTE</strong>: PLEASE DON'T USE IT IN PRODUCTION YET!</p>
+</blockquote>
 
-<h1 id="the-serpytor-docs">The SerPytor Docs</h1>
+<!-- [![Codacy Security Scan](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml) -->
 
-<p>A distributed, low-code, end-to-end data collection and analysis tool for data folks. Take the pain out of data collection from your pipeline!  </p>
+<!-- [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e926bfe2f314499bbc225cd476b4694f)](https://www.codacy.com/gh/anuran-roy/serpytor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anuran-roy/serpytor&amp;utm_campaign=Badge_Grade) -->
 
-<p><strong><em>NOTE</em></strong>: PLEASE DON'T USE IT IN PRODUCTION YET!</p>
+<p align="center">
+<img src="./logo-transparent.png" center/><br><br>
+(Midjourney, create a Python with legs serving food for me)
+<br>
+<br>
+<br>
+<a href="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codacy.yml/badge.svg?branch=main" alt="Codacy Security Scan"/></a>&nbsp;&nbsp;
+<img alt="Codacy branch grade" src="https://img.shields.io/codacy/grade/e926bfe2f314499bbc225cd476b4694f/main?label=Code%20Quality">&nbsp;&nbsp;
+<a href="https://www.codacy.com/gh/anuran-roy/serpytor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anuran-roy/serpytor&amp;utm_campaign=Badge_Grade"><img src="https://img.shields.io/codacy/grade/e926bfe2f314499bbc225cd476b4694f/dev?label=Code%20Quality%20%28Dev%29" alt="Codacy Badge"/></a>&nbsp;&nbsp;
+<a href="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL Security Scan"/></a>&nbsp;&nbsp;
+<a href="https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml"><img src="https://sonarcloud.io/api/project_badges/measure?project=anuran-roy_serpytor&metric=alert_status" alt="CodeQL Security Scan"/></a>&nbsp;&nbsp;
+<a href="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment"><img src="https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main" alt="CodeQL Security Scan"/></a>
+</p>
+
+<!-- [![CodeQL](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/codeql.yml)
+
+[![Docs](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/anuran-roy/serpytor/actions/workflows/pages/pages-build-deployment) -->
 
 <h2 id="where-did-it-come-from">Where did it come from?</h2>
 
-<p>Alright, I'll be completely honest here. It's a story, so if you're in, read along! Busy folks, the <a href="#tl-dr">TL;DR</a> is for you!  </p>
+<p>Alright, I'll be completely honest here. It's a story, so if you're in, read along! Busy folks, the <a href="#tl-dr">TL;DR</a> is for you!</p>
 
 <h3 id="the-story">The Story</h3>
 
 <p>I was always fascinated by large-scale system design and big data pipelines - on the scale of billions. Statistics released from time to time by companies like AWS, Google, Cloudflare and others intensified my fascination further.  </p>
 
-<p>I read a lot of newsletters, blogs and articles about how to implement large scale system design, I still do. But it always felt like an enigma - something that is not as easy as the online resources make it to be. Special mention to Alex Xu's newsletters and his gem of a book on System Design Interview (I've read only the first part, eagerly waiting for the second to arrive 😃)  </p>
+<p>I read a lot of newsletters, blogs and articles about how to implement large-scale system design, I still do. But it always felt like an enigma - something that is not as easy as the online resources make it to be. Special mention to Alex Xu's newsletters and his gem of a book on System Design Interview (I've read only the first part, eagerly waiting for the second to arrive 😃)  </p>
 
-<p>Fast forward to my summer holidays, I decided that something needs to be done, else I'll remain stuck in this loop of getting hyped and feeling inadequate. </p>
+<p>Fast forward to my summer holidays, I decided that something needs to be done, or else I'll remain stuck in this loop of getting hyped and feeling inadequate. </p>
 
 <p><strong>Then came a twist.</strong>  </p>
 
-<p>As I kept working and learning, I came to know about the so-called <em>Modern Data Stack</em> and how many experts claimed that the way is not sustainable in anyway imaginable. Especially one point stuck me from a newsletter (sorry I don't remember the name) that proposed a solution for the disparity and the inconvenience caused by the hugely heterogeneous nature of the Modern Data Stack. It was to homogenise the different heterogeneous components, such that components logically connected to each other are implemented into a homogeneous layer. I interpreted it as: </p>
+<p>As I kept working and learning, I came to know about the so-called <em>Modern Data Stack</em> and how many experts claimed that the way is not sustainable in anyway imaginable. Especially one point stuck with me from a newsletter (sorry I don't remember the name) that proposed a solution for the disparity and the inconvenience caused by the hugely heterogeneous nature of the Modern Data Stack. It was to homogenise the different heterogeneous components, such that components logically connected to each other are implemented into a homogeneous layer. I interpreted it as: </p>
 
 <blockquote>
   <p>Connect wherever possible; segregate wherever required. </p>
@@ -109,27 +132,31 @@ serpytor    </h1>
 <p>I was also inspired by the way the people at <a href="https://naas.ai"><strong>naas.ai</strong></a> do their work:</p>
 
 <ul>
-<li>First they build the core, low-level drivers</li>
-<li>Then their contributors build a low-code platform (I happen to be one of them 😃) by creating templates on top of the drivers</li>
-<li>Then they let their consumers build services using those templates.</li>
+<li>First, they build the core, low-level drivers</li>
+<li>Then, their contributors build a low-code platform (I happen to be one of them 😃) by creating templates on top of the drivers</li>
+<li>Then, they let their consumers build services using those templates.</li>
 </ul>
 
-<p>This brought me to the conclusion - Moving data quick needs to be of three-levels, not the one-stop solution many products claim to be. Yes, they may do a lot of things correct, but because of the unlimited variety in data, there might be cases where the so-called one-stop solution falls short. </p>
+<p>This brought me to the following conclusion: Moving data quickly needs to be of three-levels, not the one-stop solution many products claim to be. Yes, they may do a lot of things correctly, but because of the unlimited variety in data, there might be cases where the so-called one-stop solution falls short. </p>
 
-<p>Thus, I started this project. I could never guess that the codebase would grow so much so quickly!  </p>
+<p>Thus, I started this project. I could never guess that the codebase would grow so much so quickly!</p>
 
 <h3 id="tl-dr">TL; DR</h3>
 
-<p>This project was taken up by me as a challenge to understand big data architecture, and to find a low-code unified alternative to the plethora of conflicting data products out there. It's been quite a journey till now!  </p>
+<p>This project was taken up by me as a challenge to understand big data architecture, and to find a low-code unified alternative to the plethora of conflicting data products out there. It's been quite a journey till now!</p>
 
 <h2 id="why-open-source-this">Why Open Source this?</h2>
 
 <p>There are mainly two reasons:</p>
 
 <ul>
-<li><p><strong>Learning Large-scale System Design while doing it</strong>: System Design is one of the most sought-after skills in the software industry, and I know for sure that I am not the only one stuck in the vicious loop of feeling there is some black magic, trying to learn it, and end up feeling inadequate to learn the stuff. <br />
-I am someone who learns by doing. So I wanted to make something tangible to start off with.  </p></li>
-<li><p><strong><em>The more important reason-</em> A modest attempt at a unified data platform</strong>: I've been thoroughly confused about the different tools that exist in the Big Data Space - and a lot of them have almost same functionalities, if not exactly the same. It's okay to do one thing and do it good, but somewhere down the line, I think that so many options to choose from gives rise to a lot of confusion. For example, considering data formats, there are many conflicts, due to which many other extra software also needs to be introduced.  </p></li>
+<li><strong>Learning Large-scale System Design while doing it</strong>: System Design is one of the most sought-after skills in the software industry, and I know for sure that I am not the only one stuck in the vicious loop of feeling there is some black magic, trying to learn it, and end up feeling inadequate to learn the stuff.  </li>
+</ul>
+
+<p>I am someone who learns by doing. So I wanted to make something tangible to start off with.  </p>
+
+<ul>
+<li><strong><em>The more important reason-</em> A modest attempt at a unified data platform</strong>: I've been thoroughly confused about the different tools that exist in the Big Data Space - and a lot of them have almost same functionalities, if not exactly the same. It's okay to do one thing and do it well, but somewhere down the line, I think that so many options to choose from gives rise to a lot of confusion. For example, considering data formats, there are many conflicts, due to which many other extra software also needs to be introduced.  </li>
 </ul>
 
 <h2 id="getting-started">Getting Started</h2>
@@ -162,8 +189,8 @@ I am someone who learns by doing. So I wanted to make something tangible to star
 <p>As I mentioned before, SerPyTor is being created in a way that it can act as a library, framework, and/or as a service. Hence, there are three main parts of SerPyTor:</p>
 
 <ol>
-<li><p><strong>SerPyTor Components</strong>: The building blocks of SerPyTor. These are the most fundamental components of SerPyTor, and are used by the SerPyTor Framework and the SerPyTor Services.  </p></li>
-<li><p><strong>SerPyTor Framework</strong>: This is to aid developers ship code faster, and in a consistent fashion, in ways that make best use of the capabilities that SerPyTor provides. If you want something pre-made and ready to ship in no time (viz., templates), this is what you want to check out. </p></li>
+<li><p><strong>SerPyTor Components</strong>: The building blocks of SerPyTor. These are the most fundamental components of SerPyTor, and are used by the SerPyTor Framework and the SerPyTor Services.</p></li>
+<li><p><strong>SerPyTor Framework</strong>: This is to aid developers ship code faster, and in a consistent fashion, in ways that make the best use of the capabilities that SerPyTor provides. If you want something pre-made and ready to ship in no time (viz., templates), this is what you want to check out. </p></li>
 <li><p><strong>SerPyTor Services</strong>: SerPyTor services are meant for quick and effortless deployment and integration of SerPyTor-based code and products.</p></li>
 </ol>
 
@@ -171,7 +198,7 @@ I am someone who learns by doing. So I wanted to make something tangible to star
 
 <h2 id="contributing-to-serpytor">Contributing to SerPyTor</h2>
 
-<p>Contributors are the driving force behind an open-source project, and SerPyTor aims to be 100% open source in nature! As a big fan of open source projects, anyone willing to lend me a helping hand in growing this project is most welcome! 🤩</p>
+<p>Contributors are the driving force behind an open-source project, and SerPyTor aims to be 100% open source in nature! As a big fan of open-source projects, anyone willing to lend me a helping hand in growing this project is most welcome! 🤩</p>
 
 <p>You can talk in Discussions, create Issues and Pull Requests in the <a href="https://github.com/anuran-roy/serpytor"><strong>GitHub repository</strong></a>, or mail me directly at anuranroy02 [at] gmail.com 😃</p>
 </div>
@@ -281,7 +308,7 @@ I am someone who learns by doing. So I wanted to make something tangible to star
                 }
 
                 let heading;
-                switch (result.doc.type) {
+                switch (result.doc.kind) {
                     case "function":
                         if (doc.fullname.endsWith(".__init__")) {
                             heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
@@ -308,7 +335,7 @@ I am someone who learns by doing. So I wanted to make something tangible to star
                 }
                 html += `
                         <section class="search-result">
-                        <a href="${url}" class="attr ${doc.type}">${heading}</a>
+                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
                         <div class="docstring">${doc.doc}</div>
                         </section>
                     `;
