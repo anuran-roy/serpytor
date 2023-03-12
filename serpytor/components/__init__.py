@@ -4,7 +4,7 @@
 # What are SerPyTor components?
 
 SerPyTor components are the basic building blocks for SerPyTor. They contain the code for all the basic functionalities offered by SerPyTor.
-Developers can use these components when they feel that the framework isn't enough for their requirements.  
+Developers can use these components when they feel that the framework isn't enough for their requirements.
 At the sidebar, you can see the various submodules under the components module. Each one of them does a specific task, and they can be grouped
 together using the Pipeline component present in the pipelines submodule.
 
