@@ -101,9 +101,6 @@ class HeartbeatServer:
         If an endpoint type is not specified, defaults to "get"
         """
 
-        self.heartbeat_mappings: List[
-            Tuple[str, Callable]
-        ] = self.heartbeat_handler.items()
         self.heartbeat_web_server = web.Application()
         self.heartbeat_protocol: str = heartbeat_protocol
         self.heartbeat_port: int = heartbeat_port
@@ -127,6 +124,10 @@ class HeartbeatServer:
                 ),
             },
         }
+
+        self.heartbeat_mappings: List[
+            Tuple[str, Callable]
+        ] = self.heartbeat_handler.items()
 
     def transform_mappings(
         self, mappings: Dict[str, Dict[str, Union[str, Callable]]]
