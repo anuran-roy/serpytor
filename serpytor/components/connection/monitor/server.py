@@ -279,7 +279,7 @@ class Server(HeartbeatServer):
         # p.join()
         # self.service_online = False
         except Exception as e:
-            rich_print(f"Service {self.__str__} crashed :(")
+            rich_print(f"Service {self.__str__} crashed :(\n Reason: {e}")
             self.service_online = False
 
     def is_service_online(self) -> bool:
