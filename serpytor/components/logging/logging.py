@@ -39,8 +39,7 @@ class DebugLogger:
         """
         print("Passing through the StandardLogger log function")
         try:
-            output = function(*args, **kwargs)
-            return output
+            return function(*args, **kwargs)
         except Exception as e:
             print(f"\n{e}\n")
 
