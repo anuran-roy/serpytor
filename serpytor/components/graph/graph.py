@@ -1,7 +1,7 @@
 from functools import wraps
 from typing import Any, Callable, Dict, List, Optional
 
-from serpytor.components.graph import Node
+from serpytor.components.graph.node import Node
 
 
 class Graph:
@@ -12,7 +12,8 @@ class Graph:
         directed: bool = False,
         **kwargs
     ):
-        self._meta: Dict[str, Any] = {"description": description, "title": title}
+        self._meta: Dict[str, Any] = {
+            "description": description, "title": title}
 
         self._directed: bool = directed
         self._nodes: List[Node] = kwargs.get("nodes", [])
