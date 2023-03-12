@@ -1,5 +1,5 @@
-from aiohttp import web
 import uvicorn
+from aiohttp import web
 
 app = web.Application()
 router = web.RouteTableDef()

@@ -1,8 +1,6 @@
 from yaml import safe_load
-from .server import HeartbeatServer
-from serpytor.components.events import (
-    EventCapture,
-)
+
+from serpytor.components.connection.monitor.server import HeartbeatServer
 
 
 class Monitor:
@@ -13,7 +11,4 @@ class Monitor:
 
     def start_server(self) -> None:
         server = HeartbeatServer()
-        server.execute()
-
-    def connect_to_clients() -> None:
-        pass
+        server.start_heartbeats()

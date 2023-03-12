@@ -1,19 +1,9 @@
-from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.svm import SVC, SVR
-from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.metrics import (accuracy_score, f1_score, mean_squared_error,
+                             r2_score)
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import (
-    accuracy_score,
-    mean_squared_error,
-    r2_score,
-    recall_score,
-    precision_score,
-    f1_score,
-)
-
-import pandas as pd
-import numpy as np
+from sklearn.svm import SVC, SVR
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 
 def get_best_model(
@@ -66,8 +56,8 @@ def get_best_model(
 
     models = [model() for model in model_glossary[model_type]]
 
-    for idx in range(len(models)):
-        model = models[idx]
+    for model_ in models:
+        model = model_
         model.fit(X_train, Y_train)
 
     scores = {}
@@ -95,20 +85,21 @@ def get_best_model(
             for model in models
         }
 
-    if optimize_for == "balanced":
-        if not get_all_models:
-            return max(scores.items(), key=lambda x: x[1]["scores"][1])
-        else:
-            return (
-                max(scores.items(), key=lambda x: x[1]["scores"][1]),
-                scores.items(),
-            )
-
-    elif optimize_for == "accuracy":
-        if not get_all_models:
-            return max(scores.items(), key=lambda x: x[1]["scores"][0])
-        else:
-            return (
+    if optimize_for == "accuracy":
+        return (
+            (
                 max(scores.items(), key=lambda x: x[1]["scores"][0]),
                 scores.items(),
             )
+            if get_all_models
+            else max(scores.items(), key=lambda x: x[1]["scores"][0])
+        )
+    elif optimize_for == "balanced":
+        return (
+            (
+                max(scores.items(), key=lambda x: x[1]["scores"][1]),
+                scores.items(),
+            )
+            if get_all_models
+            else max(scores.items(), key=lambda x: x[1]["scores"][1])
+        )

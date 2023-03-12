@@ -1,13 +1,8 @@
-from typing import List, Tuple, Optional, Dict, Callable, Iterable, Any, Union
-from serpytor.components.pipelines.exceptions import (
-    CriticalPipelineError,
-    PipelineError,
-    PipelineWarning,
-    PipelineInfo,
-    PipelineDebugInfo,
-)
 import traceback
-from serpytor.components.events.event_capture import EventCapture
+from typing import Any, Callable, List
+
+from serpytor.components.pipelines.exceptions import (CriticalPipelineError,
+                                                      PipelineError)
 
 # from serpytor.config import EVENT_CAPTURE_CONFIG
 
@@ -128,13 +123,11 @@ if __name__ == "__main__":
 
     def proc1(data, *args, **kwargs):
         print(data)
-        mod_data = [i + 1 for i in data]
-        return mod_data
+        return [i + 1 for i in data]
 
     def proc2(data, *args, **kwargs):
         print(data)
-        mod_data2 = [i**2 for i in data]
-        return mod_data2
+        return [i**2 for i in data]
 
     pipe = Pipeline(pipeline=[(producer, [], {}), (proc1, [], {}), (proc2, [], {})])
 

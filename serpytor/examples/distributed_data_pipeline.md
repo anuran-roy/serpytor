@@ -1,3 +1,3 @@
-## Distributed Data Pipeline example!
+# Distributed Data Pipeline example
 
 Currently under construction.

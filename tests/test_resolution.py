@@ -1,6 +1,7 @@
-from serpytor.components.resolver.resolve import resolve_base
-import pytest
 from pathlib import Path
+
+
+from serpytor.components.resolver.resolve import resolve_base
 
 
 def test_base_resolution() -> None:

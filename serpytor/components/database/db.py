@@ -1,6 +1,7 @@
 from threading import Lock
-from tinydb import TinyDB, Query
-from typing import Optional, Dict, List, Any
+from typing import Any, Dict, List, Optional
+
+from tinydb import Query, TinyDB
 
 
 class DBIO:

@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from yaml import safe_load
 
 BASE_DIR = Path(__file__).parent
